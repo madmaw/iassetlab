@@ -3,6 +3,7 @@ package com.iassetlab.core.parser.xml;
 import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.ConfigurationTree;
 import com.iassetlab.core.Property;
+import com.iassetlab.core.Reference;
 import com.iassetlab.core.parser.ResourceDataPath;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,11 +22,16 @@ public class TestXmlConfigurationTreeParser {
     @Test
     public void test1() throws Exception {
 
-        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "/test1.xml");
+        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "test1.xml");
 
         XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
         ConfigurationTree tree = parser.parse(path);
 
+        test1Tree(tree);
+
+    }
+
+    private void test1Tree(ConfigurationTree tree) {
         Assert.assertEquals(tree.getName(), "test1");
 
         AssetContext context = new AssetContext();
@@ -48,5 +54,27 @@ public class TestXmlConfigurationTreeParser {
         Assert.assertEquals(tree.getDiversifiers().size(), 0);
 
         Assert.assertEquals(tree.getReferences().size(), 0);
+    }
+
+    @Test
+    public void test2() throws Exception {
+
+        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "test2.xml");
+
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
+        ConfigurationTree tree = parser.parse(path);
+
+        Assert.assertEquals(tree.getName(), "test2");
+
+        Assert.assertEquals(tree.getProperties().size(), 0);
+        Assert.assertEquals(tree.getDiversifiers().size(), 0);
+
+        List<Reference> references = tree.getReferences();
+        Assert.assertEquals(references.size(), 1);
+
+        Reference reference = references.get(0);
+
+        ConfigurationTree referenceConfiguration = reference.getConfiguration();
+        test1Tree(referenceConfiguration);
     }
 }

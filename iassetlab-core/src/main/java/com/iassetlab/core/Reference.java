@@ -21,6 +21,14 @@ public class Reference implements AssetConfigurationSource {
         this.configuration = configuration;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public ConfigurationTree getConfiguration() {
+        return configuration;
+    }
+
     @Override
     public List<Map<String, AssetValue>> build() {
         List<Map<String, AssetValue>> result = new ArrayList<>();

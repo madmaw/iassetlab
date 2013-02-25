@@ -8,8 +8,10 @@ import com.iassetlab.core.parser.ConfigurationParseException;
 import com.iassetlab.core.parser.ConfigurationTreeParser;
 import com.iassetlab.core.parser.DataPath;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -19,6 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,7 +32,7 @@ import java.util.ArrayList;
  */
 public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
 
-    private static final String CONFIGURATION_TREE_ELEMENT_NAME   = "config";
+    private static final String CONFIGURATION_TREE_ELEMENT_NAME   = "configuration";
     private static final String CONFIGURATION_TREE_NAME_ATTRIBUTE = "name";
 
     private static final String PROPERTY_ELEMENT_NAME               = "property";
@@ -60,6 +63,19 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         }
         Document document;
         InputStream ins = path.open();
+        if( ins != null ) {
+            /*
+            List<String> lines = IOUtils.readLines(ins);
+            for( String line : lines ) {
+                System.out.println(line);
+            }
+            ins = path.open();
+            */
+
+            ins = new BOMInputStream(ins);
+
+
+        }
         try {
             document = documentBuilder.parse(ins);
         } catch( SAXException ex ) {
@@ -75,26 +91,26 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
     public ConfigurationTree parseConfigurationTree(DataPath path, Element configurationTreeElement) throws ConfigurationParseException, IOException {
         String name = configurationTreeElement.getAttribute(CONFIGURATION_TREE_NAME_ATTRIBUTE);
 
-        NodeList propertyNodes = configurationTreeElement.getElementsByTagName(PROPERTY_ELEMENT_NAME);
-        ArrayList<Property> properties = new ArrayList<>(propertyNodes.getLength());
-        for( int i=0; i<propertyNodes.getLength(); i++ ) {
-            Element propertyElement = (Element)propertyNodes.item(i);
+        List<Element> propertyNodes = getElementsByTagName(configurationTreeElement, PROPERTY_ELEMENT_NAME);
+        ArrayList<Property> properties = new ArrayList<>(propertyNodes.size());
+        for( int i=0; i<propertyNodes.size(); i++ ) {
+            Element propertyElement = (Element)propertyNodes.get(i);
             Property property = parseProperty(path, propertyElement);
             properties.add(property);
         }
 
-        NodeList referenceNodes = configurationTreeElement.getElementsByTagName(REFERENCE_ELEMENT_NAME);
-        ArrayList<Reference> references = new ArrayList<>(referenceNodes.getLength());
-        for( int i=0; i<referenceNodes.getLength(); i++ ) {
-            Element referenceElement = (Element)referenceNodes.item(i);
+        List<Element> referenceNodes = getElementsByTagName(configurationTreeElement, REFERENCE_ELEMENT_NAME);
+        ArrayList<Reference> references = new ArrayList<>(referenceNodes.size());
+        for( int i=0; i<referenceNodes.size(); i++ ) {
+            Element referenceElement = (Element)referenceNodes.get(i);
             Reference reference = parseReference(path, referenceElement);
             references.add(reference);
         }
 
-        NodeList diversifierNodes = configurationTreeElement.getElementsByTagName(DIVERSIFIER_ELEMENT_NAME);
-        ArrayList<Diversifier> diversifiers = new ArrayList<>(diversifierNodes.getLength());
-        for( int i=0; i<diversifierNodes.getLength(); i++ ) {
-            Element diversifierElement = (Element)diversifierNodes.item(i);
+        List<Element> diversifierNodes = getElementsByTagName(configurationTreeElement, DIVERSIFIER_ELEMENT_NAME);
+        ArrayList<Diversifier> diversifiers = new ArrayList<>(diversifierNodes.size());
+        for( int i=0; i<diversifierNodes.size(); i++ ) {
+            Element diversifierElement = (Element)diversifierNodes.get(i);
             Diversifier diversifier = parseDiversifier(path, diversifierElement);
             diversifiers.add(diversifier);
         }
@@ -111,10 +127,10 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
 
     public Diversifier parseDiversifier(DataPath path, Element diversifierElement) throws ConfigurationParseException, IOException {
         String key = diversifierElement.getAttribute(DIVERSIFIER_KEY_ATTRIBUTE);
-        NodeList configurationTreeNodes = diversifierElement.getElementsByTagName(CONFIGURATION_TREE_ELEMENT_NAME);
-        ArrayList<ConfigurationTree> configurationTrees = new ArrayList<>(configurationTreeNodes.getLength());
-        for( int i=0; i<configurationTreeNodes.getLength(); i++ ) {
-            Element configurationTreeElement = (Element)configurationTreeNodes.item(i);
+        List<Element> configurationTreeNodes = getElementsByTagName(diversifierElement, CONFIGURATION_TREE_ELEMENT_NAME);
+        ArrayList<ConfigurationTree> configurationTrees = new ArrayList<>(configurationTreeNodes.size());
+        for( int i=0; i<configurationTreeNodes.size(); i++ ) {
+            Element configurationTreeElement = (Element)configurationTreeNodes.get(i);
             ConfigurationTree configurationTree = parseConfigurationTree(path, configurationTreeElement);
             configurationTrees.add(configurationTree);
         }
@@ -125,19 +141,35 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         String key = referenceElement.getAttribute(DIVERSIFIER_KEY_ATTRIBUTE);
         String reference = referenceElement.getAttribute(DIVERSIFIER_PATH_ATTRIBUTE);
         ConfigurationTree configurationTree;
-        if( path == null ) {
+        if( reference == null || reference.trim().length() == 0) {
             // does it contain a configuration node?
-            NodeList configurationTreeNodes = referenceElement.getElementsByTagName(CONFIGURATION_TREE_ELEMENT_NAME);
-            if( configurationTreeNodes.getLength() == 1 ) {
-                Element configurationTreeElement = (Element)configurationTreeNodes.item(0);
+            List<Element> configurationTreeNodes = getElementsByTagName(referenceElement, CONFIGURATION_TREE_ELEMENT_NAME);
+            if( configurationTreeNodes.size() == 1 ) {
+                Element configurationTreeElement = (Element)configurationTreeNodes.get(0);
                 configurationTree = parseConfigurationTree(path, configurationTreeElement);
             } else {
-                throw new ConfigurationParseException("found "+configurationTreeNodes.getLength()+" reference elements, expected 1");
+                throw new ConfigurationParseException("found "+configurationTreeNodes.size()+" reference elements, expected 1");
             }
         } else {
             DataPath referencePath = path.getRelativePath(reference);
             configurationTree = parse(referencePath);
         }
         return new Reference(key,  configurationTree);
+    }
+
+    private static List<Element> getElementsByTagName(Element parent, String tagName) {
+
+        ArrayList<Element> result = new ArrayList<>();
+        Node child = parent.getFirstChild();
+        while( child != null ) {
+            if( child instanceof Element ) {
+                Element element = (Element)child;
+                if( tagName.equals(element.getTagName()) ) {
+                    result.add(element);
+                }
+            }
+            child = child.getNextSibling();
+        }
+        return result;
     }
 }

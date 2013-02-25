@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration name="test1">
     <property key="1" name="a">A</property>
     <property key="2" name="b">B</property>
