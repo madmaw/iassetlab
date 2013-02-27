@@ -1,4 +1,4 @@
-package com.iassetlab.core.parser;
+package com.iassetlab.core.data;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,5 +38,10 @@ public class ResourceDataPath implements DataPath {
             relativePath = directory + path;
         }
         return new ResourceDataPath(this.classLoader, relativePath);
+    }
+
+    @Override
+    public String toURI() {
+        return this.classLoader.getResource(this.path).toExternalForm();
     }
 }

@@ -22,6 +22,14 @@ public class Diversifier implements AssetConfigurationSource {
         this.configurations = configurations;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public List<ConfigurationTree> getConfigurations() {
+        return configurations;
+    }
+
     @Override
     public List<Map<String, AssetValue>> build() {
         List<Map<String, AssetValue>> result = new ArrayList<>(configurations.size());

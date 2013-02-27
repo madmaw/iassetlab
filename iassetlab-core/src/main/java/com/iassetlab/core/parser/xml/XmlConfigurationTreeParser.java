@@ -6,13 +6,12 @@ import com.iassetlab.core.Property;
 import com.iassetlab.core.Reference;
 import com.iassetlab.core.parser.ConfigurationParseException;
 import com.iassetlab.core.parser.ConfigurationTreeParser;
-import com.iassetlab.core.parser.DataPath;
+import com.iassetlab.core.data.DataPath;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -41,10 +40,11 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
 
     private static final String REFERENCE_ELEMENT_NAME              = "reference";
     private static final String REFERENCE_KEY_ATTRIBUTE             = "key";
+    private static final String REFERENCE_PATH_ATTRIBUTE            = "path";
+    private static final String REFERENCE_PREFIX_ATTRIBUTE          = "prefix";
 
     private static final String DIVERSIFIER_ELEMENT_NAME            = "diversifier";
     private static final String DIVERSIFIER_KEY_ATTRIBUTE           = "key";
-    private static final String DIVERSIFIER_PATH_ATTRIBUTE          = "path";
 
 
     private DocumentBuilderFactory documentBuilderFactory;
@@ -138,8 +138,9 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
     }
 
     public Reference parseReference(DataPath path, Element referenceElement) throws ConfigurationParseException, IOException {
-        String key = referenceElement.getAttribute(DIVERSIFIER_KEY_ATTRIBUTE);
-        String reference = referenceElement.getAttribute(DIVERSIFIER_PATH_ATTRIBUTE);
+        String key = referenceElement.getAttribute(REFERENCE_KEY_ATTRIBUTE);
+        String prefix = referenceElement.getAttribute(REFERENCE_PREFIX_ATTRIBUTE);
+        String reference = referenceElement.getAttribute(REFERENCE_PATH_ATTRIBUTE);
         ConfigurationTree configurationTree;
         if( reference == null || reference.trim().length() == 0) {
             // does it contain a configuration node?
@@ -154,7 +155,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
             DataPath referencePath = path.getRelativePath(reference);
             configurationTree = parse(referencePath);
         }
-        return new Reference(key,  configurationTree);
+        return new Reference(key, prefix, configurationTree);
     }
 
     private static List<Element> getElementsByTagName(Element parent, String tagName) {

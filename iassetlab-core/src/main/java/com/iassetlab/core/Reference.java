@@ -14,15 +14,21 @@ import java.util.Map;
  */
 public class Reference implements AssetConfigurationSource {
     private String key;
+    private String prefix;
     private ConfigurationTree configuration;
 
-    public Reference(String key, ConfigurationTree configuration) {
+    public Reference(String key, String prefix, ConfigurationTree configuration) {
         this.key = key;
+        this.prefix = prefix;
         this.configuration = configuration;
     }
 
     public String getKey() {
         return key;
+    }
+
+    public String getPrefix() {
+        return prefix;
     }
 
     public ConfigurationTree getConfiguration() {
@@ -37,7 +43,7 @@ public class Reference implements AssetConfigurationSource {
             AssetValue assetValue = new AssetValue() {
                 @Override
                 public String getValue(AssetContext context) {
-                    AssetContext local = new AssetContext(context);
+                    AssetContext local = new AssetContext(context, prefix);
                     local.setAll(row);
                     // TODO pull together all the name/value pairs and combine into a URL
                     return null;
@@ -45,10 +51,10 @@ public class Reference implements AssetConfigurationSource {
 
                 @Override
                 public String getName(AssetContext context) {
-                    AssetContext local = new AssetContext(context);
+                    AssetContext local = new AssetContext(context, prefix);
                     local.setAll(row);
                     //return context.evaluate(IAssetLabConstants.KEY_ASSET_NAME);
-                    // TODO extract the name
+                    // TODO extract the name (this may include directories, something to watch out for)
                     return null;
                 }
             };

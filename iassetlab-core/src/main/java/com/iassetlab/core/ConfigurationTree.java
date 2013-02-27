@@ -65,8 +65,8 @@ public class ConfigurationTree implements AssetConfigurationSource {
         for( int i=0; i<numAssetConfigurations; i++ ) {
             Map<String, AssetValue> row = new HashMap<>(local);
             int index = i;
-            for( int j=0; i<assetConfigurations.size(); i++ ) {
-                List<Map<String, AssetValue>> assetConfiguration = assetConfigurations.get(i);
+            for( int j=0; j<assetConfigurations.size(); j++ ) {
+                List<Map<String, AssetValue>> assetConfiguration = assetConfigurations.get(j);
                 Map<String, AssetValue> assetValues = assetConfiguration.get(index % assetConfiguration.size());
                 row.putAll(assetValues);
                 index /= assetConfiguration.size();
