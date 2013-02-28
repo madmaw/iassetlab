@@ -1,14 +1,15 @@
 package com.iassetlab.core.frame;
 
 import com.iassetlab.core.AssetContext;
+import com.iassetlab.core.data.DataPath;
 
 /**
  * Created with IntelliJ IDEA.
  * User: chris
- * Date: 27/02/13
- * Time: 12:45 PM
+ * Date: 28/02/13
+ * Time: 9:55 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface FrameGeneratorFactory {
-    FrameGenerator create(AssetContext assetContext) throws FrameGeneratorConfigurationException;
+public interface FrameMetadataFactory {
+    FrameMetadata create(DataPath systemPath, AssetContext context);
 }

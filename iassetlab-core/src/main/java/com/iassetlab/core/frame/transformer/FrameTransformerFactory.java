@@ -1,6 +1,8 @@
-package com.iassetlab.core.frame;
+package com.iassetlab.core.frame.transformer;
 
 import com.iassetlab.core.AssetContext;
+
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,5 +12,5 @@ import com.iassetlab.core.AssetContext;
  * To change this template use File | Settings | File Templates.
  */
 public interface FrameTransformerFactory {
-    FrameTransformer create(AssetContext context);
+    FrameTransformer create(AssetContext context) throws FrameTransformerConfigurationException, IOException;
 }

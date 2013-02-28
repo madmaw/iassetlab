@@ -14,10 +14,8 @@ import java.util.List;
  * Time: 1:41 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface FrameHandler {
-    void addFrame(AssetContext context, InputStream frameData) throws IOException;
+public interface FrameConsumer {
+    void consume(AssetContext context, InputStream frameData, String mimeType) throws IOException;
 
     void close();
-
-    List<DataPath> getAssets();
 }

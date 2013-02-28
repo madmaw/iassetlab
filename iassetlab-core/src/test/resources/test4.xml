@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="test3">
+    <property key="x" name="y">z</property>
+    <diversifier key="size">
+        <configuration name="small">
+            <property key="width">10</property>
+            <property key="height">20</property>
+        </configuration>
+        <configuration name="large">
+            <property key="width">100</property>
+            <property key="height">200</property>
+        </configuration>
+    </diversifier>
+</configuration>

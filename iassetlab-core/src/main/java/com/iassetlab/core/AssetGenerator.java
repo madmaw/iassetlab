@@ -1,14 +1,11 @@
 package com.iassetlab.core;
 
 import com.iassetlab.core.data.DataPath;
-import com.iassetlab.core.frame.FrameGenerator;
-import com.iassetlab.core.frame.FrameGeneratorFactory;
-import com.iassetlab.core.frame.FrameHandler;
+import com.iassetlab.core.frame.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +25,7 @@ public class AssetGenerator {
         this.defaults = defaults;
     }
 
-    public void generate(ConfigurationTree configuration, FrameHandler frameHandler) throws IOException {
+    public void generate(DataPath systemPath, ConfigurationTree configuration, FrameConsumer frameConsumer) throws IOException, FrameGenerationException, FrameGeneratorConfigurationException {
         List<Map<String, AssetValue>> builds = configuration.build();
         AssetContext defaultAssetContext = new AssetContext(defaults);
         for( Map<String, AssetValue> build : builds ) {
@@ -37,10 +34,10 @@ public class AssetGenerator {
             FrameGenerator frameGenerator = frameGeneratorFactory.create(assetContext);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            frameGenerator.generate(assetContext, bos);
+            FrameMetadata metadata = frameGenerator.generate(systemPath, assetContext, bos);
 
             ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-            frameHandler.addFrame(assetContext, bis);
+            frameConsumer.consume(assetContext, bis, metadata.getMimeType());
         }
     }
 }

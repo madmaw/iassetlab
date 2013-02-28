@@ -2,6 +2,7 @@ package com.iassetlab.core.frame;
 
 import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
+import com.iassetlab.core.data.DataPath;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,6 +17,6 @@ import java.util.Map;
  */
 public interface FrameGenerator {
 
-    void generate(AssetContext context, OutputStream outs) throws IOException;
+    FrameMetadata generate(DataPath systemPath, AssetContext context, OutputStream outs) throws IOException, FrameGenerationException;
 
 }

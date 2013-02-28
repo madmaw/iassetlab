@@ -1,4 +1,6 @@
-package com.iassetlab.core.frame;
+package com.iassetlab.core.frame.transformer;
+
+import com.iassetlab.core.frame.FrameMetadata;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,5 +14,5 @@ import java.io.OutputStream;
  * To change this template use File | Settings | File Templates.
  */
 public interface FrameTransformer {
-    void transform(InputStream inputStream, OutputStream outputStream) throws IOException;
+    FrameMetadata transform(InputStream inputStream, FrameMetadata inputMetadata, OutputStream outputStream) throws IOException, FrameTransformationException;
 }
