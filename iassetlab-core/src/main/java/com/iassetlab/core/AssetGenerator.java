@@ -25,11 +25,16 @@ public class AssetGenerator {
         this.defaults = defaults;
     }
 
-    public void generate(DataPath systemPath, ConfigurationTree configuration, FrameConsumer frameConsumer) throws IOException, FrameGenerationException, FrameGeneratorConfigurationException {
+    public void generate(DataPath systemPath, ConfigurationTree configuration, FrameConsumer frameConsumer) throws IOException, FrameGenerationException, FrameGeneratorConfigurationException, FrameConsumptionException {
         List<Map<String, AssetValue>> builds = configuration.build();
-        AssetContext defaultAssetContext = new AssetContext(defaults);
+        AssetContext defaultAssetContext = new BasicAssetContext(defaults);
+        int sequenceNumber = 0;
         for( Map<String, AssetValue> build : builds ) {
-            AssetContext assetContext = new AssetContext(defaultAssetContext, build);
+
+            ChildAssetContext assetContext = new ChildAssetContext(defaultAssetContext, build);
+            sequenceNumber++;
+            String sequenceNumberString = Integer.toString(sequenceNumber);
+            assetContext.set(IAssetLabConstants.KEY_SEQUENCE_NUMBER, new Property(IAssetLabConstants.KEY_SEQUENCE_NUMBER, sequenceNumberString, sequenceNumberString));
 
             FrameGenerator frameGenerator = frameGeneratorFactory.create(assetContext);
 
@@ -39,5 +44,6 @@ public class AssetGenerator {
             ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
             frameConsumer.consume(assetContext, bis, metadata.getMimeType());
         }
+        frameConsumer.close();
     }
 }

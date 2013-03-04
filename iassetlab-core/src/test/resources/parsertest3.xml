@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration name="test3">
-    <reference key="ref" prefix="z" path="test1.xml"/>
+    <reference key="ref" prefix="z" path="parsertest1.xml"/>
 </configuration>

@@ -15,7 +15,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface FrameConsumer {
-    void consume(AssetContext context, InputStream frameData, String mimeType) throws IOException;
+    void consume(AssetContext context, InputStream frameData, String mimeType) throws IOException, FrameConsumptionException;
 
-    void close();
+    void close() throws IOException, FrameConsumptionException;
 }

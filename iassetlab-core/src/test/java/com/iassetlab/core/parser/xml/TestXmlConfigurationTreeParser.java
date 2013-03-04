@@ -20,7 +20,7 @@ public class TestXmlConfigurationTreeParser {
     @Test
     public void test1() throws Exception {
 
-        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "test1.xml");
+        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "parsertest1.xml");
 
         XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
         ConfigurationTree tree = parser.parse(path);
@@ -32,7 +32,7 @@ public class TestXmlConfigurationTreeParser {
     private void test1Tree(String treeName, ConfigurationTree tree) {
         Assert.assertEquals(tree.getName(), treeName);
 
-        AssetContext context = new AssetContext();
+        AssetContext context = new BasicAssetContext();
 
         List<Property> properties = tree.getProperties();
         Assert.assertEquals(properties.size(), 4);
@@ -67,7 +67,7 @@ public class TestXmlConfigurationTreeParser {
     @Test
     public void test2() throws Exception {
 
-        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "test2.xml");
+        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "parsertest2.xml");
 
         XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
         ConfigurationTree tree = parser.parse(path);
@@ -92,7 +92,7 @@ public class TestXmlConfigurationTreeParser {
         List<Map<String, AssetValue>> builds = tree.build();
         Assert.assertEquals(builds.size(), 1);
 
-        AssetContext context = new AssetContext();
+        AssetContext context = new BasicAssetContext();
 
         Map<String, AssetValue> build = builds.get(0);
         Assert.assertEquals(build.size(), 1);
@@ -103,7 +103,7 @@ public class TestXmlConfigurationTreeParser {
 
     @Test
     public void test3() throws Exception {
-        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "test3.xml");
+        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "parsertest3.xml");
 
         XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
         ConfigurationTree tree = parser.parse(path);
@@ -114,7 +114,7 @@ public class TestXmlConfigurationTreeParser {
         List<Map<String, AssetValue>> builds = tree.build();
         Assert.assertEquals(builds.size(), 1);
 
-        AssetContext context = new AssetContext();
+        AssetContext context = new BasicAssetContext();
 
         Map<String, AssetValue> build = builds.get(0);
         Assert.assertEquals(build.size(), 1);
@@ -124,12 +124,12 @@ public class TestXmlConfigurationTreeParser {
 
     @Test
     public void test4() throws Exception {
-        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "test4.xml");
+        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "parsertest4.xml");
 
         XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
         ConfigurationTree tree = parser.parse(path);
 
-        AssetContext context = new AssetContext();
+        AssetContext context = new BasicAssetContext();
 
         List<Property> properties = tree.getProperties();
         Assert.assertEquals(properties.size(), 1);

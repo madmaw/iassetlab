@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="test1">
+    <property key="width">20</property>
+    <property key="height">40</property>
+    <property key="fill-color">green</property>
+    <property key="lab_template_xsl">transformertest2.xsl</property>
+    <property key="lab_template_xsl_output_mime_type">image/svg+xml</property>
+</configuration>

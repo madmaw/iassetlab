@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="test1">
+    <property key="lab_template_xsl">transformertest3.xsl</property>
+    <property key="lab_template_xsl_output_mime_type">image/svg+xml</property>
+    <diversifier key="theme">
+        <configuration name="red">
+            <property key="fill-color">red</property>
+        </configuration>
+        <configuration name="green">
+            <property key="fill-color">green</property>
+        </configuration>
+    </diversifier>
+    <diversifier key="size">
+        <configuration name="small">
+            <property key="width">10</property>
+            <property key="height">20</property>
+        </configuration>
+        <configuration name="large">
+            <property key="width">100</property>
+            <property key="height">200</property>
+        </configuration>
+    </diversifier>
+
+</configuration>

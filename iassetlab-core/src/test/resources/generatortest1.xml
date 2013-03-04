@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="test1">
+    <property key="lab_template_xsl">generatortest1.xsl</property>
+    <property key="lab_template_xsl_output_mime_type">image/svg+xml</property>
+</configuration>

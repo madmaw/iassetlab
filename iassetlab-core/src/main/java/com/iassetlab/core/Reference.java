@@ -43,7 +43,7 @@ public class Reference implements AssetConfigurationSource {
             AssetValue assetValue = new AssetValue() {
                 @Override
                 public String getValue(AssetContext context) {
-                    AssetContext local = new AssetContext(context, prefix);
+                    ChildAssetContext local = new ChildAssetContext(context, prefix);
                     local.setAll(row);
                     // TODO pull together all the name/value pairs and combine into a URL
                     return null;
@@ -51,9 +51,9 @@ public class Reference implements AssetConfigurationSource {
 
                 @Override
                 public String getName(AssetContext context) {
-                    AssetContext local = new AssetContext(context, prefix);
+                    ChildAssetContext local = new ChildAssetContext(context, prefix);
                     local.setAll(row);
-                    //return context.evaluate(IAssetLabConstants.KEY_ASSET_NAME);
+                    //return context.evaluate(IAssetLabConstants.KEY_OUTPUT_NAME);
                     // TODO extract the name (this may include directories, something to watch out for)
                     return null;
                 }

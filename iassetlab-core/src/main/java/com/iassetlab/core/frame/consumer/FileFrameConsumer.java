@@ -3,12 +3,11 @@ package com.iassetlab.core.frame.consumer;
 import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.IAssetLabConstants;
-import com.iassetlab.core.data.DataPath;
 import com.iassetlab.core.frame.FrameConsumer;
+import com.iassetlab.core.util.FileFeatureUtil;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,22 +27,10 @@ public class FileFrameConsumer implements FrameConsumer {
     @Override
     public void consume(AssetContext context, InputStream frameData, String mimeType) throws IOException {
         // get the file name
-        AssetValue filenameAssetValue = context.get(IAssetLabConstants.KEY_ASSET_NAME);
+        AssetValue filenameAssetValue = context.get(IAssetLabConstants.KEY_OUTPUT_NAME);
         String filename = filenameAssetValue.getValue(context);
         // get the file extension (if it exists)
-        AssetValue fileExtensionAssetValue = context.get(IAssetLabConstants.KEY_OUTPUT_TYPE_NAME);
-        String fileExtension;
-        if( fileExtensionAssetValue == null ) {
-            fileExtension = mimeType;
-            if( fileExtension != null ) {
-                int slashIndex = fileExtension.indexOf('/');
-                if( slashIndex >= 0 ) {
-                    fileExtension = fileExtension.substring(slashIndex + 1);
-                }
-            }
-        } else {
-            fileExtension = fileExtensionAssetValue.getValue(context);
-        }
+        String fileExtension = FileFeatureUtil.getOutputFileExtension(context);
         if( fileExtension != null ) {
             filename += '.' + fileExtension;
         }

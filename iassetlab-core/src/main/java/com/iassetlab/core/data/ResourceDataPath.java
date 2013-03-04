@@ -44,4 +44,8 @@ public class ResourceDataPath implements DataPath {
     public String toURI() {
         return this.classLoader.getResource(this.path).toExternalForm();
     }
+
+    public String toString() {
+        return this.path;
+    }
 }

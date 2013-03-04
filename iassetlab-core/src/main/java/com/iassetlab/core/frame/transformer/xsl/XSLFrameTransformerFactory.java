@@ -29,32 +29,54 @@ public class XSLFrameTransformerFactory implements FrameTransformerFactory {
 
     private TransformerFactory transformerFactory;
     private DataPathFactory xslDataPathFactory;
+    private String defaultMimeType;
 
-    public XSLFrameTransformerFactory(TransformerFactory transformerFactory) {
+    public XSLFrameTransformerFactory(TransformerFactory transformerFactory, DataPathFactory xslDataPathFactory, String defaultMimeType) {
         this.transformerFactory = transformerFactory;
+        this.xslDataPathFactory = xslDataPathFactory;
+        this.defaultMimeType = defaultMimeType;
     }
 
     @Override
     public FrameTransformer create(AssetContext context) throws FrameTransformerConfigurationException, IOException {
 
-        // get the XSL file
-        String xslFile = context.get(IAssetLabConstants.KEY_TEMPLATE_XSL_PATH).getValue(context);
-        DataPath xslDataPath = xslDataPathFactory.getDataPath(xslFile);
-        InputStream xslInputStream = xslDataPath.open();
-        try {
-            Source xslSource = new StreamSource(xslInputStream);
-            Transformer transformer = transformerFactory.newTransformer(xslSource);
-            Collection<String> keys = context.getKeys();
-            for( String key : keys ) {
-                AssetValue assetValue = context.get(key);
-                String value = assetValue.getValue(context);
-                transformer.setParameter(key, value);
-            }
-            return new XSLFrameTransformer(transformer);
-        } catch( TransformerConfigurationException ex ) {
-            throw new FrameTransformerConfigurationException(xslFile, ex);
-        } finally {
-            xslInputStream.close();
+        String mimeType;
+        AssetValue mimeTypeAssetValue = context.get(IAssetLabConstants.KEY_TEMPLATE_XSL_OUTPUT_MIME_TYPE);
+        if( mimeTypeAssetValue != null ) {
+            mimeType = mimeTypeAssetValue.getValue(context);
+        } else {
+            // TODO guess the output type based on the input XSL template?
+            mimeType = this.defaultMimeType;
         }
+
+        Transformer transformer;
+        // get the XSL file
+        AssetValue xslFileAssetValue = context.get(IAssetLabConstants.KEY_TEMPLATE_XSL_PATH);
+        if( xslFileAssetValue == null ) {
+            try {
+                transformer = transformerFactory.newTransformer();
+            } catch( TransformerConfigurationException ex ) {
+                throw new FrameTransformerConfigurationException(ex);
+            }
+        } else {
+            String xslFile = xslFileAssetValue.getValue(context);
+            DataPath xslDataPath = xslDataPathFactory.getDataPath(xslFile);
+            InputStream xslInputStream = xslDataPath.open();
+            try {
+                Source xslSource = new StreamSource(xslInputStream);
+                transformer = transformerFactory.newTransformer(xslSource);
+            } catch( TransformerConfigurationException ex ) {
+                throw new FrameTransformerConfigurationException(xslFile, ex);
+            } finally {
+                xslInputStream.close();
+            }
+        }
+        Collection<String> keys = context.getKeys();
+        for( String key : keys ) {
+            AssetValue assetValue = context.get(key);
+            String value = assetValue.getValue(context);
+            transformer.setParameter(key, value);
+        }
+        return new XSLFrameTransformer(transformer, mimeType);
     }
 }

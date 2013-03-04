@@ -75,6 +75,8 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
             ins = new BOMInputStream(ins);
 
 
+        } else {
+            throw new ConfigurationParseException("invalid path "+path);
         }
         try {
             document = documentBuilder.parse(ins);

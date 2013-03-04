@@ -47,6 +47,8 @@ public class TransformerPipelineFrameGenerator implements FrameGenerator {
                 data = bos.toByteArray();
             } catch( FrameTransformerConfigurationException ex ) {
                 throw new FrameGenerationException(ex);
+            } catch( FrameTransformationException ex ) {
+                throw new FrameGenerationException(ex);
             }
         }
         outs.write(data);

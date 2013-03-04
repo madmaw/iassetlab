@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="test1">
+    <property key="lab_template_xsl">gifgeneratortest1.xsl</property>
+    <property key="lab_template_xsl_output_mime_type">image/svg+xml</property>
+    <property key="lab_output_extension">gif</property>
+    <diversifier key="frame">
+        <configuration name="1">
+            <property key="lab_output_image_animation_time">0</property>
+        </configuration>
+        <configuration name="2">
+            <property key="lab_output_image_animation_time">0.33</property>
+        </configuration>
+        <configuration name="3">
+            <property key="lab_output_image_animation_time">0.66</property>
+        </configuration>
+    </diversifier>
+
+</configuration>
