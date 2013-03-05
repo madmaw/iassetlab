@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property key="greeting">Hello $name</property>
+    <diversifier key="person">
+        <configuration name="william">
+            <property key="name">William</property>
+        </configuration>
+        <configuration name="simion">
+            <property key="name">Simion</property>
+        </configuration>
+    </diversifier>
+
+</configuration>

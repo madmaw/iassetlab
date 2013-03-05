@@ -1,4 +1,7 @@
-package com.iassetlab.core;
+package com.iassetlab.core.value;
+
+import com.iassetlab.core.AssetContext;
+import com.iassetlab.core.AssetValue;
 
 import java.util.List;
 import java.util.Map;
@@ -10,12 +13,12 @@ import java.util.Map;
  * Time: 12:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Property implements AssetValue {
+public class SimpleAssetValue implements AssetValue {
     private String key;
     private String name;
     private String value;
 
-    public Property(String key, String name, String value) {
+    public SimpleAssetValue(String key, String name, String value) {
         this.key = key;
         this.name = name;
         this.value = value;
@@ -33,5 +36,10 @@ public class Property implements AssetValue {
     @Override
     public String getName(AssetContext context) {
         return this.name;
+    }
+
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

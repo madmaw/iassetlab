@@ -12,6 +12,7 @@ import com.iassetlab.core.frame.transformer.FrameTransformer;
 import com.iassetlab.core.frame.transformer.xsl.XSLFrameTransformer;
 import com.iassetlab.core.frame.transformer.xsl.XSLFrameTransformerFactory;
 import org.apache.commons.io.IOUtils;
+import org.apache.velocity.app.VelocityEngine;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -42,7 +43,8 @@ public class TestXSLFrameTransformer {
         ResourceDataPathFactory pathFactory = new ResourceDataPathFactory(this.getClass().getClassLoader());
         DataPath path = pathFactory.getDataPath(pathToXML);
 
-        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
+        VelocityEngine velocityEngine = new VelocityEngine();
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree tree = parser.parse(path);
         List<Map<String, AssetValue>> builds = tree.build();
         Assert.assertEquals(builds.size(), strings.size());

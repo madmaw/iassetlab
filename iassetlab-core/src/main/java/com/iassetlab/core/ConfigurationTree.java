@@ -1,5 +1,7 @@
 package com.iassetlab.core;
 
+import com.iassetlab.core.value.SimpleAssetValue;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,31 @@ import java.util.Map;
  */
 public class ConfigurationTree implements AssetConfigurationSource {
 
+    public static class Property {
+        private String key;
+        private AssetValue assetValue;
+
+        public Property(String key, AssetValue assetValue) {
+            this.key = key;
+            this.assetValue = assetValue;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public AssetValue getAssetValue() {
+            return assetValue;
+        }
+
+        public String getName(AssetContext context) {
+            return this.assetValue.getName(context);
+        }
+
+        public String getValue(AssetContext context) {
+            return this.assetValue.getValue(context);
+        }
+    }
     private String name;
     private List<Property> properties;
     private List<Reference> references;
@@ -47,7 +74,7 @@ public class ConfigurationTree implements AssetConfigurationSource {
         Map<String, AssetValue> local = new HashMap<>(properties.size());
 
         for( Property property : properties ) {
-            local.put(property.getKey(), property);
+            local.put(property.getKey(), property.getAssetValue());
         }
 
         List<AssetConfigurationSource> configurationSources = new ArrayList<>( this.references.size() + this.diversifiers.size() );

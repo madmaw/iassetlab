@@ -6,10 +6,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +15,7 @@ import java.util.Map;
  * Time: 4:26 PM
  * To change this template use File | Settings | File Templates.
  */
-public class InMemoryFrameConsumer implements FrameConsumer {
+public class InMemoryFrameConsumer extends AbstractFrameConsumer {
 
     private List<byte[]> frames;
 

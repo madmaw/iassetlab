@@ -65,7 +65,7 @@ public class TestAssetGenerator extends AbstractHumanVerificationTest {
         ResourceDataPathFactory pathFactory = new ResourceDataPathFactory(this.getClass().getClassLoader());
         DataPath path = pathFactory.getDataPath("generatortest1.xml");
 
-        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree configuration = parser.parse(path);
 
         assetGenerator.generate(
@@ -115,7 +115,7 @@ public class TestAssetGenerator extends AbstractHumanVerificationTest {
         ResourceDataPathFactory pathFactory = new ResourceDataPathFactory(this.getClass().getClassLoader());
         DataPath path = pathFactory.getDataPath("generatortest2.xml");
 
-        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree configuration = parser.parse(path);
 
         assetGenerator.generate(
@@ -174,7 +174,7 @@ public class TestAssetGenerator extends AbstractHumanVerificationTest {
         ResourceDataPathFactory pathFactory = new ResourceDataPathFactory(this.getClass().getClassLoader());
         DataPath path = pathFactory.getDataPath(xmlPath);
 
-        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree configuration = parser.parse(path);
 
         assetGenerator.generate(

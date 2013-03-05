@@ -5,6 +5,7 @@ import com.iassetlab.core.data.DataPath;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -18,4 +19,6 @@ public interface FrameConsumer {
     void consume(AssetContext context, InputStream frameData, String mimeType) throws IOException, FrameConsumptionException;
 
     void close() throws IOException, FrameConsumptionException;
+
+    Comparator<AssetContext> getComparator();
 }

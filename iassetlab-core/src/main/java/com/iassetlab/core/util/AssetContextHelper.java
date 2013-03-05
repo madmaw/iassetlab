@@ -3,6 +3,9 @@ package com.iassetlab.core.util;
 import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
 
+import java.awt.*;
+import java.lang.reflect.Field;
+
 /**
  * Created with IntelliJ IDEA.
  * User: chris
@@ -43,7 +46,27 @@ public class AssetContextHelper {
             result = null;
         }
         return result;
+    }
 
+    public static final Color getColor(AssetContext assetContext, String key) {
+        String value = getString(assetContext, key);
+        Color result;
+        if( value != null ) {
+            try {
+                result = Color.decode(value);
+            } catch( NumberFormatException ex ) {
+                // attempt to look up the color as a field
+                try {
+                    Field field = Color.class.getField(value.toUpperCase());
+                    result = (Color)field.get(null);
+                } catch( Exception e ) {
+                    result = null;
+                }
+            }
+        } else {
+            result = null;
+        }
+        return result;
     }
 
     private AssetContext assetContext;

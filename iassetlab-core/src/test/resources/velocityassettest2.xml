@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property key="v1">A</property>
+    <property key="v2">B</property>
+    <property key="v3">C</property>
+    <property key="d1">$v1</property>
+    <property key="d2">$d1 - $v2</property>
+    <property key="d3">$d2 - $v3</property>
+    <property key="d4">$v1$v2$v3</property>
+</configuration>

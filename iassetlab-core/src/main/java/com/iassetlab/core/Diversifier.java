@@ -1,7 +1,8 @@
 package com.iassetlab.core;
 
+import com.iassetlab.core.value.SimpleAssetValue;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class Diversifier implements AssetConfigurationSource {
             List<Map<String, AssetValue>> rows = configuration.build();
             for( Map<String, AssetValue> row : rows ) {
                 if( !row.containsKey(this.key) ) {
-                    row.put(this.key, new Property(this.key, configuration.getName(), configuration.getName()));
+                    row.put(this.key, new SimpleAssetValue(this.key, configuration.getName(), configuration.getName()));
                 }
                 result.add(row);
             }

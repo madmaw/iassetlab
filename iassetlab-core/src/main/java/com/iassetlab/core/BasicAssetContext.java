@@ -1,7 +1,5 @@
 package com.iassetlab.core;
 
-import com.iassetlab.core.data.DataPath;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +12,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class BasicAssetContext implements AssetContext {
+
     private Map<String, AssetValue> values;
 
     public BasicAssetContext() {

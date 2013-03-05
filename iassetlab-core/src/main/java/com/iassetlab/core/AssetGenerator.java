@@ -2,12 +2,12 @@ package com.iassetlab.core;
 
 import com.iassetlab.core.data.DataPath;
 import com.iassetlab.core.frame.*;
+import com.iassetlab.core.value.SimpleAssetValue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,21 +29,31 @@ public class AssetGenerator {
         List<Map<String, AssetValue>> builds = configuration.build();
         AssetContext defaultAssetContext = new BasicAssetContext(defaults);
         int sequenceNumber = 0;
-        for( Map<String, AssetValue> build : builds ) {
+        ArrayList<ChildAssetContext> contexts = new ArrayList<ChildAssetContext>(builds.size());
 
-            ChildAssetContext assetContext = new ChildAssetContext(defaultAssetContext, build);
+        for( Map<String, AssetValue> build : builds ) {
+            ChildAssetContext context = new ChildAssetContext(defaultAssetContext, build);
             sequenceNumber++;
             String sequenceNumberString = Integer.toString(sequenceNumber);
-            assetContext.set(IAssetLabConstants.KEY_SEQUENCE_NUMBER, new Property(IAssetLabConstants.KEY_SEQUENCE_NUMBER, sequenceNumberString, sequenceNumberString));
+            context.set(IAssetLabConstants.KEY_ASSET_ID, new SimpleAssetValue(IAssetLabConstants.KEY_ASSET_ID, sequenceNumberString, sequenceNumberString));
+            contexts.add(context);
+        }
 
-            FrameGenerator frameGenerator = frameGeneratorFactory.create(assetContext);
+        Comparator<AssetContext> comparator = frameConsumer.getComparator();
+        Collections.sort(contexts, comparator);
+
+        for( ChildAssetContext context : contexts ) {
+
+            FrameGenerator frameGenerator = frameGeneratorFactory.create(context);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            FrameMetadata metadata = frameGenerator.generate(systemPath, assetContext, bos);
+            FrameMetadata metadata = frameGenerator.generate(systemPath, context, bos);
 
             ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-            frameConsumer.consume(assetContext, bis, metadata.getMimeType());
+            String mimeType = metadata.getMimeType();
+            frameConsumer.consume(context, bis, mimeType);
         }
+
         frameConsumer.close();
     }
 }

@@ -1,7 +1,6 @@
 package com.iassetlab.core.util;
 
 import com.iassetlab.core.AssetContext;
-import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.IAssetLabConstants;
 
 /**
@@ -86,7 +85,7 @@ public class FileFeatureUtil {
     public static final String getOutputName(AssetContext context) {
         String filename = AssetContextHelper.getString(context, IAssetLabConstants.KEY_OUTPUT_NAME);
         if( filename == null ) {
-            filename = AssetContextHelper.getString(context, IAssetLabConstants.KEY_SEQUENCE_NUMBER);
+            filename = AssetContextHelper.getString(context, IAssetLabConstants.KEY_ASSET_ID);
         }
         return filename;
     }

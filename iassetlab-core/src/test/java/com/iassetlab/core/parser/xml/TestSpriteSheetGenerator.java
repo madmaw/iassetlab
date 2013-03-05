@@ -9,7 +9,6 @@ import com.iassetlab.core.data.ResourceDataPathFactory;
 import com.iassetlab.core.frame.FrameGeneratorFactory;
 import com.iassetlab.core.frame.FrameMetadataFactory;
 import com.iassetlab.core.frame.consumer.DelegatingFrameConsumer;
-import com.iassetlab.core.frame.consumer.InMemoryFrameConsumer;
 import com.iassetlab.core.frame.consumer.factory.InMemoryFrameConsumerFactory;
 import com.iassetlab.core.frame.consumer.factory.SmartImageFrameConsumerFactory;
 import com.iassetlab.core.frame.metadata.DataPathFrameMetadataFactory;
@@ -29,7 +28,7 @@ import java.util.List;
  * Time: 8:56 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TestAnimatedGIFGenerator extends AbstractHumanVerificationTest {
+public class TestSpriteSheetGenerator extends AbstractHumanVerificationTest {
     @Test
     public void test1() throws Exception {
         InMemoryFrameConsumerFactory frameConsumerFactory = new InMemoryFrameConsumerFactory();
@@ -61,7 +60,7 @@ public class TestAnimatedGIFGenerator extends AbstractHumanVerificationTest {
         );
 
         ResourceDataPathFactory pathFactory = new ResourceDataPathFactory(this.getClass().getClassLoader());
-        DataPath path = pathFactory.getDataPath("gifgeneratortest1.xml");
+        DataPath path = pathFactory.getDataPath("spritesheetgeneratortest1.xml");
 
         XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree configuration = parser.parse(path);

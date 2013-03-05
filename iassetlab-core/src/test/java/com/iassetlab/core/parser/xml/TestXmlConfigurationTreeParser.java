@@ -2,6 +2,7 @@ package com.iassetlab.core.parser.xml;
 
 import com.iassetlab.core.*;
 import com.iassetlab.core.data.ResourceDataPath;
+import com.iassetlab.core.value.SimpleAssetValue;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ public class TestXmlConfigurationTreeParser {
 
         ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "parsertest1.xml");
 
-        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree tree = parser.parse(path);
 
         test1Tree("test1", tree);
@@ -34,7 +35,7 @@ public class TestXmlConfigurationTreeParser {
 
         AssetContext context = new BasicAssetContext();
 
-        List<Property> properties = tree.getProperties();
+        List<ConfigurationTree.Property> properties = tree.getProperties();
         Assert.assertEquals(properties.size(), 4);
         Assert.assertEquals(properties.get(0).getKey(), "1");
         Assert.assertEquals(properties.get(0).getName(context), "a");
@@ -69,7 +70,7 @@ public class TestXmlConfigurationTreeParser {
 
         ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "parsertest2.xml");
 
-        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree tree = parser.parse(path);
         test2Tree("test2", tree);
 
@@ -105,7 +106,7 @@ public class TestXmlConfigurationTreeParser {
     public void test3() throws Exception {
         ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "parsertest3.xml");
 
-        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree tree = parser.parse(path);
         test2Tree("test3", tree);
 
@@ -126,12 +127,12 @@ public class TestXmlConfigurationTreeParser {
     public void test4() throws Exception {
         ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "parsertest4.xml");
 
-        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance());
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree tree = parser.parse(path);
 
         AssetContext context = new BasicAssetContext();
 
-        List<Property> properties = tree.getProperties();
+        List<ConfigurationTree.Property> properties = tree.getProperties();
         Assert.assertEquals(properties.size(), 1);
         Assert.assertEquals(properties.get(0).getKey(), "x");
         Assert.assertEquals(properties.get(0).getName(context), "y");
@@ -147,10 +148,10 @@ public class TestXmlConfigurationTreeParser {
         ConfigurationTree configuration1 = configurations.get(0);
         Assert.assertEquals(configuration1.getName(), "small");
 
-        List<Property> properties1 = configuration1.getProperties();
+        List<ConfigurationTree.Property> properties1 = configuration1.getProperties();
         Assert.assertEquals(properties1.size(), 2);
-        Property property1width = properties1.get(0);
-        Property property1height = properties1.get(1);
+        ConfigurationTree.Property property1width = properties1.get(0);
+        ConfigurationTree.Property property1height = properties1.get(1);
         Assert.assertEquals(property1width.getKey(), "width");
         Assert.assertEquals(property1width.getValue(context), "10");
         Assert.assertEquals(property1height.getKey(), "height");
@@ -159,10 +160,10 @@ public class TestXmlConfigurationTreeParser {
         ConfigurationTree configuration2 = configurations.get(1);
         Assert.assertEquals(configuration2.getName(), "large");
 
-        List<Property> properties2 = configuration2.getProperties();
+        List<ConfigurationTree.Property> properties2 = configuration2.getProperties();
         Assert.assertEquals(properties2.size(), 2);
-        Property property2width = properties2.get(0);
-        Property property2height = properties2.get(1);
+        ConfigurationTree.Property property2width = properties2.get(0);
+        ConfigurationTree.Property property2height = properties2.get(1);
         Assert.assertEquals(property2width.getKey(), "width");
         Assert.assertEquals(property2width.getValue(context), "100");
         Assert.assertEquals(property2height.getKey(), "height");

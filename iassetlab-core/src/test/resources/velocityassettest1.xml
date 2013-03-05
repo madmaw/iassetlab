@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property key="variable" name="dynamic-name">dynamic-value</property>
+    <property key="literal" name="literal-name">literal-value</property>
+    <property key="dynamic" name="${variable.Name}">$variable</property>
+</configuration>

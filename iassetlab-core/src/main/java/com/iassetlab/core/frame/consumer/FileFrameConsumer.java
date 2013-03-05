@@ -8,6 +8,7 @@ import com.iassetlab.core.util.FileFeatureUtil;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.util.Comparator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +17,7 @@ import java.io.*;
  * Time: 1:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class FileFrameConsumer implements FrameConsumer {
+public class FileFrameConsumer extends AbstractFrameConsumer {
 
     private File directory;
 
@@ -64,4 +65,5 @@ public class FileFrameConsumer implements FrameConsumer {
     public void close() {
 
     }
+
 }
