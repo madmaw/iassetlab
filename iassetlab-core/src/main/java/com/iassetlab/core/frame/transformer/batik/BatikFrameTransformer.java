@@ -48,7 +48,7 @@ public class BatikFrameTransformer implements FrameTransformer {
         String parser = XMLResourceDescriptor.getXMLParserClassName();
         SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
         SVGDocument svgDocument;
-        String docBaseUri = inputMetadata.getDataPath().toURI();
+        String docBaseUri = inputMetadata.getDataPath().toAbsolutePath();
         try {
             svgDocument = f.createSVGDocument(docBaseUri, inputStream);
         } catch( Exception ex ) {

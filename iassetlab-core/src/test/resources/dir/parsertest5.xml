@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="test5">
+    <reference key="ref" prefix="z" path="parsertest5a.xml"/>
+</configuration>

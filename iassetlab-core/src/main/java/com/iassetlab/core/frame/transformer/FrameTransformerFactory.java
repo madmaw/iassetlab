@@ -1,6 +1,7 @@
 package com.iassetlab.core.frame.transformer;
 
 import com.iassetlab.core.AssetContext;
+import com.iassetlab.core.DataPath;
 
 import java.io.IOException;
 
@@ -12,5 +13,5 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public interface FrameTransformerFactory {
-    FrameTransformer create(AssetContext context) throws FrameTransformerConfigurationException, IOException;
+    FrameTransformer create(DataPath systemPath, AssetContext context) throws FrameTransformerConfigurationException, IOException;
 }

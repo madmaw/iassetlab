@@ -31,7 +31,7 @@ public class XSLFrameTransformer implements FrameTransformer {
 
     @Override
     public FrameMetadata transform(InputStream inputStream, FrameMetadata inputMetadata, OutputStream outputStream) throws IOException, FrameTransformationException {
-        String systemId = inputMetadata.getDataPath().toURI();
+        String systemId = inputMetadata.getDataPath().toAbsolutePath();
         StreamSource inputSource = new StreamSource(inputStream, systemId);
         StreamResult outputResult = new StreamResult(outputStream);
         try {

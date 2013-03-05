@@ -1,28 +1,20 @@
 package com.iassetlab.core.parser.xml;
 
 import com.iassetlab.core.*;
-import com.iassetlab.core.data.DataPath;
-import com.iassetlab.core.data.DataPathFactory;
-import com.iassetlab.core.data.ResourceDataPath;
+import com.iassetlab.core.DataPath;
 import com.iassetlab.core.data.ResourceDataPathFactory;
 import com.iassetlab.core.frame.FrameGeneratorFactory;
 import com.iassetlab.core.frame.FrameMetadataFactory;
 import com.iassetlab.core.frame.consumer.InMemoryFrameConsumer;
 import com.iassetlab.core.frame.metadata.DataPathFrameMetadataFactory;
-import com.iassetlab.core.frame.transformer.TransformerPipelineFrameGenerator;
 import com.iassetlab.core.frame.transformer.XSLSVGImagePipelineFrameGeneratorFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.swing.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,14 +35,9 @@ public class TestAssetGenerator extends AbstractHumanVerificationTest {
         );
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-        ResourceDataPathFactory xslDataPathFactory = new ResourceDataPathFactory(
-                IAssetLabConstants.class.getClassLoader()
-        );
-
         FrameGeneratorFactory frameGeneratorFactory = new XSLSVGImagePipelineFrameGeneratorFactory(
                 frameMetadataFactory,
                 transformerFactory,
-                xslDataPathFactory,
                 "image/svg+xml",
                 "image",
                 "svg+xml"
@@ -69,7 +56,6 @@ public class TestAssetGenerator extends AbstractHumanVerificationTest {
         ConfigurationTree configuration = parser.parse(path);
 
         assetGenerator.generate(
-                path,
                 configuration,
                 frameConsumer
         );
@@ -93,14 +79,9 @@ public class TestAssetGenerator extends AbstractHumanVerificationTest {
         );
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-        ResourceDataPathFactory xslDataPathFactory = new ResourceDataPathFactory(
-                IAssetLabConstants.class.getClassLoader()
-        );
-
         FrameGeneratorFactory frameGeneratorFactory = new XSLSVGImagePipelineFrameGeneratorFactory(
                 frameMetadataFactory,
                 transformerFactory,
-                xslDataPathFactory,
                 "image/svg+xml",
                 "image",
                 "png"
@@ -119,7 +100,6 @@ public class TestAssetGenerator extends AbstractHumanVerificationTest {
         ConfigurationTree configuration = parser.parse(path);
 
         assetGenerator.generate(
-                path,
                 configuration,
                 frameConsumer
         );
@@ -152,14 +132,9 @@ public class TestAssetGenerator extends AbstractHumanVerificationTest {
         );
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-        ResourceDataPathFactory xslDataPathFactory = new ResourceDataPathFactory(
-                IAssetLabConstants.class.getClassLoader()
-        );
-
         FrameGeneratorFactory frameGeneratorFactory = new XSLSVGImagePipelineFrameGeneratorFactory(
                 frameMetadataFactory,
                 transformerFactory,
-                xslDataPathFactory,
                 "image/svg+xml",
                 "image",
                 "png"
@@ -178,7 +153,6 @@ public class TestAssetGenerator extends AbstractHumanVerificationTest {
         ConfigurationTree configuration = parser.parse(path);
 
         assetGenerator.generate(
-                path,
                 configuration,
                 frameConsumer
         );

@@ -1,7 +1,5 @@
 package com.iassetlab.core;
 
-import com.iassetlab.core.value.SimpleAssetValue;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,16 +39,23 @@ public class ConfigurationTree implements AssetConfigurationSource {
             return this.assetValue.getValue(context);
         }
     }
+
+    private DataPath source;
     private String name;
     private List<Property> properties;
     private List<Reference> references;
     private List<Diversifier> diversifiers;
 
-    public ConfigurationTree(String name, List<Property> properties, List<Reference> references, List<Diversifier> diversifiers) {
+    public ConfigurationTree(DataPath source, String name, List<Property> properties, List<Reference> references, List<Diversifier> diversifiers) {
+        this.source = source;
         this.name = name;
         this.properties = properties;
         this.references = references;
         this.diversifiers = diversifiers;
+    }
+
+    public DataPath getSource() {
+        return source;
     }
 
     public List<Property> getProperties() {

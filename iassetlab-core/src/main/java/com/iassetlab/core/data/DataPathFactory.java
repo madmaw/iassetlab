@@ -1,5 +1,7 @@
 package com.iassetlab.core.data;
 
+import com.iassetlab.core.DataPath;
+
 /**
  * Created with IntelliJ IDEA.
  * User: chris
@@ -8,5 +10,5 @@ package com.iassetlab.core.data;
  * To change this template use File | Settings | File Templates.
  */
 public interface DataPathFactory {
-    DataPath getDataPath(String uri);
+    DataPath getDataPath(String absolutePath);
 }

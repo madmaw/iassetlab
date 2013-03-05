@@ -24,7 +24,6 @@ public class XSLSVGImagePipelineFrameGeneratorFactory implements FrameGeneratorF
 
     private FrameMetadataFactory frameMetadataFactory;
     private TransformerFactory transformerFactory;
-    private DataPathFactory xslDataPathFactory;
     private String defaultXSLOutputMimeType;
     private String imageMimeTypePrefix;
     private String defaultImageInformalSuffix;
@@ -32,14 +31,12 @@ public class XSLSVGImagePipelineFrameGeneratorFactory implements FrameGeneratorF
     public XSLSVGImagePipelineFrameGeneratorFactory(
             FrameMetadataFactory frameMetadataFactory,
             TransformerFactory transformerFactory,
-            DataPathFactory xslDataPathFactory,
             String defaultXSLOutputMimeType,
             String imageMimeTypePrefix,
             String defaultImageInformalSuffix
     ) {
         this.frameMetadataFactory = frameMetadataFactory;
         this.transformerFactory = transformerFactory;
-        this.xslDataPathFactory = xslDataPathFactory;
         this.defaultXSLOutputMimeType = defaultXSLOutputMimeType;
         this.defaultImageInformalSuffix = defaultImageInformalSuffix;
         this.imageMimeTypePrefix = imageMimeTypePrefix;
@@ -50,7 +47,7 @@ public class XSLSVGImagePipelineFrameGeneratorFactory implements FrameGeneratorF
         ArrayList<FrameTransformerFactory> transformerFactories = new ArrayList<>();
 
         // xsl
-        XSLFrameTransformerFactory xslFrameTransformerFactory = new XSLFrameTransformerFactory(transformerFactory, xslDataPathFactory, defaultXSLOutputMimeType);
+        XSLFrameTransformerFactory xslFrameTransformerFactory = new XSLFrameTransformerFactory(transformerFactory, defaultXSLOutputMimeType);
         transformerFactories.add(xslFrameTransformerFactory);
 
         String outputMimeType = FileFeatureUtil.getOutputMimeType(assetContext, this.imageMimeTypePrefix);

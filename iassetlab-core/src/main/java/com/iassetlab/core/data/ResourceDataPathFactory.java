@@ -1,5 +1,7 @@
 package com.iassetlab.core.data;
 
+import com.iassetlab.core.DataPath;
+
 /**
  * Created with IntelliJ IDEA.
  * User: chris
@@ -16,7 +18,7 @@ public class ResourceDataPathFactory implements DataPathFactory {
     }
 
     @Override
-    public DataPath getDataPath(String uri) {
-        return new ResourceDataPath(this.classLoader, uri);
+    public DataPath getDataPath(String absolutePath) {
+        return new ResourceDataPath(this.classLoader, absolutePath);
     }
 }

@@ -1,5 +1,8 @@
 package com.iassetlab.core.data;
 
+import com.iassetlab.core.DataPath;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -22,27 +25,31 @@ public class ResourceDataPath implements DataPath {
 
     @Override
     public InputStream open() throws IOException {
-        return classLoader.getResourceAsStream(path);
+        InputStream inputStream = classLoader.getResourceAsStream(path);
+        if( inputStream == null ) {
+            throw new FileNotFoundException(this.path);
+        }
+        return inputStream;
     }
 
     @Override
     public DataPath getRelativePath(String path) {
         // assume we are always referencing a file (not a directory)
-        int index = path.lastIndexOf('/');
+        int index = this.path.lastIndexOf('/');
         String relativePath;
-        if( index <= 0 ) {
+        if( index < 0 ) {
             relativePath = path;
         } else {
             String directory;
-            directory = path.substring(0, index+1);
+            directory = this.path.substring(0, index+1);
             relativePath = directory + path;
         }
         return new ResourceDataPath(this.classLoader, relativePath);
     }
 
     @Override
-    public String toURI() {
-        return this.classLoader.getResource(this.path).toExternalForm();
+    public String toAbsolutePath() {
+        return this.path;
     }
 
     public String toString() {

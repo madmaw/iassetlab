@@ -1,6 +1,5 @@
 package com.iassetlab.core;
 
-import com.iassetlab.core.data.DataPath;
 import com.iassetlab.core.frame.*;
 import com.iassetlab.core.value.SimpleAssetValue;
 
@@ -17,6 +16,20 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class AssetGenerator {
+
+    private class ChildAssetContextWithDataPath extends ChildAssetContext {
+        private DataPath dataPath;
+
+        public ChildAssetContextWithDataPath(AssetContext parent, Map<String, AssetValue> values, DataPath dataPath) {
+            super(parent, values);
+            this.dataPath = dataPath;
+        }
+
+        public DataPath getDataPath() {
+            return dataPath;
+        }
+    }
+
     private FrameGeneratorFactory frameGeneratorFactory;
     private Map<String, AssetValue> defaults;
 
@@ -25,29 +38,36 @@ public class AssetGenerator {
         this.defaults = defaults;
     }
 
-    public void generate(DataPath systemPath, ConfigurationTree configuration, FrameConsumer frameConsumer) throws IOException, FrameGenerationException, FrameGeneratorConfigurationException, FrameConsumptionException {
-        List<Map<String, AssetValue>> builds = configuration.build();
+    public void generate(ConfigurationTree configuration, FrameConsumer frameConsumer) throws IOException, FrameGenerationException, FrameGeneratorConfigurationException, FrameConsumptionException {
+        generate(Arrays.asList(configuration), frameConsumer);
+    }
+
+    public void generate(List<ConfigurationTree> configurations, FrameConsumer frameConsumer) throws IOException, FrameGenerationException, FrameGeneratorConfigurationException, FrameConsumptionException {
         AssetContext defaultAssetContext = new BasicAssetContext(defaults);
         int sequenceNumber = 0;
-        ArrayList<ChildAssetContext> contexts = new ArrayList<ChildAssetContext>(builds.size());
+        ArrayList<ChildAssetContextWithDataPath> contexts = new ArrayList<>();
 
-        for( Map<String, AssetValue> build : builds ) {
-            ChildAssetContext context = new ChildAssetContext(defaultAssetContext, build);
-            sequenceNumber++;
-            String sequenceNumberString = Integer.toString(sequenceNumber);
-            context.set(IAssetLabConstants.KEY_ASSET_ID, new SimpleAssetValue(IAssetLabConstants.KEY_ASSET_ID, sequenceNumberString, sequenceNumberString));
-            contexts.add(context);
+        for( ConfigurationTree configuration : configurations ) {
+            List<Map<String, AssetValue>> configurationBuilds = configuration.build();
+            DataPath dataPath = configuration.getSource();
+            for( Map<String, AssetValue> build : configurationBuilds ) {
+                ChildAssetContextWithDataPath context = new ChildAssetContextWithDataPath(defaultAssetContext, build, dataPath);
+                sequenceNumber++;
+                String sequenceNumberString = Integer.toString(sequenceNumber);
+                context.set(IAssetLabConstants.KEY_ASSET_ID, new SimpleAssetValue(dataPath, IAssetLabConstants.KEY_ASSET_ID, sequenceNumberString, sequenceNumberString));
+                contexts.add(context);
+            }
         }
 
         Comparator<AssetContext> comparator = frameConsumer.getComparator();
         Collections.sort(contexts, comparator);
 
-        for( ChildAssetContext context : contexts ) {
+        for( ChildAssetContextWithDataPath context : contexts ) {
 
             FrameGenerator frameGenerator = frameGeneratorFactory.create(context);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            FrameMetadata metadata = frameGenerator.generate(systemPath, context, bos);
+            FrameMetadata metadata = frameGenerator.generate(context.getDataPath(), context, bos);
 
             ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
             String mimeType = metadata.getMimeType();

@@ -38,7 +38,8 @@ public class Diversifier implements AssetConfigurationSource {
             List<Map<String, AssetValue>> rows = configuration.build();
             for( Map<String, AssetValue> row : rows ) {
                 if( !row.containsKey(this.key) ) {
-                    row.put(this.key, new SimpleAssetValue(this.key, configuration.getName(), configuration.getName()));
+                    SimpleAssetValue name = new SimpleAssetValue(configuration.getSource(), this.key, configuration.getName(), configuration.getName());
+                    row.put(this.key, name);
                 }
                 result.add(row);
             }

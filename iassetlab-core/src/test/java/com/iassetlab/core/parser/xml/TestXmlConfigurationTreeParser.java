@@ -30,6 +30,16 @@ public class TestXmlConfigurationTreeParser {
 
     }
 
+    @Test
+    public void test5() throws Exception {
+
+        ResourceDataPath path = new ResourceDataPath(this.getClass().getClassLoader(), "dir/parsertest5.xml");
+
+        XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
+        ConfigurationTree tree = parser.parse(path);
+
+    }
+
     private void test1Tree(String treeName, ConfigurationTree tree) {
         Assert.assertEquals(tree.getName(), treeName);
 

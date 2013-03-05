@@ -3,6 +3,7 @@ package com.iassetlab.core.frame.transformer.batik;
 import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.IAssetLabConstants;
+import com.iassetlab.core.DataPath;
 import com.iassetlab.core.frame.transformer.FrameTransformer;
 import com.iassetlab.core.frame.transformer.FrameTransformerConfigurationException;
 import com.iassetlab.core.frame.transformer.FrameTransformerFactory;
@@ -31,7 +32,7 @@ public class BatikFrameTransformerFactory implements FrameTransformerFactory {
     }
 
     @Override
-    public FrameTransformer create(AssetContext context) throws FrameTransformerConfigurationException, IOException {
+    public FrameTransformer create(DataPath dataPath, AssetContext context) throws FrameTransformerConfigurationException, IOException {
 
         AssetValue animationDurationValue = context.get(IAssetLabConstants.KEY_OUTPUT_IMAGE_ANIMATION_TIME);
         Float animationDuration;

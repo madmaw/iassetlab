@@ -4,12 +4,11 @@ import com.iassetlab.core.AssetGenerator;
 import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.ConfigurationTree;
 import com.iassetlab.core.IAssetLabConstants;
-import com.iassetlab.core.data.DataPath;
+import com.iassetlab.core.DataPath;
 import com.iassetlab.core.data.ResourceDataPathFactory;
 import com.iassetlab.core.frame.FrameGeneratorFactory;
 import com.iassetlab.core.frame.FrameMetadataFactory;
 import com.iassetlab.core.frame.consumer.DelegatingFrameConsumer;
-import com.iassetlab.core.frame.consumer.InMemoryFrameConsumer;
 import com.iassetlab.core.frame.consumer.factory.InMemoryFrameConsumerFactory;
 import com.iassetlab.core.frame.consumer.factory.SmartImageFrameConsumerFactory;
 import com.iassetlab.core.frame.metadata.DataPathFrameMetadataFactory;
@@ -43,14 +42,9 @@ public class TestAnimatedGIFGenerator extends AbstractHumanVerificationTest {
         );
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-        ResourceDataPathFactory xslDataPathFactory = new ResourceDataPathFactory(
-                IAssetLabConstants.class.getClassLoader()
-        );
-
         FrameGeneratorFactory frameGeneratorFactory = new XSLSVGImagePipelineFrameGeneratorFactory(
                 frameMetadataFactory,
                 transformerFactory,
-                xslDataPathFactory,
                 "image/svg+xml",
                 "image",
                 "png"
@@ -67,7 +61,6 @@ public class TestAnimatedGIFGenerator extends AbstractHumanVerificationTest {
         ConfigurationTree configuration = parser.parse(path);
 
         assetGenerator.generate(
-                path,
                 configuration,
                 frameConsumer
         );

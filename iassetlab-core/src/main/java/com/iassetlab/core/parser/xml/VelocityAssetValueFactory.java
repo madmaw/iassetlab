@@ -1,6 +1,7 @@
 package com.iassetlab.core.parser.xml;
 
 import com.iassetlab.core.AssetValue;
+import com.iassetlab.core.DataPath;
 import com.iassetlab.core.value.VelocityAssetValue;
 import org.apache.velocity.app.VelocityEngine;
 
@@ -29,7 +30,7 @@ public class VelocityAssetValueFactory implements AssetValueFactory {
     }
 
     @Override
-    public AssetValue create(String nameTemplate, String valueTemplate) throws InvalidAssetValueTemplateException {
-        return new VelocityAssetValue(this.velocityEngine, nameTemplate, valueTemplate);
+    public AssetValue create(DataPath sourceDataPath, String nameTemplate, String valueTemplate) throws InvalidAssetValueTemplateException {
+        return new VelocityAssetValue(this.velocityEngine, sourceDataPath, nameTemplate, valueTemplate);
     }
 }

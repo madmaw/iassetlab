@@ -1,4 +1,4 @@
-package com.iassetlab.core.data;
+package com.iassetlab.core;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,5 +15,5 @@ public interface DataPath {
 
     DataPath getRelativePath(String path);
 
-    String toURI();
+    String toAbsolutePath();
 }

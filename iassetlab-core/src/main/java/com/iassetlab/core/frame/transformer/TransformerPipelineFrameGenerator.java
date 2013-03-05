@@ -1,7 +1,7 @@
 package com.iassetlab.core.frame.transformer;
 
 import com.iassetlab.core.AssetContext;
-import com.iassetlab.core.data.DataPath;
+import com.iassetlab.core.DataPath;
 import com.iassetlab.core.frame.FrameGenerationException;
 import com.iassetlab.core.frame.FrameGenerator;
 import com.iassetlab.core.frame.FrameMetadata;
@@ -41,7 +41,7 @@ public class TransformerPipelineFrameGenerator implements FrameGenerator {
         for( int i=0; i<this.transformerFactories.size(); i++ ) {
             FrameTransformerFactory transformerFactory = this.transformerFactories.get(i);
             try {
-                FrameTransformer transformer = transformerFactory.create(context);
+                FrameTransformer transformer = transformerFactory.create(inputMetadata.getDataPath(), context);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 inputMetadata = transformer.transform(new ByteArrayInputStream(data), inputMetadata, bos);
                 data = bos.toByteArray();

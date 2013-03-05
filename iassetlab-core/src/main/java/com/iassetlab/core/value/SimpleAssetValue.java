@@ -2,6 +2,7 @@ package com.iassetlab.core.value;
 
 import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
+import com.iassetlab.core.DataPath;
 
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,18 @@ public class SimpleAssetValue implements AssetValue {
     private String key;
     private String name;
     private String value;
+    private DataPath sourceDataPath;
 
-    public SimpleAssetValue(String key, String name, String value) {
+    public SimpleAssetValue(DataPath sourceDataPath, String key, String name, String value) {
+        this.sourceDataPath = sourceDataPath;
         this.key = key;
         this.name = name;
         this.value = value;
+    }
+
+    @Override
+    public DataPath getSourceDataPath() {
+        return this.sourceDataPath;
     }
 
     public String getKey() {

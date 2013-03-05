@@ -9,6 +9,8 @@ package com.iassetlab.core;
  */
 public interface AssetValue {
 
+    DataPath getSourceDataPath();
+
     String getValue(AssetContext context);
 
     String getName(AssetContext context);

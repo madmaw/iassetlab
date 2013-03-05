@@ -1,6 +1,7 @@
 package com.iassetlab.core.parser.xml;
 
 import com.iassetlab.core.AssetValue;
+import com.iassetlab.core.DataPath;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,5 +11,5 @@ import com.iassetlab.core.AssetValue;
  * To change this template use File | Settings | File Templates.
  */
 public interface AssetValueFactory {
-    AssetValue create(String nameTemplate, String valueTemplate) throws InvalidAssetValueTemplateException;
+    AssetValue create(DataPath sourceDataPath, String nameTemplate, String valueTemplate) throws InvalidAssetValueTemplateException;
 }

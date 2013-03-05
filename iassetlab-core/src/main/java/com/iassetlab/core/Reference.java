@@ -41,11 +41,17 @@ public class Reference implements AssetConfigurationSource {
         List<Map<String, AssetValue>> rows = this.configuration.build();
         for( final Map<String, AssetValue> row : rows ) {
             AssetValue assetValue = new AssetValue() {
+
+                @Override
+                public DataPath getSourceDataPath() {
+                    return configuration.getSource();
+                }
+
                 @Override
                 public String getValue(AssetContext context) {
                     ChildAssetContext local = new ChildAssetContext(context, prefix);
                     local.setAll(row);
-                    // TODO pull together all the name/value pairs and combine into a URL
+                    // TODO pull together all the name/value pairs and combine into a URL for us to handle internaly
                     return null;
                 }
 

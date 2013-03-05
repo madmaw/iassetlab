@@ -28,13 +28,7 @@ public class FileFrameConsumer extends AbstractFrameConsumer {
     @Override
     public void consume(AssetContext context, InputStream frameData, String mimeType) throws IOException {
         // get the file name
-        AssetValue filenameAssetValue = context.get(IAssetLabConstants.KEY_OUTPUT_NAME);
-        String filename = filenameAssetValue.getValue(context);
-        // get the file extension (if it exists)
-        String fileExtension = FileFeatureUtil.getOutputFileExtension(context);
-        if( fileExtension != null ) {
-            filename += '.' + fileExtension;
-        }
+        String filename = FileFeatureUtil.getOutputFileName(context);
         int lastSlashIndex = filename.lastIndexOf('/');
         File fileDirectory;
         String fileFilename;

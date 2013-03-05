@@ -4,23 +4,18 @@ import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.BasicAssetContext;
 import com.iassetlab.core.ConfigurationTree;
-import com.iassetlab.core.data.DataPath;
-import com.iassetlab.core.data.ResourceDataPath;
+import com.iassetlab.core.DataPath;
 import com.iassetlab.core.data.ResourceDataPathFactory;
 import com.iassetlab.core.frame.FrameMetadata;
 import com.iassetlab.core.frame.transformer.FrameTransformer;
-import com.iassetlab.core.frame.transformer.xsl.XSLFrameTransformer;
 import com.iassetlab.core.frame.transformer.xsl.XSLFrameTransformerFactory;
 import org.apache.commons.io.IOUtils;
-import org.apache.velocity.app.VelocityEngine;
 import org.junit.Assert;
 import org.junit.Test;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -43,7 +38,6 @@ public class TestXSLFrameTransformer {
         ResourceDataPathFactory pathFactory = new ResourceDataPathFactory(this.getClass().getClassLoader());
         DataPath path = pathFactory.getDataPath(pathToXML);
 
-        VelocityEngine velocityEngine = new VelocityEngine();
         XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
         ConfigurationTree tree = parser.parse(path);
         List<Map<String, AssetValue>> builds = tree.build();
@@ -53,9 +47,9 @@ public class TestXSLFrameTransformer {
         for( Map<String, AssetValue> build : builds ) {
             AssetContext context = new BasicAssetContext(build);
 
-            XSLFrameTransformerFactory frameTransformerFactory = new XSLFrameTransformerFactory(TransformerFactory.newInstance(), pathFactory, null);
+            XSLFrameTransformerFactory frameTransformerFactory = new XSLFrameTransformerFactory(TransformerFactory.newInstance(), null);
 
-            FrameTransformer frameTransformer = frameTransformerFactory.create(context);
+            FrameTransformer frameTransformer = frameTransformerFactory.create(path, context);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             InputStream ins = XSLFrameTransformerFactory.class.getClassLoader().getResourceAsStream("default.xml");
             FrameMetadata inputMetadata = new FrameMetadata("text/xml", path);

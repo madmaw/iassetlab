@@ -2,6 +2,7 @@ package com.iassetlab.core.value;
 
 import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
+import com.iassetlab.core.DataPath;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
@@ -17,15 +18,21 @@ import java.io.StringWriter;
 public class VelocityAssetValue implements AssetValue {
 
     private VelocityEngine velocityEngine;
+    private DataPath sourceDataPath;
     private String valueTemplate;
     private String nameTemplate;
 
-    public VelocityAssetValue(VelocityEngine velocityEngine, String nameTemplate, String valueTemplate) {
+    public VelocityAssetValue(VelocityEngine velocityEngine, DataPath sourceDataPath, String nameTemplate, String valueTemplate) {
         this.velocityEngine = velocityEngine;
+        this.sourceDataPath = sourceDataPath;
         this.valueTemplate = valueTemplate;
         this.nameTemplate = nameTemplate;
     }
 
+    @Override
+    public DataPath getSourceDataPath() {
+        return this.sourceDataPath;
+    }
 
     @Override
     public String getValue(AssetContext context) {

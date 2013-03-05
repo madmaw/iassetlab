@@ -1,7 +1,7 @@
 package com.iassetlab.core.parser;
 
 import com.iassetlab.core.ConfigurationTree;
-import com.iassetlab.core.data.DataPath;
+import com.iassetlab.core.DataPath;
 
 import java.io.IOException;
 

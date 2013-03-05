@@ -20,11 +20,19 @@
 
     <dependencies>
 
+        <!-- other asset lab libraries -->
+        <dependency>
+            <groupId>com.iassetlab</groupId>
+            <artifactId>iassetlab-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+
         <!-- JCommander -->
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
-            <version>1.0</version>
+            <version>1.30</version>
         </dependency>
 
         <!-- Apache commons -->

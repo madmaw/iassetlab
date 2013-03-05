@@ -1,12 +1,10 @@
 package com.iassetlab.core.frame;
 
 import com.iassetlab.core.AssetContext;
-import com.iassetlab.core.data.DataPath;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

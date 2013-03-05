@@ -1,10 +1,6 @@
 package com.iassetlab.core;
 
-import com.iassetlab.core.data.DataPath;
-
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

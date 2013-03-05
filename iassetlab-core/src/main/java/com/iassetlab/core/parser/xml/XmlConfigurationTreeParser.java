@@ -3,11 +3,11 @@ package com.iassetlab.core.parser.xml;
 import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.ConfigurationTree;
 import com.iassetlab.core.Diversifier;
-import com.iassetlab.core.value.SimpleAssetValue;
 import com.iassetlab.core.Reference;
 import com.iassetlab.core.parser.ConfigurationParseException;
 import com.iassetlab.core.parser.ConfigurationTreeParser;
-import com.iassetlab.core.data.DataPath;
+import com.iassetlab.core.DataPath;
+import com.iassetlab.core.value.AbsolutePathAssetValueProxy;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.w3c.dom.Document;
@@ -34,12 +34,13 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
 
 
 
-    private static final String CONFIGURATION_TREE_ELEMENT_NAME   = "configuration";
-    private static final String CONFIGURATION_TREE_NAME_ATTRIBUTE = "name";
+    private static final String CONFIGURATION_TREE_ELEMENT_NAME     = "configuration";
+    private static final String CONFIGURATION_TREE_NAME_ATTRIBUTE   = "name";
 
     private static final String PROPERTY_ELEMENT_NAME               = "property";
     private static final String PROPERTY_KEY_ATTRIBUTE              = "key";
     private static final String PROPERTY_NAME_ATTRIBUTE             = "name";
+    private static final String PROPERTY_IS_RELATIVE_PATH           = "is_relative_path";
 
     private static final String REFERENCE_ELEMENT_NAME              = "reference";
     private static final String REFERENCE_KEY_ATTRIBUTE             = "key";
@@ -102,14 +103,14 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         ArrayList<ConfigurationTree.Property> properties = new ArrayList<>(propertyNodes.size());
         for( int i=0; i<propertyNodes.size(); i++ ) {
             Element propertyElement = propertyNodes.get(i);
-            ConfigurationTree.Property property = parseProperty(propertyElement);
+            ConfigurationTree.Property property = parseProperty(path, propertyElement);
             properties.add(property);
         }
 
         List<Element> referenceNodes = getElementsByTagName(configurationTreeElement, REFERENCE_ELEMENT_NAME);
         ArrayList<Reference> references = new ArrayList<>(referenceNodes.size());
         for( int i=0; i<referenceNodes.size(); i++ ) {
-            Element referenceElement = (Element)referenceNodes.get(i);
+            Element referenceElement = referenceNodes.get(i);
             Reference reference = parseReference(path, referenceElement);
             references.add(reference);
         }
@@ -117,20 +118,25 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         List<Element> diversifierNodes = getElementsByTagName(configurationTreeElement, DIVERSIFIER_ELEMENT_NAME);
         ArrayList<Diversifier> diversifiers = new ArrayList<>(diversifierNodes.size());
         for( int i=0; i<diversifierNodes.size(); i++ ) {
-            Element diversifierElement = (Element)diversifierNodes.get(i);
+            Element diversifierElement = diversifierNodes.get(i);
             Diversifier diversifier = parseDiversifier(path, diversifierElement);
             diversifiers.add(diversifier);
         }
 
-        return new ConfigurationTree(name, properties, references, diversifiers);
+        return new ConfigurationTree(path, name, properties, references, diversifiers);
     }
 
-    public ConfigurationTree.Property parseProperty(Element propertyElement) throws ConfigurationParseException, IOException {
+    public ConfigurationTree.Property parseProperty(DataPath dataPath, Element propertyElement) throws ConfigurationParseException, IOException {
         String key = propertyElement.getAttribute(PROPERTY_KEY_ATTRIBUTE);
         String name = propertyElement.getAttribute(PROPERTY_NAME_ATTRIBUTE);
+        String isRelativePath = propertyElement.getAttribute(PROPERTY_IS_RELATIVE_PATH);
         String value = propertyElement.getTextContent();
         try {
-            AssetValue assetValue = assetValueFactory.create(name, value);
+            AssetValue assetValue = assetValueFactory.create(dataPath, name, value);
+            if( "true".equalsIgnoreCase(isRelativePath) ) {
+                // hack to allow well-behaved paths to be specified in XML
+                assetValue = new AbsolutePathAssetValueProxy(assetValue);
+            }
             return new ConfigurationTree.Property(key, assetValue);
         } catch( InvalidAssetValueTemplateException ex ) {
             throw new ConfigurationParseException(ex);
@@ -142,7 +148,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         List<Element> configurationTreeNodes = getElementsByTagName(diversifierElement, CONFIGURATION_TREE_ELEMENT_NAME);
         ArrayList<ConfigurationTree> configurationTrees = new ArrayList<>(configurationTreeNodes.size());
         for( int i=0; i<configurationTreeNodes.size(); i++ ) {
-            Element configurationTreeElement = (Element)configurationTreeNodes.get(i);
+            Element configurationTreeElement = configurationTreeNodes.get(i);
             ConfigurationTree configurationTree = parseConfigurationTree(path, configurationTreeElement);
             configurationTrees.add(configurationTree);
         }
@@ -158,7 +164,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
             // does it contain a configuration node?
             List<Element> configurationTreeNodes = getElementsByTagName(referenceElement, CONFIGURATION_TREE_ELEMENT_NAME);
             if( configurationTreeNodes.size() == 1 ) {
-                Element configurationTreeElement = (Element)configurationTreeNodes.get(0);
+                Element configurationTreeElement = configurationTreeNodes.get(0);
                 configurationTree = parseConfigurationTree(path, configurationTreeElement);
             } else {
                 throw new ConfigurationParseException("found "+configurationTreeNodes.size()+" reference elements, expected 1");

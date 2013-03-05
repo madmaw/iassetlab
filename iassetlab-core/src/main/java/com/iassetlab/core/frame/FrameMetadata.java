@@ -1,6 +1,6 @@
 package com.iassetlab.core.frame;
 
-import com.iassetlab.core.data.DataPath;
+import com.iassetlab.core.DataPath;
 
 /**
  * Created with IntelliJ IDEA.

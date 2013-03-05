@@ -2,7 +2,7 @@ package com.iassetlab.core.frame.metadata;
 
 import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
-import com.iassetlab.core.data.DataPath;
+import com.iassetlab.core.DataPath;
 import com.iassetlab.core.frame.FrameMetadata;
 import com.iassetlab.core.frame.FrameMetadataFactory;
 
@@ -29,12 +29,15 @@ public class DataPathFrameMetadataFactory implements FrameMetadataFactory {
     public FrameMetadata create(DataPath systemPath, AssetContext context) {
         AssetValue assetValue = context.get(this.assetValueKey);
         String path;
+        DataPath relativeDataPath;
         if( assetValue == null ) {
             path = this.defaultPath;
+            relativeDataPath = systemPath;
         } else {
             path = assetValue.getValue(context);
+            relativeDataPath = assetValue.getSourceDataPath();
         }
-        DataPath dataPath = systemPath.getRelativePath(path);
+        DataPath dataPath = relativeDataPath.getRelativePath(path);
         return new FrameMetadata(this.mimeType, dataPath);
     }
 }

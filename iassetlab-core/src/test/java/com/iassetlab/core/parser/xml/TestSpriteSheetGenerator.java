@@ -4,7 +4,7 @@ import com.iassetlab.core.AssetGenerator;
 import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.ConfigurationTree;
 import com.iassetlab.core.IAssetLabConstants;
-import com.iassetlab.core.data.DataPath;
+import com.iassetlab.core.DataPath;
 import com.iassetlab.core.data.ResourceDataPathFactory;
 import com.iassetlab.core.frame.FrameGeneratorFactory;
 import com.iassetlab.core.frame.FrameMetadataFactory;
@@ -42,14 +42,9 @@ public class TestSpriteSheetGenerator extends AbstractHumanVerificationTest {
         );
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-        ResourceDataPathFactory xslDataPathFactory = new ResourceDataPathFactory(
-                IAssetLabConstants.class.getClassLoader()
-        );
-
         FrameGeneratorFactory frameGeneratorFactory = new XSLSVGImagePipelineFrameGeneratorFactory(
                 frameMetadataFactory,
                 transformerFactory,
-                xslDataPathFactory,
                 "image/svg+xml",
                 "image",
                 "png"
@@ -66,7 +61,6 @@ public class TestSpriteSheetGenerator extends AbstractHumanVerificationTest {
         ConfigurationTree configuration = parser.parse(path);
 
         assetGenerator.generate(
-                path,
                 configuration,
                 frameConsumer
         );
