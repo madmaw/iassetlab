@@ -1,0 +1,11 @@
+{
+
+    "name": "iassetlab-web-angular",
+    "version": "1.0.0",
+    "dependencies": {
+        "jquery": "1.9.1",
+        "angular": "1.0.5",
+        "angular-bootstrap": "0.2.0",
+        "DefinitelyTyped": "latest"
+    }
+}

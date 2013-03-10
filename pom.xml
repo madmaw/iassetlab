@@ -9,6 +9,9 @@
     <modules>
         <module>iassetlab-core</module>
         <module>iassetlab-cli</module>
+        <module>iassetlab-web-angular</module>
+        <module>iassetlab-mvc-templa-ts</module>
+        <module>iassetlab-mvc-templa-ts-sample</module>
     </modules>
 
     <properties>
@@ -29,8 +32,6 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
                         <fork>false</fork>
-                        <meminitial>512m</meminitial>
-                        <maxmem>1024m</maxmem>
                     </configuration>
                 </plugin>
             </plugins>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+<project name="tsc"  basedir="." default="build">
+
+    <target name="clean">
+        <delete dir="target"/>
+    </target>
+
+    <target name="build">
+        <!--
+        <copy todir="target/build">
+            <fileset dir="." includes="ts/**/*.ts"/>
+            <fileset dir="." includes="components/DefinitelyTyped/angularjs/*.d.ts"/>
+            <fileset dir="." includes="components/DefinitelyTyped/jquery/*.d.ts"/>
+        </copy>
+        -->
+
+        <!-- Compile all .ts files -->
+        <apply executable="tsc" parallel="false" failonerror="true">
+
+            <arg value="-out"/>
+            <arg path="target/dist/templa.js"/>
+            <arg value="--target"/>
+            <arg value="ES5"/>
+
+            <fileset dir="." includes="src/main/ts/**/*.ts"/>
+        </apply>
+
+        <copy todir="target/dist/lib">
+            <!--
+            <fileset dir="src/main/lib/angular" includes="*.js"/>
+            <fileset dir="src/main/lib/jquery" includes="jquery.min.js"/>
+            -->
+        </copy>
+        <copy todir="target/dist">
+            <!--
+            <fileset dir="src/main/web" includes="**/*"/>
+            -->
+        </copy>
+
+        <!-- Lint all required CSS, JS files -->
+        <!-- Concatenate all required CSS, JS files -->
+        <!-- Compress built CSS, JS files -->
+    </target>
+</project>
