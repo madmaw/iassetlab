@@ -2,15 +2,16 @@
 <head>
     <title>Templa Samples HelloWorld</title>
     <script src="target/dist/lib/templa-mvc-core.js"></script>
+    <script src="target/dist/lib/templa-mvc-element.js"></script>
     <script src="target/dist/templa-mvc-samples.js"></script>
     <script>
         window.onload = function () {
             var helloworld_element = document.getElementById("helloworld");
-            Templa.Samples.HelloWorld.init(helloworld_element);
+            Templa.MVC.Samples.HelloWorld.init(helloworld_element);
 
             var helloyou_label_element = document.getElementById("helloyou_label");
             var helloyou_input_element = document.getElementById("helloyou_input");
-            Templa.Samples.HelloYou.init(helloyou_label_element, helloyou_input_element);
+            Templa.MVC.Samples.HelloYou.init(helloyou_label_element, helloyou_input_element);
         }
     </script>
 </head>

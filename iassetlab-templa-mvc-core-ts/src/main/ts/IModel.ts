@@ -1,5 +1,5 @@
 ///<reference path="ModelChangeEvent.ts"/>
-module Templa {
+module Templa.MVC {
     export interface IModel {
 
         addOnChangeListener(listener:(source:IModel, changeEvent:ModelChangeEvent)=>void);

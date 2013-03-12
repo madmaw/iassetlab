@@ -1,18 +1,18 @@
-///<reference path="../IModel.ts"/>
-module Templa.Model {
+///<reference path="IModel.ts"/>
+module Templa.MVC {
 
-    export class AbstractModel implements Templa.IModel {
-        private modelOnChangeListeners: { (source: Templa.IModel, changeEvent: Templa.ModelChangeEvent) : void; }[];
+    export class AbstractModel implements Templa.MVC.IModel {
+        private modelOnChangeListeners: { (source: Templa.MVC.IModel, changeEvent: Templa.MVC.ModelChangeEvent) : void; }[];
 
         constructor() {
             this.modelOnChangeListeners = [];
         }
 
-        public addOnChangeListener(listener:(source:Templa.IModel, changeEvent:Templa.ModelChangeEvent)=>void) {
+        public addOnChangeListener(listener: (source: Templa.MVC.IModel, changeEvent: Templa.MVC.ModelChangeEvent)=>void) {
             this.modelOnChangeListeners.push(listener);
         }
 
-        public removeOnChangeListener(listener:(source:Templa.IModel, changeEvent:Templa.ModelChangeEvent)=>void) {
+        public removeOnChangeListener(listener: (source: Templa.MVC.IModel, changeEvent: Templa.MVC.ModelChangeEvent)=>void) {
             var index:number = this.modelOnChangeListeners.length;
             while( index > 0 ) {
                 index--;
@@ -22,7 +22,7 @@ module Templa.Model {
             }
         }
 
-        public _fireModelChangeEvent(changeEvent:Templa.ModelChangeEvent) {
+        public _fireModelChangeEvent(changeEvent: Templa.MVC.ModelChangeEvent) {
             for( var i in this.modelOnChangeListeners ) {
                 var modelOnChangeListener = this.modelOnChangeListeners[i];
                 modelOnChangeListener(this, changeEvent);

@@ -1,4 +1,4 @@
-module Templa {
+module Templa.MVC {
     export class ModelChangeEvent {
 
         private _changeType:string;

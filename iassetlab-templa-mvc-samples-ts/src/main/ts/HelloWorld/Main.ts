@@ -2,8 +2,8 @@
 ///<reference path="../Controller/Label/LabelController.ts"/>
 ///<reference path="../Controller/Label/ILabelModel.ts"/>
 
-module Templa.Samples.HelloWorld {
-    export class HelloWorldModel extends Templa.Model.AbstractModel implements Templa.Samples.Controller.Label.ILabelModel {
+module Templa.MVC.Samples.HelloWorld {
+    export class HelloWorldModel extends Templa.MVC.AbstractModel implements Templa.MVC.Samples.Controller.Label.ILabelModel {
         private _name: string;
 
         constructor(_name: string) {
@@ -17,9 +17,9 @@ module Templa.Samples.HelloWorld {
     }
 
     export function init(container:Element) {
-        var labelViewFactory = new Templa.Controller.View.HTMLElementViewFactory("Hello <span key='name_element'></span>!");
-        var labelController = new Templa.Samples.Controller.Label.LabelController(labelViewFactory, "name_element");
-        var labelModel = new Templa.Samples.HelloWorld.HelloWorldModel("World");
+        var labelViewFactory = new Templa.MVC.Element.HTMLElementViewFactory("Hello <span key='name_element'></span>!");
+        var labelController = new Templa.MVC.Samples.Controller.Label.LabelController(labelViewFactory, "name_element");
+        var labelModel = new Templa.MVC.Samples.HelloWorld.HelloWorldModel("World");
         labelController.setModel(labelModel);
 
         labelController.init(container);

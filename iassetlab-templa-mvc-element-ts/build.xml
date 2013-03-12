@@ -8,11 +8,9 @@
 
     <target name="deps">
         <ant antfile="../iassetlab-templa-mvc-core-ts/build.xml" dir="../iassetlab-templa-mvc-core-ts"/>
-        <ant antfile="../iassetlab-templa-mvc-element-ts/build.xml" dir="../iassetlab-templa-mvc-element-ts"/>
 
         <copy todir="src/main/lib">
             <fileset file="../iassetlab-templa-mvc-core-ts/target/dist/templa-mvc-core.d.ts"/>
-            <fileset file="../iassetlab-templa-mvc-element-ts/target/dist/templa-mvc-element.d.ts"/>
         </copy>
     </target>
 
@@ -35,7 +33,7 @@
         <exec executable="tsc" failonerror="true">
 
             <arg value="-out"/>
-            <arg path="target/dist/templa-mvc-samples.js"/>
+            <arg path="target/dist/templa-mvc-element.js"/>
             <arg value="--target"/>
             <arg value="ES5"/>
             <arg value="--declaration"/>
@@ -43,14 +41,6 @@
 
         </exec>
 
-        <copy todir="target/dist/lib">
-            <fileset file="../iassetlab-templa-mvc-core-ts/target/dist/templa-mvc-core.js"/>
-            <fileset file="../iassetlab-templa-mvc-element-ts/target/dist/templa-mvc-element.js"/>
-            <!--
-            <fileset dir="src/main/lib/angular" includes="*.js"/>
-            <fileset dir="src/main/lib/jquery" includes="jquery.min.js"/>
-            -->
-        </copy>
       <!--
         <copy todir="target/dist">
             <fileset dir="src/main/web" includes="**/*"/>

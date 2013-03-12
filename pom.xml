@@ -11,6 +11,7 @@
         <module>iassetlab-cli</module>
         <module>iassetlab-web-angular</module>
         <module>iassetlab-templa-mvc-core-ts</module>
+        <module>iassetlab-templa-mvc-element-ts</module>
         <module>iassetlab-templa-mvc-samples-ts</module>
     </modules>
 

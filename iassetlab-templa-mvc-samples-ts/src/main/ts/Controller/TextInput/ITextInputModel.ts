@@ -1,10 +1,10 @@
 ///<reference path="../../../lib/templa-mvc-core.d.ts"/>
 
 // Module
-module Templa.Samples.Controller.TextInput {
+module Templa.MVC.Samples.Controller.TextInput {
 
     // Class
-    export interface ITextInputModel extends Templa.IModel {
+    export interface ITextInputModel extends Templa.MVC.IModel {
         
         getValue(): string;
 

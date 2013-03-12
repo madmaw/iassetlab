@@ -1,6 +1,6 @@
 ///<reference path="IModel.ts"/>
 
-module Templa {
+module Templa.MVC {
 
     export interface IController {
 
