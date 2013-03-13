@@ -4,10 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.iassetlab</groupId>
-    <artifactId>iassetlab-templa-mvc-element-ts</artifactId>
+    <artifactId>iassetlab-templa-mvc-element-handlebars-ts</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
 
     <parent>
         <groupId>com.iassetlab</groupId>
@@ -28,7 +27,7 @@
         <sourceDirectory>src/main/ts</sourceDirectory>
         <resources>
             <resource>
-                <directory>src/main/web</directory>
+                <directory>src/main/d.ts</directory>
             </resource>
             <resource>
                 <directory>src/main/lib</directory>

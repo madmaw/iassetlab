@@ -31,13 +31,13 @@ module Templa.MVC.Samples.HelloYou {
     export function init(labelContainer:Element, inputContainer:Element) {
         var helloYouModel = new HelloYouModel("You");
 
-        var labelViewFactory = new Templa.MVC.Element.HTMLElementViewFactory("Hello <span key='name_element'></span>!");
+        var labelViewFactory = new Templa.MVC.Element.DivElementViewFactory("Hello <span key='name_element'></span>!");
         var labelController = new Templa.MVC.Samples.Controller.Label.LabelController(labelViewFactory, "name_element");
         labelController.setModel(helloYouModel);
         labelController.init(labelContainer);
         labelController.start();
 
-        var textInputViewFactory = new Templa.MVC.Element.HTMLElementViewFactory("<input key='input_element'></input><br/><input type='button' key='input_button' value='Submit'></input>");
+        var textInputViewFactory = new Templa.MVC.Element.DivElementViewFactory("<input key='input_element'></input><br/><input type='button' key='input_button' value='Submit'></input>");
         var textInputController = new Templa.MVC.Samples.Controller.TextInput.TextInputController(textInputViewFactory, "input_element", "input_button");
         textInputController.setModel(helloYouModel);
         textInputController.init(inputContainer);

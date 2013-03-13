@@ -1,5 +1,6 @@
 ///<reference path="../AbstractElementController.ts"/>
 ///<reference path="../../lib/templa-mvc-core.d.ts"/>
+///<reference path="../../lib/templa-util.d.ts"/>
 
 module Templa.MVC.Element.Composite {
     export class AbstractCompositeElementController extends Templa.MVC.Element.AbstractElementController {
@@ -8,6 +9,7 @@ module Templa.MVC.Element.Composite {
 
         constructor(viewFactory: Templa.MVC.Element.IElementViewFactory) {
             super(viewFactory);
+            this._controllers = [];
         }
 
         public _load(model: Templa.MVC.IModel) {
@@ -29,18 +31,62 @@ module Templa.MVC.Element.Composite {
                 // TODO check state
                 controller.destroy();
             }
+            this._controllers = [];
         }
 
         public add(controller: Templa.MVC.IController) {
             this._controllers.push(controller);
             // TODO check state
             var container: Element = <Element><any>this.getControllerContainer(controller);
-            controller.init(container);
-            controller.start();
+            var state: number = this.getState();
+            if (state >= ControllerStateInitialized) {
+                controller.init(container);
+                if (state >= ControllerStateStarted) {
+                    controller.start();
+                }
+            }
+        }
+
+        public remove(controller: Templa.MVC.IController) {
+            var removed: bool = Templa.Util.Arrays.removeElement(this._controllers, controller);
+            if (removed) {
+                var state: number = this.getState();
+                if (state >= ControllerStateInitialized) {
+                    if (state >= ControllerStateStarted) {
+                        controller.stop();
+                    }
+                    controller.destroy();
+                }
+            }
         }
 
         public getControllerContainer(controller: Templa.MVC.IController):Node {
             return this._view.getRoots()[0];
         }
+
+        public getCommands(): Templa.MVC.Command[] {
+            var commands: Templa.MVC.Command[] = [];
+            for (var i in this._controllers) {
+                var controller: IController = this._controllers[i];
+                var controllerCommands: Command[] = controller.getCommands();
+                if (controllerCommands != null) {
+                    Templa.Util.Arrays.pushAll(commands, controllerCommands);
+                }
+            }
+            return commands;
+        }
+
+        public getTitle(): string {
+            var title: string = null;
+            for (var i in this._controllers) {
+                var controller: IController = this._controllers[i];
+                title = controller.getTitle();
+                if (title != null) {
+                    break;
+                }
+            }
+            return title;
+        }
+
     }
 }

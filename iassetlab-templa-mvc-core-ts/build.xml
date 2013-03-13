@@ -6,6 +6,15 @@
         <delete dir="target"/>
     </target>
 
+    <target name="deps">
+        <ant antfile="../iassetlab-templa-util-ts/build.xml" dir="../iassetlab-templa-util-ts"/>
+
+        <copy todir="src/main/lib">
+            <fileset file="../iassetlab-templa-util-ts/target/dist/templa-util.d.ts"/>
+        </copy>
+    </target>
+
+
     <target name="build">
         <!--
         <copy todir="target/build">

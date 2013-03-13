@@ -4,10 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.iassetlab</groupId>
-    <artifactId>iassetlab-templa-mvc-element-ts</artifactId>
+    <artifactId>iassetlab-templa-util-ts</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
 
     <parent>
         <groupId>com.iassetlab</groupId>

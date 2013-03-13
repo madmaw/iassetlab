@@ -8,10 +8,12 @@
 
     <target name="deps">
         <ant antfile="../iassetlab-templa-mvc-core-ts/build.xml" dir="../iassetlab-templa-mvc-core-ts"/>
+        <ant antfile="../iassetlab-templa-mvc-element-ts/build.xml" dir="../iassetlab-templa-mvc-element-ts"/>
         <ant antfile="../iassetlab-templa-util-ts/build.xml" dir="../iassetlab-templa-util-ts"/>
 
         <copy todir="src/main/lib">
             <fileset file="../iassetlab-templa-mvc-core-ts/target/dist/templa-mvc-core.d.ts"/>
+            <fileset file="../iassetlab-templa-mvc-element-ts/target/dist/templa-mvc-element.d.ts"/>
             <fileset file="../iassetlab-templa-util-ts/target/dist/templa-util.d.ts"/>
         </copy>
     </target>
@@ -35,10 +37,12 @@
         <exec executable="tsc" failonerror="true">
 
             <arg value="-out"/>
-            <arg path="target/dist/templa-mvc-element.js"/>
+            <arg path="target/dist/templa-mvc-element-handlebars.js"/>
             <arg value="--target"/>
             <arg value="ES5"/>
             <arg value="--declaration"/>
+            <arg value="--module"/>
+            <arg value="amd"/>
             <arg line="'${tsFilesArg}'"/>
 
         </exec>

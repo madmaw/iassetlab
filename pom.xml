@@ -10,8 +10,10 @@
         <module>iassetlab-core</module>
         <module>iassetlab-cli</module>
         <module>iassetlab-web-angular</module>
+        <module>iassetlab-templa-util-ts</module>
         <module>iassetlab-templa-mvc-core-ts</module>
         <module>iassetlab-templa-mvc-element-ts</module>
+        <module>iassetlab-templa-mvc-element-handlebars-ts</module>
         <module>iassetlab-templa-mvc-samples-ts</module>
     </modules>
 

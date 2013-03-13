@@ -1,0 +1,7 @@
+{
+    "name": "iassetlab-templa-mvc-samples-ts",
+    "version": "1.0.0",
+    "dependencies": {
+		"handlebars.js":"latest"
+    }
+}

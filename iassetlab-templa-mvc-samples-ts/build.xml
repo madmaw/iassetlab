@@ -9,10 +9,14 @@
     <target name="deps">
         <ant antfile="../iassetlab-templa-mvc-core-ts/build.xml" dir="../iassetlab-templa-mvc-core-ts"/>
         <ant antfile="../iassetlab-templa-mvc-element-ts/build.xml" dir="../iassetlab-templa-mvc-element-ts"/>
+        <ant antfile="../iassetlab-templa-mvc-element-handlebars-ts/build.xml" dir="../iassetlab-templa-mvc-element-handlebars-ts"/>
+        <ant antfile="../iassetlab-templa-util-ts/build.xml" dir="../iassetlab-templa-util-ts"/>
 
         <copy todir="src/main/lib">
             <fileset file="../iassetlab-templa-mvc-core-ts/target/dist/templa-mvc-core.d.ts"/>
             <fileset file="../iassetlab-templa-mvc-element-ts/target/dist/templa-mvc-element.d.ts"/>
+            <fileset file="../iassetlab-templa-mvc-element-handlebars-ts/target/dist/templa-mvc-element-handlebars.d.ts"/>
+            <fileset file="../iassetlab-templa-util-ts/target/dist/templa-util.d.ts"/>
         </copy>
     </target>
 
@@ -44,9 +48,13 @@
         </exec>
 
         <copy todir="target/dist/lib">
+            <fileset file="src/main/lib/handlebars.js/dist/handlebars.js"/>
             <fileset file="../iassetlab-templa-mvc-core-ts/target/dist/templa-mvc-core.js"/>
             <fileset file="../iassetlab-templa-mvc-element-ts/target/dist/templa-mvc-element.js"/>
-            <!--
+            <fileset file="../iassetlab-templa-mvc-element-handlebars-ts/target/dist/templa-mvc-element-handlebars.js"/>
+            <fileset file="../iassetlab-templa-util-ts/target/dist/templa-util.js"/>
+
+          <!--
             <fileset dir="src/main/lib/angular" includes="*.js"/>
             <fileset dir="src/main/lib/jquery" includes="jquery.min.js"/>
             -->

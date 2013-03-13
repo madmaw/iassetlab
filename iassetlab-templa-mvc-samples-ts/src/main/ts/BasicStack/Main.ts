@@ -1,8 +1,9 @@
 ///<reference path="../../lib/templa-mvc-core.d.ts"/>
 ///<reference path="../../lib/templa-mvc-element.d.ts"/>
-///<reference path="../Controller/TextInput/ITextInputModel.ts"/>
 ///<reference path="../Controller/Label/LabelController.ts"/>
 ///<reference path="../Controller/Label/ILabelModel.ts"/>
+///<reference path="../Controller/TextInput/TextInputController.ts"/>
+///<reference path="../Controller/TextInput/ITextInputModel.ts"/>
 
 // Module
 module Templa.MVC.Samples.BasicStack {
@@ -19,7 +20,7 @@ module Templa.MVC.Samples.BasicStack {
             super();
             this.controllerStack = [];
             this.labelViewKey = "label";
-            this.labelViewFactory = new Templa.MVC.Element.HTMLElementViewFactory("<span key='"+this.labelViewKey+"'></span>");
+            this.labelViewFactory = new Templa.MVC.Element.DivElementViewFactory("<span key='"+this.labelViewKey+"'></span>");
         }
 
         getValue(): string {
@@ -73,8 +74,19 @@ module Templa.MVC.Samples.BasicStack {
     export function init(stackContainer: Element, inputContainer: Element) {
         var stackModel = new BasicStackModel();
 
-        var stackViewFactory = new Templa.MVC.Element.HTMLElementViewFactory("<div key='stack'></div>");
+        var stackViewFactory = new Templa.MVC.Element.DivElementViewFactory("<div key='stack'></div>");
         var stackController = new Templa.MVC.Element.Composite.StackElementController(stackViewFactory);
+        stackController.setModel(stackModel);
+        stackController.init(stackContainer);
+        stackController.start();
+
+        var inputElementKey = "input_element";
+        var inputButtonKey = "input_button";
+        var inputViewFactory = new Templa.MVC.Element.DivElementViewFactory("<input key='"+inputElementKey+"'></input><br/><input type='button' key='"+inputButtonKey+"' value='Submit'></input>");
+        var inputController = new Templa.MVC.Samples.Controller.TextInput.TextInputController(inputViewFactory, inputElementKey, inputButtonKey);
+        inputController.setModel(stackModel);
+        inputController.init(inputContainer);
+        inputController.start();
     }
 
 }
