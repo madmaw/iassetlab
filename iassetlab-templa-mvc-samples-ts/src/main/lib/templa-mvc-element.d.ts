@@ -78,8 +78,8 @@ module Templa.MVC.Element.Composite {
         private _controllers;
         constructor(viewFactory: IElementViewFactory);
         public _load(model: IModel): void;
-        public clear(): void;
-        public add(controller: IController): void;
+        public clear(fireEvent?: bool): void;
+        public add(controller: IController, fireEvent?: bool): void;
         public remove(controller: IController): void;
         public getControllerContainer(controller: IController): Node;
         public getCommands(): Command[];
@@ -97,6 +97,7 @@ module Templa.MVC.Element.Composite {
         private _backCommand;
         constructor(viewFactory: IElementViewFactory);
         public _back(): void;
+        public getCommands(): Command[];
     }
 }
 module Templa.MVC.Element {

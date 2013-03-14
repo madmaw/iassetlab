@@ -14,27 +14,34 @@ module Templa.MVC.Element.Composite {
 
         public _load(model: Templa.MVC.IModel) {
             // load up the controllers
-            this.clear();
+            this.clear(false);
             var compositeControllerModel: Templa.MVC.Composite.ICompositeControllerModel = <Templa.MVC.Composite.ICompositeControllerModel>model;
             var controllers = compositeControllerModel.getControllers();
             for( var i in controllers ) {
                 var controller = controllers[i];
-                this.add(controller);
+                this.add(controller, false);
+            }
+            this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
+        }
+
+        public clear(fireEvent?:bool) {
+            if (this._controllers.length > 0) {
+
+                for (var i in this._controllers) {
+                    var controller = this._controllers[i];
+                    // TODO check state
+                    controller.stop();
+                    // TODO check state
+                    controller.destroy();
+                }
+                if (fireEvent) {
+                    this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
+                }
+                this._controllers = [];
             }
         }
 
-        public clear() {
-            for( var i in this._controllers ) {
-                var controller = this._controllers[i];
-                // TODO check state
-                controller.stop();
-                // TODO check state
-                controller.destroy();
-            }
-            this._controllers = [];
-        }
-
-        public add(controller: Templa.MVC.IController) {
+        public add(controller: Templa.MVC.IController, fireEvent?:bool) {
             this._controllers.push(controller);
             // TODO check state
             var container: Element = <Element><any>this.getControllerContainer(controller);
@@ -44,6 +51,9 @@ module Templa.MVC.Element.Composite {
                 if (state >= ControllerStateStarted) {
                     controller.start();
                 }
+            }
+            if (fireEvent) {
+                this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
             }
         }
 
@@ -57,6 +67,7 @@ module Templa.MVC.Element.Composite {
                     }
                     controller.destroy();
                 }
+                this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
             }
         }
 

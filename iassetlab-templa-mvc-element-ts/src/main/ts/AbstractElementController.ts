@@ -104,17 +104,27 @@ module Templa.MVC.Element {
         }
 
         public addOnChangeListener(listener: (source: IController, changeEvent: ControllerChangeEvent) => void ) {
+            if (this._controllerOnChangeListeners == null) {
+                this._controllerOnChangeListeners = [];
+            }
             this._controllerOnChangeListeners.push(listener);
         }
 
         public removeOnChangeListener(listener: (source: IController, changeEvent: ControllerChangeEvent) => void ) {
-            Templa.Util.Arrays.removeElement(this._controllerOnChangeListeners, listener);
+            if (this._controllerOnChangeListeners != null) {
+                Templa.Util.Arrays.removeElement(this._controllerOnChangeListeners, listener);
+                if (this._controllerOnChangeListeners.length == 0) {
+                    this._controllerOnChangeListeners = null;
+                }
+            }
         }
 
         public _fireControllerChangeEvent(controllerChangeEvent: Templa.MVC.ControllerChangeEvent) {
-            for (var i in this._controllerOnChangeListeners) {
-                var controllerOnChangeListener = this._controllerOnChangeListeners[i];
-                controllerOnChangeListener(this, controllerChangeEvent);
+            if (this._controllerOnChangeListeners != null) {
+                for (var i in this._controllerOnChangeListeners) {
+                    var controllerOnChangeListener = this._controllerOnChangeListeners[i];
+                    controllerOnChangeListener(this, controllerChangeEvent);
+                }
             }
         }
 

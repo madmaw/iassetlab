@@ -23,6 +23,13 @@ module Templa.MVC.Element.Composite {
             stackControllerModel.requestPop();
         }
 
-
+        public getCommands(): Command[]{
+            var commands = super.getCommands();
+            if (commands == null) {
+                commands = [];
+            }
+            commands.push(this._backCommand);
+            return commands;
+        }
     }
 }
