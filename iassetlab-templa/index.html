@@ -1,0 +1,40 @@
+<html>
+<head>
+    <title>Templa Samples HelloWorld</title>
+    <script src="lib/handlebars.js/dist/handlebars.js"></script>
+    <script src="target/dist/templa-all.js"></script>
+    <script>
+        window.onload = function () {
+            var helloworld_element = document.getElementById("helloworld");
+            templa.samples.mvc.hello_world.init(helloworld_element);
+
+            var helloyou_label_element = document.getElementById("helloyou_label");
+            var helloyou_input_element = document.getElementById("helloyou_input");
+            templa.samples.mvc.hello_you.init(helloyou_label_element, helloyou_input_element);
+
+            var basicstack_input_element = document.getElementById("basicstack_input");
+            var basicstack_stack_element = document.getElementById("basicstack_stack");
+            templa.samples.mvc.basic_stack.init(basicstack_stack_element, basicstack_input_element);
+
+            var decoratedstack_input_element = document.getElementById("decoratedstack_input");
+            var decoratedstack_stack_element = document.getElementById("decoratedstack_stack");
+            templa.samples.mvc.decorated_stack.init(decoratedstack_stack_element, decoratedstack_input_element);
+        }
+    </script>
+</head>
+<body>
+
+<h3>Test 1</h3>
+<div id="helloworld"></div>
+<h3>Test 2</h3>    
+<div id="helloyou_label"></div>
+<div id="helloyou_input"></div>
+<h3>Test 3</h3>
+<div id="basicstack_input"></div>
+<div id="basicstack_stack"></div>
+<h3>Test 4</h3>
+<div id="decoratedstack_input"></div>
+<div id="decoratedstack_stack"></div>
+</body>
+
+</html>
