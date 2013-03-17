@@ -13,15 +13,15 @@ module templa.mvc {
 
         setModel(model:IModel);
 
-        init(container:Element);
+        init(container:Element):bool;
 
         load();
 
-        start();
+        start(): bool;
 
-        stop();
+        stop(): bool;
 
-        destroy();
+        destroy(): bool;
 
         getState(): number;
 

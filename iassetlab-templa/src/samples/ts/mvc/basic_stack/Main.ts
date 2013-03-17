@@ -3,6 +3,7 @@
 ///<reference path="../../../../main/ts/mvc/element/IElementViewFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/DivElementViewFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/composite/StackElementController.ts"/>
+///<reference path="../../../../main/ts/mvc/composite/AbstractStackControllerModel.ts"/>
 
 ///<reference path="../Controller/label/LabelController.ts"/>
 ///<reference path="../Controller/label/ILabelModel.ts"/>
@@ -13,16 +14,14 @@
 module templa.samples.mvc.basic_stack {
 
     // Class
-    export class BasicStackModel extends templa.mvc.AbstractModel implements templa.samples.mvc.controller.text_input.ITextInputModel, templa.mvc.composite.IStackControllerModel {
+    export class BasicStackModel extends templa.mvc.composite.AbstractStackControllerModel implements templa.samples.mvc.controller.text_input.ITextInputModel {
 
-        private controllerStack: templa.samples.mvc.controller.label.LabelController[];
         private labelViewKey: string;
         private labelViewFactory: templa.mvc.element.IElementViewFactory;
 
         // Constructor
         constructor() {
             super();
-            this.controllerStack = [];
             this.labelViewKey = "label";
             this.labelViewFactory = new templa.mvc.element.DivElementViewFactory("<span key='"+this.labelViewKey+"'></span>");
         }
@@ -36,31 +35,7 @@ module templa.samples.mvc.basic_stack {
             
             var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, this.labelViewKey);
             labelController.setModel(new LabelModel(value));
-            this.controllerStack.push(labelController);
-            // TODO probably should have old controller in there too
-            this._fireModelChangeEvent(new templa.mvc.ModelChangeEvent("pushed", labelController));
-        }
-
-        isStackEmpty(): bool {
-            return this.controllerStack.length == 0;
-        }
-
-        canPop(): bool {
-            return !this.isStackEmpty();
-        }
-
-        requestPop() {
-            var popped = this.controllerStack.pop();
-            this._fireModelChangeEvent(new templa.mvc.ModelChangeEvent("popped", popped));
-        }
-
-        getControllers(): templa.mvc.IController[]{
-            var controllers: templa.mvc.IController[] = [];
-            if (this.controllerStack.length > 0) {
-                var topController = this.controllerStack[this.controllerStack.length - 1];
-                controllers.push(topController);
-            }
-            return controllers;
+            this._push(labelController);
         }
     }
 

@@ -15,15 +15,19 @@ module templa.samples.mvc.controller.text_input {
             super(_viewFactory);
         }
 
-        public start() {
-            super.start();
-            // listen upon the button for click events
-            var buttonElement: HTMLInputElement = <HTMLInputElement><any>this._find(this._buttonElementKey);
-            buttonElement.onclick = () => {
-                var value:string = this.getValue();
-                var textInputModel:ITextInputModel = <ITextInputModel>this._model;
-                textInputModel.requestSubmit(value);
-            };
+        public start(): bool {
+            if (super.start()) {
+                // listen upon the button for click events
+                var buttonElement: HTMLInputElement = <HTMLInputElement><any>this._find(this._buttonElementKey);
+                buttonElement.onclick = () => {
+                    var value: string = this.getValue();
+                    var textInputModel: ITextInputModel = <ITextInputModel>this._model;
+                    textInputModel.requestSubmit(value);
+                };
+                return true;
+            } else {
+                return false;
+            }
         }
 
         public getValue():string {
