@@ -13,7 +13,7 @@ module templa.samples.mvc.controller.label {
             super(_viewFactory);
         }
 
-        public _load(model: templa.mvc.IModel) {
+        public _doLoad(model: templa.mvc.IModel) {
             var labelModel: ILabelModel = <ILabelModel>model;
             var label = labelModel.getLabel();
             var labelElement: MSHTMLElementExtensions = <MSHTMLElementExtensions><any>this._find(this._labelElementKey);

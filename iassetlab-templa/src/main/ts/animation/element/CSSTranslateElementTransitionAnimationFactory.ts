@@ -1,12 +1,12 @@
 ///<reference path="IElementAnimationFactory.ts"/>
-///<reference path="CSSElementAnimation.ts"/>
+///<reference path="CSSTranslateElementTransitionAnimation.ts"/>
 ///<reference path="../IAnimation.ts"/>
 
 // Module
 module templa.animation.element {
 
     // Class
-    export class CSSTranslateElementAnimationFactory implements IElementAnimationFactory {
+    export class CSSTranslateElementTransitionAnimationFactory implements IElementAnimationFactory {
 
         // Constructor
         constructor(
@@ -27,9 +27,9 @@ module templa.animation.element {
             var finalX = this._xMultTo * bounds.width;
             var finalY = this._yMultTo * bounds.height;
 
-            var initialStyle: string = "position:relative; top:"+initialY+"px;left:"+initialX+"px;";
-            var transformStyle: string = "all "+this._timeSeconds+"s ease-in translate("+(finalX-initialX)+"px ,"+(finalY - initialY)+"px)";
-            return new CSSElementAnimation(initialStyle, transformStyle);
+            var transformStyle: string = "translate(" + (finalX - initialX) + "px ," + (finalY - initialY) + "px)";
+            var transitionStyle: string = "all " + this._timeSeconds + "s ease-in";
+            return new CSSTranslateElementTransitionAnimation(view, initialX, initialY, transitionStyle, transformStyle);
         }
     }
 

@@ -8,7 +8,7 @@
 ///<reference path="../../../../main/ts/mvc/element/composite/KeyedElementController.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/handlebars/HandlebarsElementViewFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/handlebars/command/HandlebarsCommandElementViewFactory.ts"/>
-///<reference path="../../../../main/ts/animation/element/CSSTranslateElementAnimationFactory.ts"/>
+///<reference path="../../../../main/ts/animation/element/CSSElementClassAnimationFactory.ts"/>
 ///<reference path="../controller/label/LabelController.ts"/>
 ///<reference path="../controller/label/ILabelModel.ts"/>
 ///<reference path="../controller/text_input/TextInputController.ts"/>
@@ -67,17 +67,20 @@ module templa.samples.mvc.decorated_stack {
 
         requestSubmit(value: string) {
             // push a new controller
+            if (value != null && value.length > 0) {
+                var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, this.labelViewKey);
+                labelController.setModel(new LabelModel(value));
 
-            var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, this.labelViewKey);
-            labelController.setModel(new LabelModel(value));
+                var toolbarController = new templa.mvc.element.command.ToolbarCommandElementController(this.toolbarViewFactory, this.toolbarCommandElementViewFactory, this.toolbarBackViewKey, this.toolbarGeneralViewKey);
+                toolbarController.setModel(new templa.mvc.command.CommandControllerModelAdapter(this._topLevelController));
 
-            var toolbarController = new templa.mvc.element.command.ToolbarCommandElementController(this.toolbarViewFactory, this.toolbarCommandElementViewFactory, this.toolbarBackViewKey, this.toolbarGeneralViewKey);
-            toolbarController.setModel(new templa.mvc.command.CommandControllerModelAdapter(this._topLevelController));
-
-            var decoratorController = new templa.mvc.element.composite.KeyedElementController(this.decoratorViewFactory);
-            decoratorController.setModel(new ToolbarDecoratorModel(toolbarController, this.decoratorToolbarViewKey, labelController, this.decoratorBodyViewKey));
-
-            this._push(decoratorController);
+                var decoratorController = new templa.mvc.element.composite.KeyedElementController(this.decoratorViewFactory);
+                decoratorController.setModel(new ToolbarDecoratorModel(toolbarController, this.decoratorToolbarViewKey, labelController, this.decoratorBodyViewKey));
+                this._push(decoratorController);
+            } else {
+                // testing only
+                this._push(null);
+            }
         }
     }
 
@@ -121,10 +124,10 @@ module templa.samples.mvc.decorated_stack {
             "<div id='{{id}}' key='stack'></div>",
             "id"
         );
-        var pushAddAnimationFactory = new templa.animation.element.CSSTranslateElementAnimationFactory(10, 1, 0, 0, 0);
-        var pushRemoveAnimationFactory = new templa.animation.element.CSSTranslateElementAnimationFactory(10, 0, 0, -1, 0);
-        var popAddAnimationFactory = new templa.animation.element.CSSTranslateElementAnimationFactory(10, -1, 0, 0, 0);
-        var popRemoveAnimationFactory = new templa.animation.element.CSSTranslateElementAnimationFactory(10, 0, 0, 1, 0);
+        var pushAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-push-add", 2000);
+        var pushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-push-remove", 2000);
+        var popAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-pop-add", 2000);
+        var popRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-pop-remove", 2000);
         var stackController = new templa.mvc.element.composite.StackElementController(
             stackViewFactory,
             popAddAnimationFactory,

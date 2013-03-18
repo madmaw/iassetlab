@@ -8,13 +8,13 @@ module templa.animation {
     export class AbstractAnimation implements IAnimation {
 
         private _state: string;
-        private _aniationChangeListeners: { (source: IAnimation, changeEvent: AnimationStateChangeEvent): void; }[];
+        private _animationChangeListeners: { (source: IAnimation, changeEvent: AnimationStateChangeEvent): void; }[];
 
 
         // Constructor
         constructor() {
             this._state = animationStateCreated;
-            this._aniationChangeListeners = [];
+            this._animationChangeListeners = [];
         }
 
         public getState(): string {
@@ -22,33 +22,51 @@ module templa.animation {
         }
 
         public init() {
-            this._state = animationStateInitialized;
-            this._fireAnimationStateChangeEvent(new AnimationStateChangeEvent(this._state));
+            if (this._doInit()) {
+                this._state = animationStateInitialized;
+                this._fireAnimationStateChangeEvent(new AnimationStateChangeEvent(this._state));
+            }
+        }
+
+        public _doInit(): bool {
+            return true;
         }
 
         public start() {
-            this._state = animationStateStarted;
-            this._fireAnimationStateChangeEvent(new AnimationStateChangeEvent(this._state));
+            if (this._doStart()) {
+                this._state = animationStateStarted;
+                this._fireAnimationStateChangeEvent(new AnimationStateChangeEvent(this._state));
+            }
+        }
+
+        public _doStart(): bool {
+            return true;
         }
 
         public destroy() {
-            this._state = animationStateFinished;
-            this._fireAnimationStateChangeEvent(new AnimationStateChangeEvent(this._state));
+            if (this._doDestroy()) {
+                this._state = animationStateFinished;
+                this._fireAnimationStateChangeEvent(new AnimationStateChangeEvent(this._state));
+            }
+        }
+
+        public _doDestroy(): bool {
+            return true;
         }
 
         public _fireAnimationStateChangeEvent(changeEvent: AnimationStateChangeEvent) {
-            for (var i in this._aniationChangeListeners) {
-                var animationChangeListener: (source: IAnimation, changeEvent: AnimationStateChangeEvent) => void = this._aniationChangeListeners[i];
+            for (var i in this._animationChangeListeners) {
+                var animationChangeListener: (source: IAnimation, changeEvent: AnimationStateChangeEvent) => void = this._animationChangeListeners[i];
                 animationChangeListener(this, changeEvent);
             }
         }
 
         public addAnimationListener(listener: (source: IAnimation, changeEvent: AnimationStateChangeEvent) => void ) {
-            this._aniationChangeListeners.push(listener);
+            this._animationChangeListeners.push(listener);
         }
 
         public removeAnimationListener(listener: (source: IAnimation, changeEvent: AnimationStateChangeEvent) => void ) {
-            templa.util.Arrays.removeElement(this._aniationChangeListeners, listener);
+            templa.util.Arrays.removeElement(this._animationChangeListeners, listener);
         }
 
 

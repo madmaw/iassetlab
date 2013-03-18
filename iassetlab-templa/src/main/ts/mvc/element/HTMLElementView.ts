@@ -5,7 +5,6 @@ module templa.mvc.element {
 
         private _html:string;
         private _container: HTMLElement;
-        private _div: HTMLElement;
         private _id: string;
 
         constructor(_html: string, _container: HTMLElement, _id:string) {
@@ -16,13 +15,10 @@ module templa.mvc.element {
 
         public attach() {
             this._container.innerHTML += this._html;
-            // find ourselves
-            this._div = <HTMLElement><any>this._find("id", this._id, <Node[]>[<Node><any>this._container]);
         }
 
         public detach() {
-            this._div.parentNode.removeChild(this._div);
-            this._div = null;
+            this._container.removeChild(this.div);
         }
 
         public find(key:string):Element {
@@ -53,13 +49,13 @@ module templa.mvc.element {
         }
 
         public getRoots() {
-            return [this._div];
+            return [this.div];
             //return this.getChildren();
         }
 
         public getChildren(container?: HTMLElement): Node[]{
             if (container == null) {
-                container = this._div;
+                container = this.div;
             }
             var collection: NodeList = container.childNodes;
             var result: Node[] = [];
@@ -70,6 +66,11 @@ module templa.mvc.element {
                 i++;
             }
             return result;
+        }
+
+        public get div(): HTMLElement {
+            // find ourselves
+            return <HTMLElement><any>this._find("id", this._id, <Node[]>[<Node><any>this._container]);
         }
     }
 }

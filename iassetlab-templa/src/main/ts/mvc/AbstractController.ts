@@ -1,6 +1,7 @@
 ///<reference path="IController.ts"/>
 ///<reference path="../animation/IAnimation.ts"/>
 ///<reference path="../util/Arrays.ts"/>
+///<reference path="IView.ts"/>
 
 // Module
 module templa.mvc {
@@ -28,61 +29,114 @@ module templa.mvc {
         }
 
         public init(container: Element): bool {
+            var result: bool;
             if (this._state == templa.mvc.ControllerStateUninitialized) {
-                this._state = templa.mvc.ControllerStateInitialized;
-                return true;
+                result = this._doInit(container);
+                if (result) {
+                    this._state = templa.mvc.ControllerStateInitialized;
+                    // kick off any pending animations
+                    if (this._animations != null) {
+                        for (var i in this._animations) {
+                            var animation: templa.animation.IAnimation = this._animations[i];
+                            animation.init();
+                            animation.start();
+                        }
+                    }
+                }
             } else {
-                return false;
+                result = false;
             }
+            return result;
+        }
+
+        public _doInit(container: Element): bool {
+            return true;
         }
 
         public load() {
-            this._load(this._model);
+            this._doLoad(this._model);
         }
 
-        public _load(model: templa.mvc.IModel) {
+        public _doLoad(model: templa.mvc.IModel) {
 
         }
 
-        public handleModelChangeEvent(event: templa.mvc.ModelChangeEvent) {
+        public getView(): templa.mvc.IView {
+            throw new Error("this should be overriden");
+        }
+
+        public _handleModelChangeEvent(event: templa.mvc.ModelChangeEvent) {
             // override to get more fine-grained updates
-            this._load(this._model);
+            this._doLoad(this._model);
         }
 
         public start(): bool {
+            var result: bool;
             if (this._state == templa.mvc.ControllerStateInitialized) {
-                this._state = templa.mvc.ControllerStateStarted;
-                this.load();
-                // start listening on the model
-                this._modelOnChangeListener = (model: templa.mvc.IModel, event: templa.mvc.ModelChangeEvent) => {
-                    this.handleModelChangeEvent(event);
-                };
-                this._model.addOnChangeListener(this._modelOnChangeListener);
-                return true;
+                result = this._doStart();
+                if (result) {
+                    this._state = templa.mvc.ControllerStateStarted;
+                    this.load();
+                    // start listening on the model
+                    this._modelOnChangeListener = (model: templa.mvc.IModel, event: templa.mvc.ModelChangeEvent) => {
+                        this._handleModelChangeEvent(event);
+                    };
+                    this._model.addOnChangeListener(this._modelOnChangeListener);
+                }
             } else {
-                return false;
+                result = false;
             }
+            return result;
+        }
+
+        public _doStart(): bool {
+            return true;
         }
 
         public stop(): bool {
+            var result: bool;
             if (this._state == templa.mvc.ControllerStateStarted) {
-                this._state = templa.mvc.ControllerStateInitialized;
-                // stop listening on the model
-                this._model.removeOnChangeListener(this._modelOnChangeListener);
-                this._modelOnChangeListener = null;
-                return true;
+                result = this._doStop();
+                if (result) {
+                    this._state = templa.mvc.ControllerStateInitialized;
+                    // stop listening on the model
+                    this._model.removeOnChangeListener(this._modelOnChangeListener);
+                    this._modelOnChangeListener = null;
+                }
             } else {
-                return false;
+                result = false;
             }
+            return result;
         }
 
-        public destroy(): bool {
+        public _doStop(): bool {
+            return true;
+        }
+
+        public destroy(detachView?: bool): bool {
+            // destroy any animations
+            var result: bool;
             if (this._state == templa.mvc.ControllerStateInitialized) {
-                this._state = templa.mvc.ControllerStateUninitialized;
-                return true;
+                if (this._animations != null) {
+                    for (var i in this._animations) {
+                        var animation: templa.animation.IAnimation = this._animations[i];
+                        animation.destroy();
+                    }
+                    this._animations = null;
+                }
+                result = this._doDestroy(detachView);
+                if (result) {
+                    // unfortunately the animations are going to cop it if we fail
+                    this._state = templa.mvc.ControllerStateUninitialized;
+                }
             } else {
-                return false;
+                result = false;
             }
+            return result;
+        }
+
+        public _doDestroy(detachView?: bool): bool {
+            return true;
         }
 
         public getState(): number {
@@ -127,6 +181,10 @@ module templa.mvc {
             }
         }
 
+        public addAnimation(animation: templa.animation.IAnimation) {
+            this._addAnimation(animation, false);
+        }
+
         public _addAnimation(animation: templa.animation.IAnimation, doNotStart?: bool) {
             if (this._animations == null) {
                 this._animations = [];
@@ -141,6 +199,7 @@ module templa.mvc {
             animation.addAnimationListener(this._animationListener);
             if (doNotStart != true && this._state >= ControllerStateInitialized) {
                 // start the animation
+                animation.init();
                 animation.start();
             }
         }

@@ -39,7 +39,7 @@ module templa.mvc.element.command {
             this._generalViews = [];
         }
 
-        public _load(model: templa.mvc.IModel) {
+        public _doLoad(model: templa.mvc.IModel) {
             var commandControllerModel = <templa.mvc.command.ICommandControllerModel>model;
             var commands = commandControllerModel.getCommands();
 

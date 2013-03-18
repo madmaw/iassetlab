@@ -52,7 +52,8 @@ module templa.mvc.composite {
         public _push(controller: IController): void {
             var previousController = this.peek;
             this._stack.push(controller);
-            this._fireModelChangeEvent(new StackControllerModelChangeEvent(stackControllerModelEventPushed, previousController, this.peek));
+            var event = new StackControllerModelChangeEvent(stackControllerModelEventPushed, previousController, controller);
+            this._fireModelChangeEvent(event);
         }
 
         public get peek(): IController {

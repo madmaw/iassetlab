@@ -3,6 +3,7 @@
 ///<reference path="../IController.ts"/>
 ///<reference path="../AbstractController.ts"/>
 ///<reference path="../../util/Arrays.ts"/>
+///<reference path="../IView.ts"/>
 
 module templa.mvc.element {
 
@@ -17,6 +18,10 @@ module templa.mvc.element {
             this._viewFactory = _viewFactory;
         }
 
+        public getView(): templa.mvc.IView {
+            return this._view;
+        }
+
         public _find(key: string): Element {
             var result: Element;
             if (this._view != null) {
@@ -27,24 +32,18 @@ module templa.mvc.element {
             return result;
         }
 
-        public init(container:Element): bool {
-            if (super.init(container)) {
-                this._view = this._viewFactory.create(container);
-                this._view.attach();
-                return true;
-            } else {
-                return false;
-            }
+        public _doInit(container:Element): bool {
+            this._view = this._viewFactory.create(container);
+            this._view.attach();
+            return true;
         }
 
-        public destroy(): bool {
-            if (super.destroy()) {
+        public _doDestroy(detachView?: bool): bool {
+            if (detachView != false) {
                 this._view.detach();
-                this._view = null;
-                return true;
-            } else {
-                return false;
             }
+            this._view = null;
+            return true;
         }
     }
 }
