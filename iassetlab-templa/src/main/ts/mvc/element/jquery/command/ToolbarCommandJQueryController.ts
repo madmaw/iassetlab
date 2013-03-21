@@ -1,11 +1,11 @@
-///<reference path="../AbstractElementController.ts"/>
-///<reference path="ICommandElementViewFactory.ts"/>
+///<reference path="../AbstractJQueryController.ts"/>
+///<reference path="ICommandJQueryViewDescriptionFactory.ts"/>
 
 // Module
-module templa.mvc.element.command {
+module templa.mvc.element.jquery.command {
 
     // Class
-    export class ToolbarCommandElementController extends AbstractElementController {
+    export class ToolbarCommandJQueryController extends AbstractJQueryController {
 
         private _backViews: IElementView[];
         private _generalViews: IElementView[];
@@ -13,9 +13,9 @@ module templa.mvc.element.command {
         // Constructor
         constructor(
             _viewFactory: IElementViewFactory,
-            private _commandViewFactory:ICommandElementViewFactory,
-            private _backContainerKey: string,
-            private _generalContainerKey: string
+            private _commandViewDescriptionFactory:ICommandJQueryViewDescriptionFactory,
+            private _backContainerSelector: string,
+            private _generalContainerSelector: string
         ) {
             super(_viewFactory);
 
@@ -23,19 +23,37 @@ module templa.mvc.element.command {
             this._generalViews = [];
         }
 
-        public _clear() {
+        public _doDestroy(detachView?: bool) {
+            if (detachView == false) {
+                // TODO disable onclicks
+                this._backViews = [];
+                this._generalViews = [];
+            } else {
+                this._clear();
+            }
+            var result = super._doDestroy(detachView);
+            return result;
+        }
+
+        public _detachViews() {
             // remove all the existing commands
             for (var i in this._backViews) {
                 var backView: IElementView = this._backViews[i];
                 backView.detach();
             }
-            this._backViews = [];
 
             // remove all the general commands
             for (var i in this._generalViews) {
                 var generalView: IElementView = this._generalViews[i];
                 generalView.detach();
             }
+        }
+
+
+
+        public _clear() {
+            this._detachViews();
+            this._backViews = [];
             this._generalViews = [];
         }
 
@@ -48,24 +66,24 @@ module templa.mvc.element.command {
             // TODO should probably sort the commands
             for (var i in commands) {
                 var command: Command = commands[i];
-                var container: Element;
+                var container: IElementReference;
                 var views;
                 if (command.commandType == CommandTypeBack) {
-                    container = this._find(this._backContainerKey);
+                    container = this.$reference(this._backContainerSelector);
                     views = this._backViews;
                 } else {
-                    container = this._find(this._generalContainerKey);
+                    container = this.$reference(this._generalContainerSelector);
                     views = this._generalViews;
                 }
-                var actionElementView: ActionElementView = this._commandViewFactory.create(container, command);
-                var actionElementKey = actionElementView.actionElementKey;
+                var actionElementView: CommandJQueryViewDescription = this._commandViewDescriptionFactory.create(container, command);
+                var actionElementSelector = actionElementView.actionElementSelector;
                 var view = actionElementView.view;
                 view.attach();
-                var actionElement:HTMLElement = <HTMLElement><any>view.find(actionElementKey);
-                actionElement.onclick = function {
+                var actionElements: JQuery = this.$(actionElementSelector, view.getRoots());
+                actionElements.click(function {
                     // hope this works
                     command.action();
-                };
+                });
                 views.push(view);
             }
 

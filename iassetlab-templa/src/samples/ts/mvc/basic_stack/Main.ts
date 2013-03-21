@@ -1,8 +1,9 @@
 ///<reference path="../../../../main/ts/mvc/AbstractModel.ts"/>
 ///<reference path="../../../../main/ts/mvc/composite/IStackControllerModel.ts"/>
+///<reference path="../../../../main/ts/mvc/element/DirectElementReference.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/IElementViewFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/DivElementViewFactory.ts"/>
-///<reference path="../../../../main/ts/mvc/element/composite/StackElementController.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/composite/StackJQueryController.ts"/>
 ///<reference path="../../../../main/ts/mvc/composite/AbstractStackControllerModel.ts"/>
 
 ///<reference path="../Controller/label/LabelController.ts"/>
@@ -33,7 +34,7 @@ module templa.samples.mvc.basic_stack {
         requestSubmit(value: string) {
             // push a new controller
             
-            var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, this.labelViewKey);
+            var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, "[key='"+this.labelViewKey+"']");
             labelController.setModel(new LabelModel(value));
             this._push(labelController);
         }
@@ -54,17 +55,17 @@ module templa.samples.mvc.basic_stack {
         var stackModel = new BasicStackModel();
 
         var stackViewFactory = new templa.mvc.element.DivElementViewFactory("<div key='stack'></div>");
-        var stackController = new templa.mvc.element.composite.StackElementController(stackViewFactory);
+        var stackController = new templa.mvc.element.jquery.composite.StackJQueryController(stackViewFactory);
         stackController.setModel(stackModel);
-        stackController.init(stackContainer);
+        stackController.init(new templa.mvc.element.DirectElementReference(stackContainer));
         stackController.start();
 
         var inputElementKey = "input_element";
         var inputButtonKey = "input_button";
         var inputViewFactory = new templa.mvc.element.DivElementViewFactory("<input key='"+inputElementKey+"'></input><br/><input type='button' key='"+inputButtonKey+"' value='Submit'></input>");
-        var inputController = new templa.samples.mvc.controller.text_input.TextInputController(inputViewFactory, inputElementKey, inputButtonKey);
+        var inputController = new templa.samples.mvc.controller.text_input.TextInputController(inputViewFactory, "[key='"+inputElementKey+"']", "[key='"+inputButtonKey+"']");
         inputController.setModel(stackModel);
-        inputController.init(inputContainer);
+        inputController.init(new templa.mvc.element.DirectElementReference(inputContainer));
         inputController.start();
     }
 

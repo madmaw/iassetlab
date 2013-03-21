@@ -1,9 +1,8 @@
-///<reference path="../IElementViewFactory.ts"/>
-///<reference path="../HTMLElementView.ts"/>
-///<reference path="../../../../d.ts/handlebars.d.ts"/>
+///<reference path="IElementViewFactory.ts"/>
+///<reference path="HTMLElementView.ts"/>
+///<reference path="../../../d.ts/handlebars.d.ts"/>
 
-// Module (ends in 'z' to avoid naming conflict with handlebars main module)
-module templa.mvc.element.handlebars {
+module templa.mvc.element {
 
     /**
      * constant to allow us to create unique ids for the divs
@@ -20,7 +19,7 @@ module templa.mvc.element.handlebars {
             this._compiledTemplate = Handlebars.compile(_template);
         }
 
-        public create(container:Element): templa.mvc.element.IElementView {
+        public create(container:IElementReference): templa.mvc.element.IElementView {
             var count = templateElementCount;
             templateElementCount++;
             var id = "__template_element_id_" + count;
@@ -33,7 +32,7 @@ module templa.mvc.element.handlebars {
                 }
             }
             var html: string = this._compiledTemplate(options);
-            return new HTMLElementView(html, <HTMLElement><any>container, id);
+            return new HTMLElementView(html, container, id);
         }
     }
 

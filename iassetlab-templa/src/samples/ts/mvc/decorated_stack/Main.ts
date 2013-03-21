@@ -2,12 +2,13 @@
 ///<reference path="../../../../main/ts/mvc/composite/AbstractStackControllerModel.ts"/>
 ///<reference path="../../../../main/ts/mvc/composite/IStackControllerModel.ts"/>
 ///<reference path="../../../../main/ts/mvc/command/CommandControllerModelAdapter.ts"/>
-///<reference path="../../../../main/ts/mvc/element/command/ICommandElementViewFactory.ts"/>
-///<reference path="../../../../main/ts/mvc/element/command/ToolbarCommandElementController.ts"/>
-///<reference path="../../../../main/ts/mvc/element/composite/StackElementController.ts"/>
-///<reference path="../../../../main/ts/mvc/element/composite/KeyedElementController.ts"/>
-///<reference path="../../../../main/ts/mvc/element/handlebars/HandlebarsElementViewFactory.ts"/>
-///<reference path="../../../../main/ts/mvc/element/handlebars/command/HandlebarsCommandElementViewFactory.ts"/>
+///<reference path="../../../../main/ts/mvc/element/DirectElementReference.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/command/ICommandJQueryViewDescriptionFactory.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/command/ToolbarCommandJQueryController.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/composite/StackJQueryController.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/composite/KeyedJQueryController.ts"/>
+///<reference path="../../../../main/ts/mvc/element/HandlebarsElementViewFactory.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/command/HandlebarsCommandJQueryViewDescriptionFactory.ts"/>
 ///<reference path="../../../../main/ts/animation/element/CSSElementClassAnimationFactory.ts"/>
 ///<reference path="../controller/label/LabelController.ts"/>
 ///<reference path="../controller/label/ILabelModel.ts"/>
@@ -28,36 +29,35 @@ module templa.samples.mvc.decorated_stack {
         private toolbarBackViewKey: string;
         private toolbarGeneralViewKey: string;
         private toolbarViewFactory: templa.mvc.element.IElementViewFactory;
-        private toolbarCommandElementViewFactory: templa.mvc.element.command.ICommandElementViewFactory;
+        private toolbarCommandElementViewFactory: templa.mvc.element.jquery.command.ICommandJQueryViewDescriptionFactory;
 
         // Constructor
         constructor(private _topLevelController:templa.mvc.IController) {
             super();
             this.labelViewKey = "label";
-            this.labelViewFactory = new templa.mvc.element.handlebars.HandlebarsElementViewFactory(
+            this.labelViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
                 "<span id='{{id}}' key='{{label_key}}'></span>",
                 "id",
                 { label_key: this.labelViewKey }
             );
             this.decoratorToolbarViewKey = "toolbar";
             this.decoratorBodyViewKey = "body";
-            this.decoratorViewFactory = new templa.mvc.element.handlebars.HandlebarsElementViewFactory(
+            this.decoratorViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
                 "<div id='{{id}}'><div key='{{toolbar_key}}'></div><div key='{{view_key}}'></div></div>", 
                 "id",
                 { toolbar_key: this.decoratorToolbarViewKey, view_key: this.decoratorBodyViewKey }
             );
             this.toolbarBackViewKey = "back";
             this.toolbarGeneralViewKey = "general";
-            this.toolbarViewFactory = new templa.mvc.element.handlebars.HandlebarsElementViewFactory(
+            this.toolbarViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
                 "<div id='{{id}}'><div key='{{back_buttons}}'></div><div key='{{general_buttons}}'></div></div>",
                 "id",
                 { back_buttons: this.toolbarBackViewKey, general_buttons: this.toolbarGeneralViewKey }
             );
 
-            this.toolbarCommandElementViewFactory = new templa.mvc.element.handlebars.commands.HandlebarsCommandElementViewFactory(
-                "<a key='{{key}}' id='{{id}}'>{{command.id}}</a>",
-                "id",
-                "key"               
+            this.toolbarCommandElementViewFactory = new templa.mvc.element.jquery.command.HandlebarsCommandJQueryViewDescriptionFactory(
+                "<a id='{{id}}'>{{command.id}}</a>",
+                "id"               
             );
         }
 
@@ -68,13 +68,25 @@ module templa.samples.mvc.decorated_stack {
         requestSubmit(value: string) {
             // push a new controller
             if (value != null && value.length > 0) {
-                var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, this.labelViewKey);
+                var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, "[key='"+this.labelViewKey+"']");
                 labelController.setModel(new LabelModel(value));
 
-                var toolbarController = new templa.mvc.element.command.ToolbarCommandElementController(this.toolbarViewFactory, this.toolbarCommandElementViewFactory, this.toolbarBackViewKey, this.toolbarGeneralViewKey);
+                var toolbarController = new templa.mvc.element.jquery.command.ToolbarCommandJQueryController(
+                    this.toolbarViewFactory,
+                    this.toolbarCommandElementViewFactory,
+                    "[key='"+this.toolbarBackViewKey+"']",
+                    "[key='"+this.toolbarGeneralViewKey+"']"
+                );
                 toolbarController.setModel(new templa.mvc.command.CommandControllerModelAdapter(this._topLevelController));
 
-                var decoratorController = new templa.mvc.element.composite.KeyedElementController(this.decoratorViewFactory);
+                var map = <{ string: string; }>{};
+                map[this.decoratorToolbarViewKey] = "[key='"+this.decoratorToolbarViewKey+"']";
+                map[this.decoratorBodyViewKey] = "[key='"+this.decoratorBodyViewKey+"']";
+
+                var decoratorController = new templa.mvc.element.jquery.composite.KeyedJQueryController(
+                    this.decoratorViewFactory, 
+                    map
+                );
                 decoratorController.setModel(new ToolbarDecoratorModel(toolbarController, this.decoratorToolbarViewKey, labelController, this.decoratorBodyViewKey));
                 this._push(decoratorController);
             } else {
@@ -120,7 +132,7 @@ module templa.samples.mvc.decorated_stack {
 
     export function init(stackContainer: Element, inputContainer: Element) {
 
-        var stackViewFactory = new templa.mvc.element.handlebars.HandlebarsElementViewFactory(
+        var stackViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
             "<div id='{{id}}' key='stack'></div>",
             "id"
         );
@@ -128,7 +140,7 @@ module templa.samples.mvc.decorated_stack {
         var pushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-push-remove", 2000);
         var popAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-pop-add", 2000);
         var popRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-pop-remove", 2000);
-        var stackController = new templa.mvc.element.composite.StackElementController(
+        var stackController = new templa.mvc.element.jquery.composite.StackJQueryController(
             stackViewFactory,
             popAddAnimationFactory,
             popRemoveAnimationFactory,
@@ -137,19 +149,19 @@ module templa.samples.mvc.decorated_stack {
         );
         var stackModel = new DecoratedStackModel(stackController);
         stackController.setModel(stackModel);
-        stackController.init(stackContainer);
+        stackController.init(new templa.mvc.element.DirectElementReference(stackContainer));
         stackController.start();
 
         var inputElementKey = "input_element";
         var inputButtonKey = "input_button";
-        var inputViewFactory = new templa.mvc.element.handlebars.HandlebarsElementViewFactory(
+        var inputViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
             "<div id='{{id}}'><input key='{{input_element}}'></input><br/><input type='button' key='{{input_button}}' value='Submit'></input></div>",
             "id",
             { input_element: inputElementKey, input_button: inputButtonKey }
         );
-        var inputController = new templa.samples.mvc.controller.text_input.TextInputController(inputViewFactory, inputElementKey, inputButtonKey);
+        var inputController = new templa.samples.mvc.controller.text_input.TextInputController(inputViewFactory, "[key='" + inputElementKey + "']", "[key='" + inputButtonKey + "']");
         inputController.setModel(stackModel);
-        inputController.init(inputContainer);
+        inputController.init(new templa.mvc.element.DirectElementReference(inputContainer));
         inputController.start();
     }
 

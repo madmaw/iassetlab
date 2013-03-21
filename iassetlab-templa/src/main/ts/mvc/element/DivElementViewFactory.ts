@@ -14,12 +14,12 @@ module templa.mvc.element {
 
         }
 
-        public create(container: Element): IElementView {
+        public create(container: IElementReference): IElementView {
             var count: number = divElementCount;
             var id = "__div_ele_" + count;
             divElementCount++;
             var html = "<div id='" + id + "'>" + this._html + "</div>";
-            return new HTMLElementView(html, <HTMLElement><any>container, id);
+            return new HTMLElementView(html, container, id);
         }
     }
 }

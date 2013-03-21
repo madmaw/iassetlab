@@ -1,0 +1,149 @@
+﻿.animation-stack-push-add {
+    -webkit-animation-duration: 2s;
+    -moz-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-name: animation-stack-push-add-keyframes;
+    -moz-animation-name: animation-stack-push-add-keyframes;
+    animation-name: animation-stack-push-add-keyframes;
+}
+
+@-webkit-keyframes animation-stack-push-add-keyframes{
+    from {
+        margin-left: 100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@-moz-keyframes animation-stack-push-add-keyframes{
+    from {
+        margin-left: 100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@keyframes animation-stack-push-add-keyframes{
+    from {
+        margin-left: 100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+
+.animation-stack-push-remove {
+    -webkit-animation-duration: 2s;
+    -moz-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-name: animation-stack-push-remove-keyframes;    
+    -moz-animation-name: animation-stack-push-remove-keyframes;    
+    animation-name: animation-stack-push-remove-keyframes;    
+}
+
+
+@-webkit-keyframes animation-stack-push-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -100%;
+    }
+}
+
+@-moz-keyframes animation-stack-push-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -100%;
+    }
+}
+
+@keyframes animation-stack-push-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -100%;
+    }
+}
+
+
+.animation-stack-pop-add {
+    -webkit-animation-duration: 2s;
+    -moz-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-name: animation-stack-pop-add-keyframes;    
+    -moz-animation-name: animation-stack-pop-add-keyframes;    
+    animation-name: animation-stack-pop-add-keyframes;    
+}
+
+@-webkit-keyframes animation-stack-pop-add-keyframes{
+    from {
+        margin-left: -100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@-moz-keyframes animation-stack-pop-add-keyframes{
+    from {
+        margin-left: -100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@keyframes animation-stack-pop-add-keyframes{
+    from {
+        margin-left: -100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+
+.animation-stack-pop-remove {
+    -webkit-animation-duration: 2s;
+    -moz-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-name: animation-stack-pop-remove-keyframes;    
+    -moz-animation-name: animation-stack-pop-remove-keyframes;    
+    animation-name: animation-stack-pop-remove-keyframes;    
+}
+
+@-webkit-keyframes animation-stack-pop-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: 100%;
+    }
+}
+
+@-moz-keyframes animation-stack-pop-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: 100%;
+    }
+}
+
+
+@keyframes animation-stack-pop-remove-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: 100%;
+    }
+}
+

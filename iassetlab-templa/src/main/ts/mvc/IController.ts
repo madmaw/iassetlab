@@ -2,6 +2,7 @@
 ///<reference path="Command.ts"/>
 ///<reference path="ControllerChangeEvent.ts"/>
 ///<reference path="IView.ts"/>
+///<reference path="IElementReference.ts"/>
 ///<reference path="../animation/IAnimation.ts"/>
 
 module templa.mvc {
@@ -15,7 +16,7 @@ module templa.mvc {
 
         setModel(model:IModel);
 
-        init(container:Element):bool;
+        init(container:IElementReference):bool;
 
         load();
 

@@ -1,12 +1,13 @@
-///<reference path="AbstractCompositeElementController.ts"/>
-///<reference path="../../composite/IStackControllerModel.ts"/>
-///<reference path="../../composite/StackControllerModelChangeEvent.ts"/>
-///<reference path="../../../animation/element/IElementAnimationFactory.ts"/>
-///<reference path="../../../animation/IAnimation.ts"/>
-///<reference path="../../../animation/AnimationStateChangeEvent.ts"/>
+///<reference path="AbstractCompositeJQueryController.ts"/>
+///<reference path="../../../composite/IStackControllerModel.ts"/>
+///<reference path="../../../composite/StackControllerModelChangeEvent.ts"/>
+///<reference path="../../../../animation/element/IElementAnimationFactory.ts"/>
+///<reference path="../../../../animation/IAnimation.ts"/>
+///<reference path="../../../../animation/AnimationStateChangeEvent.ts"/>
 
-module templa.mvc.element.composite {
-    export class StackElementController extends AbstractCompositeElementController {
+//  this doesn't actually use an JQuery features
+module templa.mvc.element.jquery.composite {
+    export class StackJQueryController extends AbstractCompositeJQueryController {
 
         private _backCommand: Command;
 

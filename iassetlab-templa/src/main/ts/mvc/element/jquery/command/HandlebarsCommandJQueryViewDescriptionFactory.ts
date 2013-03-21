@@ -1,11 +1,11 @@
 ///<reference path="../../../../../d.ts/handlebars.d.ts"/>
-///<reference path="../../command/ICommandElementViewFactory.ts"/>
-///<reference path="../../command/ActionElementView.ts"/>
+///<reference path="ICommandJQueryViewDescriptionFactory.ts"/>
+///<reference path="CommandJQueryViewDescription.ts"/>
 ///<reference path="../../HTMLElementView.ts"/>
 ///<reference path="../../../Command.ts"/>
 
 // Module
-module templa.mvc.element.handlebars.commands {
+module templa.mvc.element.jquery.command {
 
     /**
      * constant to allow us to create unique ids for the divs
@@ -13,24 +13,21 @@ module templa.mvc.element.handlebars.commands {
     var templateCommandElementCount: number = 0;
 
     // Class
-    export class HandlebarsCommandElementViewFactory implements templa.mvc.element.command.ICommandElementViewFactory {
+    export class HandlebarsCommandJQueryViewDescriptionFactory implements ICommandJQueryViewDescriptionFactory {
 
         private _compiledTemplate: (any) => string;
 
         // Constructor
-        constructor(_template: string, private _id: string, private _key?: string, private _options?: any) {
+        constructor(_template: string, private _idAttributeName: string, private _options?: any) {
             this._compiledTemplate = Handlebars.compile(_template);
         }
 
-        public create(container: Element, command: Command): templa.mvc.element.command.ActionElementView {
+        public create(_container: IElementReference, _command: Command): CommandJQueryViewDescription {
             var count = templateCommandElementCount;
             templateCommandElementCount++;
             var id = "__command_template_element_id_"+count;
-            var options = { command: command };
-            options[this._id] = id;
-            if (this._key != null) {
-                options[this._key] = id;
-            }
+            var options = { command: _command };
+            options[this._idAttributeName] = id;
             if (this._options != null) {
                 for (var key in this._options) {
                     var value = this._options[key];
@@ -38,8 +35,8 @@ module templa.mvc.element.handlebars.commands {
                 }
             }
             var html = this._compiledTemplate(options);
-            var view = new HTMLElementView(html, <HTMLElement><any>container, id);
-            return new templa.mvc.element.command.ActionElementView(view, id);
+            var view = new HTMLElementView(html, _container, id);
+            return new CommandJQueryViewDescription(view, "["+this._idAttributeName+"='"+id+"']");
         }
     }
 

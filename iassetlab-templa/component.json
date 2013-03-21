@@ -2,6 +2,7 @@
     "name": "iassetlab-templa-ts",
     "version": "1.0.0",
     "dependencies": {
-		"handlebars.js":"latest"
+		"handlebars.js":"1.0.10", 
+		"jquery":"1.9.1"
     }
 }

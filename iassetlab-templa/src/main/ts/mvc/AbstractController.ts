@@ -28,7 +28,7 @@ module templa.mvc {
             this._model = model;
         }
 
-        public init(container: Element): bool {
+        public init(container: IElementReference): bool {
             var result: bool;
             if (this._state == templa.mvc.ControllerStateUninitialized) {
                 result = this._doInit(container);
@@ -49,7 +49,7 @@ module templa.mvc {
             return result;
         }
 
-        public _doInit(container: Element): bool {
+        public _doInit(container: IElementReference): bool {
             return true;
         }
 

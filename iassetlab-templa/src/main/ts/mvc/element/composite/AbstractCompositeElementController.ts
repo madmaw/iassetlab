@@ -1,10 +1,11 @@
 ///<reference path="../AbstractElementController.ts"/>
+///<reference path="../ViewRootElementReference.ts"/>
 ///<reference path="../../composite/ICompositeControllerModel.ts"/>
 
 module templa.mvc.element.composite {
     export class AbstractCompositeElementController extends templa.mvc.element.AbstractElementController {
 
-        private _controllers: templa.mvc.IController[];
+        public _controllers: templa.mvc.IController[];
 
         constructor(viewFactory: templa.mvc.element.IElementViewFactory) {
             super(viewFactory);
@@ -16,14 +17,14 @@ module templa.mvc.element.composite {
             this.clear(false);
             var compositeControllerModel: templa.mvc.composite.ICompositeControllerModel = <templa.mvc.composite.ICompositeControllerModel>model;
             var controllers = compositeControllerModel.getControllers();
-            for( var i in controllers ) {
+            for (var i in controllers) {
                 var controller = controllers[i];
                 this._add(controller, false);
             }
             this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
         }
 
-        public clear(fireEvent?:bool) {
+        public clear(fireEvent?: bool) {
             if (this._controllers.length > 0) {
 
                 for (var i in this._controllers) {
@@ -58,7 +59,7 @@ module templa.mvc.element.composite {
             return result;
         }
 
-        public _doInit(container:Element): bool {
+        public _doInit(container: IElementReference): bool {
             var result: bool = super._doInit(container);
             for (var i in this._controllers) {
                 var controller = this._controllers[i];
@@ -77,10 +78,10 @@ module templa.mvc.element.composite {
             return result;
         }
 
-        public _add(controller: templa.mvc.IController, fireEvent?:bool) {
+        public _add(controller: templa.mvc.IController, fireEvent?: bool) {
             this._controllers.push(controller);
-           
-            var container: Element = <Element><any>this.getControllerContainer(controller);
+
+            var container: IElementReference = this.getControllerContainer(controller);
             var state: number = this.getState();
             if (state >= ControllerStateInitialized) {
                 controller.init(container);
@@ -93,7 +94,7 @@ module templa.mvc.element.composite {
             }
         }
 
-        public _remove(controller: templa.mvc.IController, detachView?:bool) {
+        public _remove(controller: templa.mvc.IController, detachView?: bool) {
             var removed: bool = templa.util.Arrays.removeElement(this._controllers, controller);
             if (removed) {
                 var state: number = this.getState();
@@ -107,9 +108,10 @@ module templa.mvc.element.composite {
             }
         }
 
-        public getControllerContainer(controller: templa.mvc.IController):Node {
-            return this._view.getRoots()[0];
+        public getControllerContainer(controller: templa.mvc.IController): IElementReference {
+            return new ViewRootElementReference(this._view);;
         }
+
 
         public getCommands(): templa.mvc.Command[] {
             var commands: templa.mvc.Command[] = [];
@@ -134,6 +136,5 @@ module templa.mvc.element.composite {
             }
             return title;
         }
-
     }
 }

@@ -1,8 +1,10 @@
 ///<reference path="IElementViewFactory.ts"/>
 ///<reference path="IElementView.ts"/>
+///<reference path="AttributeElementReference.ts"/>
 ///<reference path="../IController.ts"/>
 ///<reference path="../AbstractController.ts"/>
 ///<reference path="../../util/Arrays.ts"/>
+///<reference path="../../util/Elements.ts"/>
 ///<reference path="../IView.ts"/>
 
 module templa.mvc.element {
@@ -11,28 +13,16 @@ module templa.mvc.element {
     export class AbstractElementController extends AbstractController {
 
         public _view: IElementView;
-        private _viewFactory: IElementViewFactory;
 
-        constructor(_viewFactory: IElementViewFactory) {
+        constructor(private _viewFactory: IElementViewFactory) {
             super();
-            this._viewFactory = _viewFactory;
         }
 
         public getView(): templa.mvc.IView {
             return this._view;
         }
 
-        public _find(key: string): Element {
-            var result: Element;
-            if (this._view != null) {
-                result = this._view.find(key);
-            } else {
-                result = null;
-            }
-            return result;
-        }
-
-        public _doInit(container:Element): bool {
+        public _doInit(container: IElementReference): bool {
             this._view = this._viewFactory.create(container);
             this._view.attach();
             return true;
