@@ -1,6 +1,6 @@
 ///<reference path="AbstractCompositeJQueryController.ts"/>
 ///<reference path="../../../composite/IStackControllerModel.ts"/>
-///<reference path="../../../composite/StackControllerModelChangeEvent.ts"/>
+///<reference path="../../../composite/StackControllerModelChangeDescription.ts"/>
 ///<reference path="../../../../animation/element/IElementAnimationFactory.ts"/>
 ///<reference path="../../../../animation/IAnimation.ts"/>
 ///<reference path="../../../../animation/AnimationStateChangeEvent.ts"/>
@@ -33,12 +33,17 @@ module templa.mvc.element.jquery.composite {
         }
 
         public _handleModelChangeEvent(event: templa.mvc.ModelChangeEvent) {
-            if (event.changeType == templa.mvc.composite.stackControllerModelEventPushed || event.changeType == templa.mvc.composite.stackControllerModelEventPopped) {
-                var stackEvent: templa.mvc.composite.StackControllerModelChangeEvent = <any>event;
+            var stackChangeDescription = event.lookup(templa.mvc.composite.stackControllerModelEventPushed);
+            if (stackChangeDescription == null) {
+                stackChangeDescription = event.lookup(templa.mvc.composite.stackControllerModelEventPopped);
+            }
+            if ( stackChangeDescription != null ) {
+                var stackDescription: templa.mvc.composite.StackControllerModelChangeDescription = stackChangeDescription;
 
                 var addAnimationFactory;
                 var removeAnimationFactory;
-                if (event.changeType == templa.mvc.composite.stackControllerModelEventPushed) {
+                
+                if (stackDescription.changeType == templa.mvc.composite.stackControllerModelEventPushed) {
                     addAnimationFactory = this._pushAddAnimationFactory;
                     removeAnimationFactory = this._pushRemoveAnimationFactory;
                 } else {
@@ -46,7 +51,7 @@ module templa.mvc.element.jquery.composite {
                     removeAnimationFactory = this._popRemoveAnimationFactory;
                 }
 
-                var hiddenController = stackEvent.previousController;
+                var hiddenController = stackDescription.previousController;
                 if (hiddenController != null) {
                     var maxState: number;
                     var hiddenView: IElementView;
@@ -72,7 +77,7 @@ module templa.mvc.element.jquery.composite {
                     this._remove(hiddenController, hiddenView == null);
                 }
 
-                var pushedController = stackEvent.topController;
+                var pushedController = stackDescription.topController;
                 if (pushedController != null) {
 
                     this._add(pushedController);

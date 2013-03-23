@@ -1,14 +1,38 @@
+///<reference path="ModelChangeDescription.ts"/>
+
 module templa.mvc {
     export class ModelChangeEvent {
 
-        private _changeType:string;
+        private _descriptions:ModelChangeDescription[];
 
-        constructor(_changeType?:string) {
-            this._changeType = _changeType;
+
+        constructor(_changeType?:string);
+        constructor(_modelChangeDescription?:ModelChangeDescription);
+        constructor(_modelChangeDescriptions?:ModelChangeDescription[]);
+        constructor(data?:any){
+            if (data == null) {
+                this._descriptions = [];
+            } else {
+                if (data instanceof ModelChangeDescription) {
+                    this._descriptions = [data];
+                } else if (data instanceof Array) {
+                    this._descriptions = data;
+                } else {
+                    this._descriptions = [new ModelChangeDescription(data)];
+                }
+            }
         }
 
-        public get changeType():string {
-            return this._changeType;
+        public lookup(changeType: string) {
+            var result = null;
+            for (var i in this._descriptions) {
+                var description = this._descriptions[i];
+                if (description.changeType == changeType) {
+                    result = description;
+                    break;
+                }
+            }
+            return result;
         }
     }
 }

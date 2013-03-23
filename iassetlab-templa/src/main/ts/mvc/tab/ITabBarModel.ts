@@ -12,6 +12,6 @@ module templa.mvc.tab {
 
         getAvailableTabIds(): string[];
 
-        requestSelectTabBarId(tabId: string);
+        requestSelectTabId(tabId: string);
     }
 }

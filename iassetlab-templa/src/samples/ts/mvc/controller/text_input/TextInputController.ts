@@ -18,11 +18,21 @@ module templa.samples.mvc.controller.text_input {
         public _doStart(): bool {
             // listen upon the button for click events
             this.$(this._buttonElementSelector).click(() => {
-                var value: string = this.getValue();
-                var textInputModel: ITextInputModel = <ITextInputModel>this._model;
-                textInputModel.requestSubmit(value);
+                this._requestSubmit();
+            });
+            this.$(this._inputElementSelector).keypress((e:KeyboardEvent) => {
+                if (e.which == 13) {
+                    this._requestSubmit();
+                    e.preventDefault();
+                }
             });
             return true;
+        }
+
+        private _requestSubmit() {
+            var value: string = this.getValue();
+            var textInputModel: ITextInputModel = <ITextInputModel>this._model;
+            textInputModel.requestSubmit(value);
         }
 
         public getValue():string {

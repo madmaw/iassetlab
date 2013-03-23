@@ -12,8 +12,10 @@
 ///<reference path="../../../../main/ts/animation/element/CSSElementClassAnimationFactory.ts"/>
 ///<reference path="../controller/label/LabelController.ts"/>
 ///<reference path="../controller/label/ILabelModel.ts"/>
+///<reference path="../controller/label/ImmutableLabelModel.ts"/>
 ///<reference path="../controller/text_input/TextInputController.ts"/>
 ///<reference path="../controller/text_input/ITextInputModel.ts"/>
+///<reference path="DecoratedStackToolbarDecoratorModel.ts"/>
 
 // Module
 module templa.samples.mvc.decorated_stack {
@@ -69,7 +71,7 @@ module templa.samples.mvc.decorated_stack {
             // push a new controller
             if (value != null && value.length > 0) {
                 var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, "[key='"+this.labelViewKey+"']");
-                labelController.setModel(new LabelModel(value));
+                labelController.setModel(new templa.samples.mvc.controller.label.ImmutableLabelModel(value));
 
                 var toolbarController = new templa.mvc.element.jquery.command.ToolbarCommandJQueryController(
                     this.toolbarViewFactory,
@@ -87,82 +89,13 @@ module templa.samples.mvc.decorated_stack {
                     this.decoratorViewFactory, 
                     map
                 );
-                decoratorController.setModel(new ToolbarDecoratorModel(toolbarController, this.decoratorToolbarViewKey, labelController, this.decoratorBodyViewKey));
+                decoratorController.setModel(new DecoratedStackToolbarDecoratorModel(toolbarController, this.decoratorToolbarViewKey, labelController, this.decoratorBodyViewKey));
                 this._push(decoratorController);
             } else {
                 // testing only
                 this._push(null);
             }
         }
-    }
-
-
-
-    export class ToolbarDecoratorModel extends templa.mvc.AbstractModel implements templa.mvc.composite.IKeyedControllerModel {
-
-        constructor(private _toolbarController: templa.mvc.IController, private _toolbarControllerKey: string, private _otherController: templa.mvc.IController, private _otherControllerKey:string) {
-            super();
-        }
-
-        public getControllerKey(controller: templa.mvc.IController): string {
-            var result: string;
-            if (controller == this._toolbarController) {
-                result = this._toolbarControllerKey;
-            } else {
-                result = this._otherControllerKey;
-            }
-            return result;
-        }
-
-        public getControllers(): templa.mvc.IController[]{
-            return [this._toolbarController, this._otherController];
-        }
-    }
-
-    export class LabelModel extends templa.mvc.AbstractModel implements templa.samples.mvc.controller.label.ILabelModel {
-
-        constructor(private _label: string) {
-            super();
-        }
-
-        public getLabel(): string {
-            return this._label;
-        }
-    }
-
-    export function init(stackContainer: Element, inputContainer: Element) {
-
-        var stackViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
-            "<div id='{{id}}' key='stack'></div>",
-            "id"
-        );
-        var pushAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-push-add", 2000);
-        var pushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-push-remove", 2000);
-        var popAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-pop-add", 2000);
-        var popRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-pop-remove", 2000);
-        var stackController = new templa.mvc.element.jquery.composite.StackJQueryController(
-            stackViewFactory,
-            popAddAnimationFactory,
-            popRemoveAnimationFactory,
-            pushAddAnimationFactory,
-            pushRemoveAnimationFactory
-        );
-        var stackModel = new DecoratedStackModel(stackController);
-        stackController.setModel(stackModel);
-        stackController.init(new templa.mvc.element.DirectElementReference(stackContainer));
-        stackController.start();
-
-        var inputElementKey = "input_element";
-        var inputButtonKey = "input_button";
-        var inputViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
-            "<div id='{{id}}'><input key='{{input_element}}'></input><br/><input type='button' key='{{input_button}}' value='Submit'></input></div>",
-            "id",
-            { input_element: inputElementKey, input_button: inputButtonKey }
-        );
-        var inputController = new templa.samples.mvc.controller.text_input.TextInputController(inputViewFactory, "[key='" + inputElementKey + "']", "[key='" + inputButtonKey + "']");
-        inputController.setModel(stackModel);
-        inputController.init(new templa.mvc.element.DirectElementReference(inputContainer));
-        inputController.start();
     }
 
 }

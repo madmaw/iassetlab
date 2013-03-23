@@ -31,7 +31,15 @@ module templa.mvc {
 
         }
 
-        public _fireModelChangeEvent(changeEvent: ModelChangeEvent) {
+        public _fireModelChangeEvent(changeDescription?: string);
+        public _fireModelChangeEvent(changeDescription?: ModelChangeDescription);
+        public _fireModelChangeEvent(changeEvent?: ModelChangeEvent);
+        public _fireModelChangeEvent(changeEvent?: any) {
+            if (changeEvent == null) {
+                changeEvent = new ModelChangeEvent();
+            } else if (!(changeEvent instanceof ModelChangeEvent)) {
+                changeEvent = new ModelChangeEvent(changeEvent);
+            }
             for (var i in this._modelOnChangeListeners ) {
                 var modelOnChangeListener = this._modelOnChangeListeners[i];
                 modelOnChangeListener(this, changeEvent);

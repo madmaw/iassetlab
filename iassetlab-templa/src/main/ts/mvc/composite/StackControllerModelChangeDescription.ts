@@ -1,11 +1,11 @@
 ///<reference path="../IController.ts"/>
-///<reference path="../ModelChangeEvent.ts"/>
+///<reference path="../ModelChangeDescription.ts"/>
 
 // Module
 module templa.mvc.composite {
 
     // Class
-    export class StackControllerModelChangeEvent extends ModelChangeEvent {
+    export class StackControllerModelChangeDescription extends ModelChangeDescription {
 
         // Constructor
         constructor(changeType:string, private _previousController: templa.mvc.IController, private _topController: templa.mvc.IController) {

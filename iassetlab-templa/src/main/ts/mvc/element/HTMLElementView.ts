@@ -21,8 +21,13 @@ module templa.mvc.element {
             return new AttributeElementReference(this, "key", key);
         }
 
-        public getRoots() {
-            return [this.div];
+        public getRoots():Node[] {
+            var div = this.div;
+            var roots = [];
+            if (div != null) {
+                roots.push(div);
+            }
+            return roots;
             //return this.getChildren();
         }
 

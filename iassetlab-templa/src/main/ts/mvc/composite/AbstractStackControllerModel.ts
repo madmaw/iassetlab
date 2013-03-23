@@ -1,6 +1,6 @@
 ///<reference path="../AbstractModel.ts"/>
 ///<reference path="IStackControllerModel.ts"/>
-///<reference path="StackControllerModelChangeEvent.ts"/>
+///<reference path="StackControllerModelChangeDescription.ts"/>
 
 // Module
 module templa.mvc.composite {
@@ -41,7 +41,7 @@ module templa.mvc.composite {
             if (this._stack.length > 0) {
                 var previousController = this._stack[this._stack.length - 1];
                 this._stack.splice(this._stack.length - 1, 1);
-                this._fireModelChangeEvent(new StackControllerModelChangeEvent(stackControllerModelEventPopped, previousController, this.peek));
+                this._fireModelChangeEvent(new StackControllerModelChangeDescription(stackControllerModelEventPopped, previousController, this.peek));
                 result = true;
             } else {
                 result = false;
@@ -52,8 +52,8 @@ module templa.mvc.composite {
         public _push(controller: IController): void {
             var previousController = this.peek;
             this._stack.push(controller);
-            var event = new StackControllerModelChangeEvent(stackControllerModelEventPushed, previousController, controller);
-            this._fireModelChangeEvent(event);
+            var description = new StackControllerModelChangeDescription(stackControllerModelEventPushed, previousController, controller);
+            this._fireModelChangeEvent(description);
         }
 
         public get peek(): IController {

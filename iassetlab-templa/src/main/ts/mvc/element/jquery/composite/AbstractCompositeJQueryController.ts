@@ -21,11 +21,14 @@ module templa.mvc.element.jquery.composite {
             for (var i in this._controllers) {
                 var controller: IController = this._controllers[i];
                 var view: IElementView = <IElementView>controller.getView();
-                var childRoots = view.getRoots();
-                templa.util.Arrays.pushAll(allChildRoots, childRoots);
+                if (view != null) {
+                    // we can get odd situations where the owner controller is initialized, but the children are not
+                    var childRoots = view.getRoots();
+                    templa.util.Arrays.pushAll(allChildRoots, childRoots);
+                }
             }
             // selector goes first as checking the parenthood is quite expensive
-            var query = $(<Element[]>roots).find(selector).find(function (index) {
+            var query = $(<Element[]>roots).find(selector).filter(function (index) {
                 var valid = true;
                 var e:Node = this;
                 while (e != null) {
@@ -39,6 +42,7 @@ module templa.mvc.element.jquery.composite {
                         e = e.parentNode;
                     }
                 }
+                return valid;
             });
             // we inherently know that our roots are valid (no need to check lineage)
             var self: JQuery = $(<Element[]>roots).filter(selector);
@@ -58,7 +62,7 @@ module templa.mvc.element.jquery.composite {
             } else {
                 result = new JQueryElementReference(this, selector);
             }
-            return new ViewRootElementReference(this._view);;
+            return result;
         }
 
         public getControllerContainerSelector(controller: templa.mvc.IController): string {

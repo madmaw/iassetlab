@@ -58,7 +58,7 @@ module templa.mvc.element.jquery.tab {
 
         private _requestSelectTabId(tabId: string) {
             var tabBarModel: templa.mvc.tab.ITabBarModel = <templa.mvc.tab.ITabBarModel>this._model;
-            tabBarModel.requestSelectTabBarId(tabId);
+            tabBarModel.requestSelectTabId(tabId);
         }
 
         private _selectTab(selectedTabId: string) {
@@ -79,7 +79,7 @@ module templa.mvc.element.jquery.tab {
         }
 
         public _handleModelChangeEvent(event: ModelChangeEvent) {
-            if (event.changeType == templa.mvc.tab.tabBarModelEventSelectedTabChange) {
+            if (event.lookup(templa.mvc.tab.tabBarModelEventSelectedTabChange)) {
                 // special case for the selected tab changing (avoids reloading everything)
                 var tabBarModel: templa.mvc.tab.ITabBarModel = <templa.mvc.tab.ITabBarModel>this._model;
                 this._selectTab(tabBarModel.getSelectedTabId());

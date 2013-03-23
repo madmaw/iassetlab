@@ -7,20 +7,33 @@
     <link rel="stylesheet" href="src/samples/css/animations.css">
     <script>
         window.onload = function () {
+
+            // hello world
             var helloworld_element = document.getElementById("helloworld");
-            templa.samples.mvc.hello_world.init(helloworld_element);
+            var helloWorldController = templa.samples.mvc.hello_world.HelloWorldControllerFactory.create();
+            helloWorldController.init(new templa.mvc.element.DirectElementReference(helloworld_element));
+            helloWorldController.start();
 
-            var helloyou_label_element = document.getElementById("helloyou_label");
-            var helloyou_input_element = document.getElementById("helloyou_input");
-            templa.samples.mvc.hello_you.init(helloyou_label_element, helloyou_input_element);
+            // hello you
+            var helloYouControllerFactory = new templa.samples.mvc.hello_you.HelloYouControllerFactory();
 
-            var basicstack_input_element = document.getElementById("basicstack_input");
-            var basicstack_stack_element = document.getElementById("basicstack_stack");
-            templa.samples.mvc.basic_stack.init(basicstack_stack_element, basicstack_input_element);
+            var helloyou_element = document.getElementById("helloyou");
+            var helloYouController = helloYouControllerFactory.create();
+            helloYouController.init(new templa.mvc.element.DirectElementReference(helloyou_element));
+            helloYouController.start();
 
-            var decoratedstack_input_element = document.getElementById("decoratedstack_input");
-            var decoratedstack_stack_element = document.getElementById("decoratedstack_stack");
-            templa.samples.mvc.decorated_stack.init(decoratedstack_stack_element, decoratedstack_input_element);
+            // basic stack
+            var basicstack_element = document.getElementById("basicstack");
+            var basicStackControllerFactory = new templa.samples.mvc.basic_stack.BasicStackControllerFactory();
+            var basicStackController = basicStackControllerFactory.create();
+            basicStackController.init(new templa.mvc.element.DirectElementReference(basicstack_element));
+            basicStackController.start();
+
+            // decorated stack
+            var decoratedstack_element = document.getElementById("decoratedstack");
+            var decoratedStackController = templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory.create();
+            decoratedStackController.init(new templa.mvc.element.DirectElementReference(decoratedstack_element));
+            decoratedStackController.start();
         }
     </script>
 </head>
@@ -29,14 +42,11 @@
 <h3>Test 1</h3>
 <div id="helloworld"></div>
 <h3>Test 2</h3>    
-<div id="helloyou_label"></div>
-<div id="helloyou_input"></div>
+<div id="helloyou"></div>
 <h3>Test 3</h3>
-<div id="basicstack_input"></div>
-<div id="basicstack_stack"></div>
+<div id="basicstack"></div>
 <h3>Test 4</h3>
-<div id="decoratedstack_input"></div>
-<div id="decoratedstack_stack"></div>
+<div id="decoratedstack"></div>
 </body>
 
 </html>

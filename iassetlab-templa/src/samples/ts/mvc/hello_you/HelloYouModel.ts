@@ -31,21 +31,5 @@ module templa.samples.mvc.hello_you {
         }
     }
 
-    export function init(labelContainer:Element, inputContainer:Element) {
-        var helloYouModel = new HelloYouModel("You");
-
-        var labelViewFactory = new templa.mvc.element.DivElementViewFactory("Hello <span key='name_element'></span>!");
-        var labelController = new templa.samples.mvc.controller.label.LabelController(labelViewFactory, "[key='name_element']");
-        labelController.setModel(helloYouModel);
-        labelController.init(new templa.mvc.element.DirectElementReference(labelContainer));
-        labelController.start();
-
-        var textInputViewFactory = new templa.mvc.element.DivElementViewFactory("<input key='input_element'></input><br/><input type='button' key='input_button' value='Submit'></input>");
-        var textInputController = new templa.samples.mvc.controller.text_input.TextInputController(textInputViewFactory, "[key='input_element']", "[key='input_button']");
-        textInputController.setModel(helloYouModel);
-        textInputController.init(new templa.mvc.element.DirectElementReference(inputContainer));
-        textInputController.start();
-    }
-
 }
 
