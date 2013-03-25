@@ -24,7 +24,9 @@ module templa.mvc.element.jquery.composite {
                 if (view != null) {
                     // we can get odd situations where the owner controller is initialized, but the children are not
                     var childRoots = view.getRoots();
-                    templa.util.Arrays.pushAll(allChildRoots, childRoots);
+                    if (childRoots != null) {
+                        templa.util.Arrays.pushAll(allChildRoots, childRoots);
+                    }
                 }
             }
             // selector goes first as checking the parenthood is quite expensive
@@ -35,7 +37,7 @@ module templa.mvc.element.jquery.composite {
                     if (roots.indexOf(e) >= 0) {
                         // we're at our root, it's OK
                         break;
-                    } else if (childRoots.indexOf(e) >= 0) {
+                    } else if (allChildRoots.indexOf(e) >= 0) {
                         valid = false;
                         break;
                     } else {
@@ -51,7 +53,16 @@ module templa.mvc.element.jquery.composite {
         }
 
         public $reference(selector: string): IElementReference {
-            return new JQueryElementReference(this, selector);
+            // too slow!
+            //return new JQueryElementReference(this, selector);
+            var query = this.$(selector);
+            var result;
+            if (query.length > 0) {
+                result = new DirectElementReference(query.get(0));
+            } else {
+                result = null;
+            }
+            return result;
         }
 
         public getControllerContainer(controller: templa.mvc.IController): IElementReference {
@@ -60,7 +71,7 @@ module templa.mvc.element.jquery.composite {
             if (selector == null) {
                 result = super.getControllerContainer(controller);
             } else {
-                result = new JQueryElementReference(this, selector);
+                result = this.$reference(selector);
             }
             return result;
         }

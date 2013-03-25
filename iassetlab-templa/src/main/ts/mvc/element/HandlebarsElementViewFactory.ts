@@ -1,5 +1,5 @@
 ///<reference path="IElementViewFactory.ts"/>
-///<reference path="HTMLElementView.ts"/>
+///<reference path="DocumentFragmentElementView.ts"/>
 ///<reference path="../../../d.ts/handlebars.d.ts"/>
 
 module templa.mvc.element {
@@ -15,7 +15,7 @@ module templa.mvc.element {
         private _compiledTemplate: (any) => string;
 
         // Constructor
-        constructor(_template: string, private _id: string, private _options?:any) {
+        constructor(_template: string, private _options?:any) {
             this._compiledTemplate = Handlebars.compile(_template);
         }
 
@@ -24,7 +24,7 @@ module templa.mvc.element {
             templateElementCount++;
             var id = "__template_element_id_" + count;
             var options = {};
-            options[this._id] = id;
+            //options[this._id] = id;
             if (this._options != null) {
                 for (var key in this._options) {
                     var value = this._options[key];
@@ -32,7 +32,7 @@ module templa.mvc.element {
                 }
             }
             var html: string = this._compiledTemplate(options);
-            return new HTMLElementView(html, container, id);
+            return new DocumentFragmentElementView(html, container, id);
         }
     }
 

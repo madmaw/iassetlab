@@ -2,7 +2,7 @@
 ///<reference path="../../../../main/ts/mvc/composite/IStackControllerModel.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/DirectElementReference.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/IElementViewFactory.ts"/>
-///<reference path="../../../../main/ts/mvc/element/DivElementViewFactory.ts"/>
+///<reference path="../../../../main/ts/mvc/element/DocumentFragmentElementViewFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/composite/StackJQueryController.ts"/>
 ///<reference path="../../../../main/ts/mvc/composite/AbstractStackControllerModel.ts"/>
 
@@ -25,7 +25,7 @@ module templa.samples.mvc.basic_stack {
             super();
             this.labelViewKey = "label";
             // TODO this should be passed in, not created internally
-            this.labelViewFactory = new templa.mvc.element.DivElementViewFactory("<span key='"+this.labelViewKey+"'></span>");
+            this.labelViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory("<span key='"+this.labelViewKey+"'></span>");
         }
 
         getValue(): string {

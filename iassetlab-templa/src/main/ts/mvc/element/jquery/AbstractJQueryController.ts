@@ -24,7 +24,16 @@ module templa.mvc.element.jquery {
         }
 
         public $reference(selector: string): IElementReference {
-            return new JQueryElementReference(this, selector);
+            // too slow!
+            //return new JQueryElementReference(this, selector);
+            var query = this.$(selector);
+            var result;
+            if (query.length > 0) {
+                result = new DirectElementReference(query.get(0));
+            } else {
+                result = null;
+            }
+            return result;
         }
     }
 

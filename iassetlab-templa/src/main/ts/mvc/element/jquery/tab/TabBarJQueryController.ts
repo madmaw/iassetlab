@@ -7,12 +7,12 @@
 module templa.mvc.element.jquery.tab {
 
     // Class
-    export class TabBarController extends AbstractJQueryController {
+    export class TabBarJQueryController extends AbstractJQueryController {
 
         private _tabIdsToDescriptions: { string: TabBarTabJQueryViewDescription; };
 
         // Constructor
-        constructor(_viewFactory: IElementViewFactory, private _tabBarTabViewDescriptionFactory: ITabBarTabJQueryViewDescriptionFactory, private _tabBarContainerSelector:string, private _selectedTabClass:string) {
+        constructor(_viewFactory: IElementViewFactory, private _tabBarTabViewDescriptionFactory: ITabBarTabJQueryViewDescriptionFactory, private _tabButtonContainerSelector:string, private _selectedTabClass:string) {
             super(_viewFactory);
             this._tabIdsToDescriptions = <{ string: TabBarTabJQueryViewDescription; }>{};
         }
@@ -26,10 +26,10 @@ module templa.mvc.element.jquery.tab {
 
             var tabIds = tabBarModel.getAvailableTabIds();
             var selectedTabId = tabBarModel.getSelectedTabId();
-            var tabBarContainer = this.$reference(this._tabBarContainerSelector);
+            var tabButtonContainer = this.$reference(this._tabButtonContainerSelector);
             for (var i in tabIds) {
                 var tabId = tabIds[i];
-                var description: TabBarTabJQueryViewDescription = this._tabBarTabViewDescriptionFactory.create(tabBarContainer, tabId);
+                var description: TabBarTabJQueryViewDescription = this._tabBarTabViewDescriptionFactory.create(tabButtonContainer, tabId);
 
                 var view = description.view;
                 view.attach();
@@ -41,9 +41,8 @@ module templa.mvc.element.jquery.tab {
                 }
                 // add in the onclick listener
                 var clickableElements: JQuery = this.$(description.clickableElementSelector, view.getRoots());
-                clickableElements.click(() => {
-                    // I suspect JS is going to fuck up the value of tab id
-                    this._requestSelectTabId(tabId);
+                clickableElements.click(tabId, (e:JQueryEventObject) => {
+                    this._requestSelectTabId(e.data);
                 });
             }
         }

@@ -16,7 +16,7 @@ module templa.samples.mvc.basic_stack {
         }
 
         public createStackController(): templa.mvc.IController {
-            var stackViewFactory = new templa.mvc.element.DivElementViewFactory("<div key='stack'></div>");
+            var stackViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory("<div key='stack'></div>");
             var stackController = new templa.mvc.element.jquery.composite.StackJQueryController(stackViewFactory);
             stackController.setModel(this._model);
             return stackController;
@@ -25,7 +25,7 @@ module templa.samples.mvc.basic_stack {
         public createInputController(): templa.mvc.IController {
             var inputElementKey = "input_element";
             var inputButtonKey = "input_button";
-            var inputViewFactory = new templa.mvc.element.DivElementViewFactory("<input key='" + inputElementKey + "'></input><br/><input type='button' key='" + inputButtonKey + "' value='Submit'></input>");
+            var inputViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory("<input key='" + inputElementKey + "'></input><br/><input type='button' key='" + inputButtonKey + "' value='Submit'></input>");
             var inputController = new templa.samples.mvc.controller.text_input.TextInputController(inputViewFactory, "[key='" + inputElementKey + "']", "[key='" + inputButtonKey + "']");
             inputController.setModel(this._model);
             return inputController;
@@ -41,7 +41,7 @@ module templa.samples.mvc.basic_stack {
                 <{ string: templa.mvc.IController; }>controllers
             );
             
-            var viewFactory = new templa.mvc.element.DivElementViewFactory(
+            var viewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory(
                 "<div id = '" + idInput +"' > </div><div id = '"+idStack+"' > </div>"
             );
 

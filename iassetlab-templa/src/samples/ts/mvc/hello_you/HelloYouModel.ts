@@ -1,6 +1,5 @@
 ///<reference path="../../../../main/ts/mvc/AbstractModel.ts"/>
 ///<reference path="../../../../main/ts/mvc/ModelChangeEvent.ts"/>
-///<reference path="../../../../main/ts/mvc/element/DivElementViewFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/DirectElementReference.ts"/>
 
 ///<reference path="../controller/label/LabelController.ts"/>

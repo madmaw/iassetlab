@@ -15,7 +15,7 @@ module templa.samples.mvc.hello_you {
 
         public createLabelController(): templa.mvc.IController {
 
-            var labelViewFactory = new templa.mvc.element.DivElementViewFactory("Hello <span key='name_element'></span>!");
+            var labelViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory("Hello <span key='name_element'></span>!");
             var labelController = new templa.samples.mvc.controller.label.LabelController(labelViewFactory, "[key='name_element']");
             labelController.setModel(this._model);
             return labelController;
@@ -23,7 +23,7 @@ module templa.samples.mvc.hello_you {
         }
 
         public createInputController(): templa.mvc.IController {
-            var textInputViewFactory = new templa.mvc.element.DivElementViewFactory("<input key='input_element'></input><br/><input type='button' key='input_button' value='Submit'></input>");
+            var textInputViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory("<input key='input_element'></input><br/><input type='button' key='input_button' value='Submit'></input>");
             var textInputController = new templa.samples.mvc.controller.text_input.TextInputController(textInputViewFactory, "[key='input_element']", "[key='input_button']");
             textInputController.setModel(this._model);
             return textInputController;
@@ -39,7 +39,7 @@ module templa.samples.mvc.hello_you {
                 <{ string: templa.mvc.IController; }>controllers
             );
 
-            var viewFactory = new templa.mvc.element.DivElementViewFactory(
+            var viewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory(
                 "<div id = '" + idOutput + "' > </div><div id = '" + idInput + "' > </div>"
             );
 

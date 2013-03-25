@@ -1,5 +1,6 @@
 ///<reference path="../../../../main/ts/mvc/composite/MappedKeyedControllerModel.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/composite/KeyedJQueryController.ts"/>
+///<reference path="../../../../main/ts/mvc/element/DocumentFragmentElementViewFactory.ts"/>
 ///<reference path="DecoratedStackModel.ts"/>
 
 // Module
@@ -30,8 +31,7 @@ module templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory {
         var inputElementKey = "input_element";
         var inputButtonKey = "input_button";
         var inputViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
-            "<div id='{{id}}'><input key='{{input_element}}'></input><br/><input type='button' key='{{input_button}}' value='Submit'></input></div>",
-            "id",
+            "<input key='{{input_element}}'></input><br/><input type='button' key='{{input_button}}' value='Submit'></input>",
             { input_element: inputElementKey, input_button: inputButtonKey }
         );
         var inputController = new templa.samples.mvc.controller.text_input.TextInputController(inputViewFactory, "[key='" + inputElementKey + "']", "[key='" + inputButtonKey + "']");
@@ -47,7 +47,7 @@ module templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory {
             <{ string: templa.mvc.IController; }>controllers
         );
 
-        var viewFactory = new templa.mvc.element.DivElementViewFactory(
+        var viewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory(
             "<div id = '" + idInput + "' > </div><div id = '" + idStack + "' > </div>"
         );
 

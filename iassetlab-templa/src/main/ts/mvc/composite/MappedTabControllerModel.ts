@@ -1,3 +1,4 @@
+///<reference path="MappedKeyedControllerModel.ts"/>
 ///<reference path="ICompositeControllerModel.ts"/>
 ///<reference path="../AbstractModel.ts"/>
 ///<reference path="../IController.ts"/>
@@ -6,14 +7,20 @@
 ///<reference path="../tab/ITabBarModel.ts"/>
 
 // Module
-module templa.samples.mvc.tab_index {
+module templa.mvc.composite {
 
     // Class
-    export class IndexTabControllerModel extends templa.mvc.AbstractModel implements templa.mvc.tab.ITabBarModel, templa.mvc.composite.ICompositeControllerModel {
+    /**
+     * combined tab bar and composite model for common tab-bar behavior
+     */
+    export class MappedTabControllerModel extends MappedKeyedControllerModel implements templa.mvc.tab.ITabBarModel {
+
+        private _selectedTabId: string;
 
         // Constructor
-        constructor(private _selectedTabId: string, private _tabIdsToControllers: { string: templa.mvc.IController; }) {
-            super();
+        constructor(selectedTabId: string, private _tabIdsToControllers: { string: templa.mvc.IController; }, private _tabControllerKey:string, _controllerMap?: { string: IController; }) {
+            super(_controllerMap);
+            this._setSelectedTabId(selectedTabId);
         }
 
         public getSelectedTabId(): string {
@@ -30,26 +37,23 @@ module templa.samples.mvc.tab_index {
         }
 
         public requestSelectTabId(tabId: string) {
-            this._selectedTabId = tabId;
-            this._fireModelChangeEvent(
-                new templa.mvc.ModelChangeEvent(
-                    [
-                        new templa.mvc.ModelChangeDescription(templa.mvc.tab.tabBarModelEventSelectedTabChange),
-                        new templa.mvc.ModelChangeDescription(templa.mvc.composite.compositeControllerModelEventControllersChanged)
-                    ]
-                )
-            );
+            this._setSelectedTabId(tabId);
         }
 
-        public getControllers(): templa.mvc.IController[]{
-            var selectedController = this._tabIdsToControllers[this._selectedTabId];
-            var result: templa.mvc.IController[];
-            if (selectedController != null) {
-                result = [selectedController];
-            } else {
-                result = [];
+        public _setSelectedTabId(tabId: string) {
+            if (this._selectedTabId != tabId) {
+                this._selectedTabId = tabId;
+                var selectedTabController = this._tabIdsToControllers[tabId];
+                this.setController(this._tabControllerKey, selectedTabController, true);
+                this._fireModelChangeEvent(
+                    new templa.mvc.ModelChangeEvent(
+                        [
+                            new templa.mvc.ModelChangeDescription(templa.mvc.tab.tabBarModelEventSelectedTabChange),
+                            new templa.mvc.ModelChangeDescription(templa.mvc.composite.compositeControllerModelEventControllersChanged)
+                        ]
+                    )
+                );
             }
-            return result;
         }
     }
 

@@ -1,5 +1,5 @@
 ///<reference path="IElementViewFactory.ts"/>
-///<reference path="HTMLElementView.ts"/>
+///<reference path="DocumentFragmentElementView.ts"/>
 
 module templa.mvc.element {
 
@@ -8,7 +8,7 @@ module templa.mvc.element {
      */
     var divElementCount: number = 0;
 
-    export class DivElementViewFactory implements IElementViewFactory {
+    export class DocumentFragmentElementViewFactory implements IElementViewFactory {
 
         constructor(private _html:string) {
 
@@ -18,8 +18,7 @@ module templa.mvc.element {
             var count: number = divElementCount;
             var id = "__div_ele_" + count;
             divElementCount++;
-            var html = "<div id='" + id + "'>" + this._html + "</div>";
-            return new HTMLElementView(html, container, id);
+            return new DocumentFragmentElementView(this._html, container, id);
         }
     }
 }

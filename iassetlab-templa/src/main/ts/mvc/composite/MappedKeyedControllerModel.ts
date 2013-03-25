@@ -37,9 +37,11 @@ module templa.mvc.composite {
             return result;
         }
 
-        public setController(key: string, controller: IController) {
+        public setController(key: string, controller: IController, doNotFireEvent?:bool) {
             this._controllerMap[key] = controller;
-            this._fireModelChangeEvent(compositeControllerModelEventControllersChanged);
+            if (doNotFireEvent != true) {
+                this._fireModelChangeEvent(compositeControllerModelEventControllersChanged);
+            }
         }
     }
 

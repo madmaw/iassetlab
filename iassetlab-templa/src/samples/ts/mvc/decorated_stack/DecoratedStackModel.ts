@@ -38,28 +38,24 @@ module templa.samples.mvc.decorated_stack {
             super();
             this.labelViewKey = "label";
             this.labelViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
-                "<span id='{{id}}' key='{{label_key}}'></span>",
-                "id",
+                "<span key='{{label_key}}'></span>",
                 { label_key: this.labelViewKey }
             );
             this.decoratorToolbarViewKey = "toolbar";
             this.decoratorBodyViewKey = "body";
             this.decoratorViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
-                "<div id='{{id}}'><div key='{{toolbar_key}}'></div><div key='{{view_key}}'></div></div>", 
-                "id",
+                "<div key='{{toolbar_key}}'></div><div key='{{view_key}}'></div>", 
                 { toolbar_key: this.decoratorToolbarViewKey, view_key: this.decoratorBodyViewKey }
             );
             this.toolbarBackViewKey = "back";
             this.toolbarGeneralViewKey = "general";
             this.toolbarViewFactory = new templa.mvc.element.HandlebarsElementViewFactory(
-                "<div id='{{id}}'><div key='{{back_buttons}}'></div><div key='{{general_buttons}}'></div></div>",
-                "id",
+                "<div key='{{back_buttons}}'></div><div key='{{general_buttons}}'></div>",
                 { back_buttons: this.toolbarBackViewKey, general_buttons: this.toolbarGeneralViewKey }
             );
 
             this.toolbarCommandElementViewFactory = new templa.mvc.element.jquery.command.HandlebarsCommandJQueryViewDescriptionFactory(
-                "<a id='{{id}}'>{{command.id}}</a>",
-                "id"               
+                "<a>{{command.id}}</a>"
             );
         }
 

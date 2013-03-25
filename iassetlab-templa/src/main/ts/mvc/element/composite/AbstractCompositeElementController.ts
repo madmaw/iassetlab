@@ -26,13 +26,16 @@ module templa.mvc.element.composite {
 
         public clear(fireEvent?: bool) {
             if (this._controllers.length > 0) {
-
+                var state = this.getState();
                 for (var i in this._controllers) {
                     var controller = this._controllers[i];
-                    // TODO check state
-                    controller.stop();
-                    // TODO check state
-                    controller.destroy();
+                    // check state
+                    if (state >= templa.mvc.ControllerStateInitialized) {
+                        if (state >= templa.mvc.ControllerStateStarted) {
+                            controller.stop();
+                        }
+                        controller.destroy();
+                    }
                 }
                 if (fireEvent) {
                     this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
@@ -70,11 +73,15 @@ module templa.mvc.element.composite {
         }
 
         public _doDestroy(detachView?: bool): bool {
-            var result: bool = super._doDestroy(detachView);
+            var result: bool = true;
             for (var i in this._controllers) {
                 var controller = this._controllers[i];
-                result = result && controller.destroy(detachView);
+                // NOTE setting detach view to false will yield some performance benefits since we will just trim the entire tree in one hit (at the parent)
+                // TODO are there cases where the view heirarchy does not reflect the controller heirarchy? (I hope not)
+                result = controller.destroy(false) && result;
             }
+            // destroy our view at the end, otherwise the children cannot remove themselves from an empty view
+            result = super._doDestroy(detachView) && result;
             return result;
         }
 

@@ -147,3 +147,6 @@
     }
 }
 
+.selected {
+    font-weight: bold;
+}

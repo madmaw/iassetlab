@@ -1,7 +1,7 @@
 ///<reference path="../../../../../d.ts/handlebars.d.ts"/>
 ///<reference path="ICommandJQueryViewDescriptionFactory.ts"/>
 ///<reference path="CommandJQueryViewDescription.ts"/>
-///<reference path="../../HTMLElementView.ts"/>
+///<reference path="../../DocumentFragmentElementView.ts"/>
 ///<reference path="../../../Command.ts"/>
 
 // Module
@@ -18,7 +18,7 @@ module templa.mvc.element.jquery.command {
         private _compiledTemplate: (any) => string;
 
         // Constructor
-        constructor(_template: string, private _idAttributeName: string, private _options?: any) {
+        constructor(_template: string, private _options?: any) {
             this._compiledTemplate = Handlebars.compile(_template);
         }
 
@@ -27,7 +27,7 @@ module templa.mvc.element.jquery.command {
             templateCommandElementCount++;
             var id = "__command_template_element_id_"+count;
             var options = { command: _command };
-            options[this._idAttributeName] = id;
+            //options[this._idAttributeName] = id;
             if (this._options != null) {
                 for (var key in this._options) {
                     var value = this._options[key];
@@ -35,8 +35,8 @@ module templa.mvc.element.jquery.command {
                 }
             }
             var html = this._compiledTemplate(options);
-            var view = new HTMLElementView(html, _container, id);
-            return new CommandJQueryViewDescription(view, "["+this._idAttributeName+"='"+id+"']");
+            var view = new DocumentFragmentElementView(html, _container, id);
+            return new CommandJQueryViewDescription(view, "#"+id);
         }
     }
 

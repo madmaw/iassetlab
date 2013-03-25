@@ -2,7 +2,6 @@
 ///<reference path="../../../../../main/ts/mvc/composite/IStackControllerModel.ts"/>
 ///<reference path="../../../../../main/ts/mvc/element/DirectElementReference.ts"/>
 ///<reference path="../../../../../main/ts/mvc/element/IElementViewFactory.ts"/>
-///<reference path="../../../../../main/ts/mvc/element/DivElementViewFactory.ts"/>
 ///<reference path="../../../../../main/ts/mvc/element/jquery/composite/StackJQueryController.ts"/>
 ///<reference path="../../../../../main/ts/mvc/composite/AbstractStackControllerModel.ts"/>
 ///<reference path="ILabelModel.ts"/>
