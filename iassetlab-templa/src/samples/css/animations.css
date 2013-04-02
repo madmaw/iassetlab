@@ -1,4 +1,6 @@
-﻿.animation-stack-push-add {
+﻿/** animations take into account the relative position of the views being added: the margin values interact with eachother, which is why the numbers look weird */
+
+.animation-stack-push-add {
     -webkit-animation-duration: 2s;
     -moz-animation-duration: 2s;
     animation-duration: 2s;
@@ -9,7 +11,7 @@
 
 @-webkit-keyframes animation-stack-push-add-keyframes{
     from {
-        margin-left: 100%;
+        margin-left: 0%;
     }
     to {
         margin-left: 0%;
@@ -18,7 +20,7 @@
 
 @-moz-keyframes animation-stack-push-add-keyframes{
     from {
-        margin-left: 100%;
+        margin-left: 0%;
     }
     to {
         margin-left: 0%;
@@ -27,7 +29,7 @@
 
 @keyframes animation-stack-push-add-keyframes{
     from {
-        margin-left: 100%;
+        margin-left: 0%;
     }
     to {
         margin-left: 0%;
@@ -84,28 +86,28 @@
 
 @-webkit-keyframes animation-stack-pop-add-keyframes{
     from {
-        margin-left: -100%;
+        margin-left: -200%;
     }
     to {
-        margin-left: 0%;
+        margin-left: -200%;
     }
 }
 
 @-moz-keyframes animation-stack-pop-add-keyframes{
     from {
-        margin-left: -100%;
+        margin-left: -200%;
     }
     to {
-        margin-left: 0%;
+        margin-left: -200%;
     }
 }
 
 @keyframes animation-stack-pop-add-keyframes{
     from {
-        margin-left: -100%;
+        margin-left: -200%;
     }
     to {
-        margin-left: 0%;
+        margin-left: -200%;
     }
 }
 
@@ -145,8 +147,4 @@
     to {
         margin-left: 100%;
     }
-}
-
-.selected {
-    font-weight: bold;
 }

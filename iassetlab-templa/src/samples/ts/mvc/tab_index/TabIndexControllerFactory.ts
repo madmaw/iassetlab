@@ -1,5 +1,9 @@
+///<reference path="../../../../main/ts/loading/CompositeLoadable.ts"/>
 ///<reference path="../../../../main/ts/mvc/IController.ts"/>
 ///<reference path="../../../../main/ts/mvc/composite/MappedTabControllerModel.ts"/>
+///<reference path="../../../../main/ts/mvc/loading/LoadableProxyingLoadingControllerModel.ts"/>
+///<reference path="../../../../main/ts/mvc/loading/SwitchOnLoadingCompositeControllerModel.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/loading/ProgressBarLoadingJQueryUIController.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/tab/TabBarJQueryController.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/tab/MappedTabBarTabJQueryViewDescriptionFactory.ts"/>
 ///<reference path="../hello_world/HelloWorldControllerFactory.ts"/>
@@ -19,6 +23,13 @@ module templa.samples.mvc.tab_index {
 
         public create(): templa.mvc.IController {
 
+            // TODO we ignore this for now, but we shouldn't
+            
+            var loadables: templa.loading.ILoadable[] = [];
+
+            var tabBarContainerId = "tab_bar_container";
+            var tabBarKey = "tab_bar";
+
             var helloWorldControllerId = "hello_world";
             var helloWorldController = templa.samples.mvc.hello_world.HelloWorldControllerFactory.create();
 
@@ -31,7 +42,7 @@ module templa.samples.mvc.tab_index {
             var basicStackController = basicStackControllerFactory.create();
 
             var decoratedStackControllerId = "decorated_stack";
-            var decoratedStackController = templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory.create();
+            var decoratedStackController = templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory.create(loadables, ["#" + tabBarKey]);
 
             var tabbedControllers = {};
             tabbedControllers[helloWorldControllerId] = helloWorldController;
@@ -39,12 +50,27 @@ module templa.samples.mvc.tab_index {
             tabbedControllers[basicStackControllerId] = basicStackController;
             tabbedControllers[decoratedStackControllerId] = decoratedStackController;
 
-            var tabBarContainerId = "tab_bar_container";
             var tabBarIdsToViewFactories = {};
-            tabBarIdsToViewFactories[helloWorldControllerId] = new templa.mvc.element.DocumentFragmentElementViewFactory("<div class='tab_bar_button tab_bar_button_root'>Hello World</div>");
-            tabBarIdsToViewFactories[helloYouControllerId] = new templa.mvc.element.DocumentFragmentElementViewFactory("<div class='tab_bar_button tab_bar_button_root'>Hello You</div>");
-            tabBarIdsToViewFactories[basicStackControllerId] = new templa.mvc.element.DocumentFragmentElementViewFactory("<div class='tab_bar_button tab_bar_button_root'>Basic Stack</div>");
-            tabBarIdsToViewFactories[decoratedStackControllerId] = new templa.mvc.element.DocumentFragmentElementViewFactory("<div class='tab_bar_button tab_bar_button_root'>Decorated Stack</div>");
+            tabBarIdsToViewFactories[helloWorldControllerId] = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/tab_index/tab_button.html",
+                loadables,
+                { title: "Hello World" }
+            );
+            tabBarIdsToViewFactories[helloYouControllerId] = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/tab_index/tab_button.html",
+                loadables,
+                { title: "Hello You" }
+            );
+            tabBarIdsToViewFactories[basicStackControllerId] = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/tab_index/tab_button.html",
+                loadables,
+                { title: "Basic Stack" }
+            );
+            tabBarIdsToViewFactories[decoratedStackControllerId] = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/tab_index/tab_button.html",
+                loadables,
+                { title: "Decorated Stack" }
+            );
 
             var tabBarViewDescriptionFactory = new templa.mvc.element.jquery.tab.MappedTabBarTabJQueryViewDescriptionFactory(
                 <any>tabBarIdsToViewFactories,
@@ -62,7 +88,6 @@ module templa.samples.mvc.tab_index {
             );
 
             var tabPaneKey = "tab_pane";
-            var tabBarKey = "tab_bar";
             var tabControllers = {};
             tabControllers[tabBarKey] = tabBarController;
 
@@ -74,9 +99,15 @@ module templa.samples.mvc.tab_index {
             );
 
 
+            var tabViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/tab_index/tab_container.html",
+                loadables
+            );
+            /*
             var tabViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory(
                 "<div id = '" + tabBarKey + "' > </div><div id = '" + tabPaneKey + "' > </div>"
             );
+            */
             var tabController = new templa.mvc.element.jquery.composite.KeyedJQueryController(
                 tabViewFactory
             );
@@ -84,7 +115,24 @@ module templa.samples.mvc.tab_index {
             tabBarController.setModel(tabModel);
             tabController.setModel(tabModel);
 
-            return tabController;
+            var loadingViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory();
+            var loadingController = new templa.mvc.element.jquery.loading.ProgressBarLoadingJQueryUIController(
+                loadingViewFactory
+            );
+
+            var compositeLoadable = new templa.loading.CompositeLoadable(loadables);
+            var loadingModel: templa.mvc.loading.LoadableProxyingLoadingControllerModel = new templa.mvc.loading.LoadableProxyingLoadingControllerModel(compositeLoadable);
+            loadingController.setModel(loadingModel);
+
+            var loadingSwitcherModel = new templa.mvc.loading.SwitchOnLoadingCompositeControllerModel(loadingController, tabController, loadingModel);
+            var loadingSwitcherViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory();
+            var loadingSwitcherController = new templa.mvc.element.jquery.composite.AbstractCompositeJQueryController(
+                loadingSwitcherViewFactory
+            );
+            loadingSwitcherController.setModel(loadingSwitcherModel);
+
+            //return tabController; 
+            return loadingSwitcherController;
         }
     }
 

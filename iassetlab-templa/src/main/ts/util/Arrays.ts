@@ -16,10 +16,10 @@ module templa.util.Arrays {
         return result;
     }
 
-    export function pushAll(array: any[], elements: any[]) {
+    export function pushAll(into: any[], elements: any[]) {
         for (var i in elements) {
             var element = elements[i];
-            array.push(element);
+            into.push(element);
         }
     }
 

@@ -1,10 +1,15 @@
 <html>
 <head>
     <title>Templa Samples HelloWorld</title>
-    <script src="lib/handlebars.js/dist/handlebars.js"></script>
-    <script src="lib/jquery/jquery.js"></script>
+    <meta name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+    <script src="lib/handlebars-1.0.10.js"></script>
+    <script src="lib/jquery-1.9.1.js"></script>
+    <script src="lib/jquery-ui-1.10.2.js"></script>
     <script src="target/dist/templa-all.js"></script>
     <link rel="stylesheet" href="src/samples/css/animations.css">
+    <link rel="stylesheet" href="src/samples/css/samples.css">
+    <link rel="stylesheet" href="src/samples/css/jquery-ui-1.10.2/jquery-ui.css">
+    <link rel="stylesheet" href="src/samples/css/jquery-ui-1.10.2/jquery.ui.progressbar.css">
     <script>
         window.onload = function () {
 
@@ -12,6 +17,10 @@
             var tabElement = document.getElementById("tab");
             var tabControllerFactory = new templa.samples.mvc.tab_index.TabIndexControllerFactory();
             var tabController = tabControllerFactory.create();
+
+            window.onresize = function () {
+                tabController.layout();
+            };
             tabController.init(new templa.mvc.element.DirectElementReference(tabElement));
             tabController.start();
         }

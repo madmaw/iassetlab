@@ -5,20 +5,27 @@
 module templa.mvc.element {
     export class DocumentFragmentElementView implements IElementView {
 
-        private _fragment: DocumentFragment;
-
-        constructor(_html: string, private _container: IElementReference, private _id: string) {
-            // probably should do this in the factory!?
+        public static createFromHTML(html: string, container: IElementReference, id: string) {
             var fragment: DocumentFragment = document.createDocumentFragment();
             var element = document.createElement("div");
-            element.setAttribute("id", this._id);
-            element.innerHTML = _html;
+            element.setAttribute("id", id);
+            if (html != null) {
+                element.innerHTML = html;
+            }
             fragment.appendChild(element);
-            this._fragment = fragment;
+
+            return new DocumentFragmentElementView(fragment, container, id);
+        }
+
+        private _attached: bool;
+
+        constructor(private _fragment:DocumentFragment, private _container: IElementReference, private _id: string) {
+            this._attached = false;
         }
 
         public attach() {
             this._container.resolve().appendChild(this._fragment);
+            this._attached = true;
         }
 
         public detach() {
@@ -27,6 +34,7 @@ module templa.mvc.element {
                 var container:Node = this._container.resolve();
                 container.removeChild(element);
             }
+            this._attached = false;
             /* NO?!
             var childNodes = this._fragment.childNodes;
             for (var i in childNodes) {
@@ -35,6 +43,10 @@ module templa.mvc.element {
             }
             */
 
+        }
+
+        public layout(): bool {
+            return false;
         }
 
         public getRoots():Node[] {
@@ -49,8 +61,13 @@ module templa.mvc.element {
 
         public get _element(): Node {
             // find ourselves
-            var container = this._container.resolve();
-            var childNodes = container.childNodes;
+            var childNodes;
+            if (this._attached) {
+                var container = this._container.resolve();
+                childNodes = container.childNodes;
+            } else {
+                childNodes = this._fragment.childNodes;
+            }
             for (var i in childNodes) {
                 var childNode: Element = childNodes[i];
                 if (childNode instanceof Element && childNode.getAttribute("id") == this._id) {

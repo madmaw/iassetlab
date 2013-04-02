@@ -76,12 +76,13 @@ module templa.mvc {
                 result = this._doStart();
                 if (result) {
                     this._state = templa.mvc.ControllerStateStarted;
-                    this.load();
                     // start listening on the model
                     this._modelOnChangeListener = (model: templa.mvc.IModel, event: templa.mvc.ModelChangeEvent) => {
                         this._handleModelChangeEvent(event);
                     };
                     this._model.addOnChangeListener(this._modelOnChangeListener);
+                    // then load (sometimes the models will initialise/refresh themselves upon having a listener added, so it has to be done first)
+                    this.load();
                 }
             } else {
                 result = false;
@@ -185,6 +186,18 @@ module templa.mvc {
             this._addAnimation(animation, false);
         }
 
+        public layout(): void {
+            var view = this.getView();
+            if (view != null) {
+                var reload = view.layout();
+                var state = this.getState();
+                if (reload && state == ControllerStateStarted) {
+                    this.load();
+                }
+            }
+        }
+
+
         public _addAnimation(animation: templa.animation.IAnimation, doNotStart?: bool) {
             if (this._animations == null) {
                 this._animations = [];
@@ -192,6 +205,7 @@ module templa.mvc {
                     if (event.animationState == templa.animation.animationStateFinished) {
                         // remove the animation
                         this._removeAnimation(source, true);
+                        this.layout();
                     }
                 };
             }
@@ -213,6 +227,14 @@ module templa.mvc {
             if (doNotDestroy != true) {
                 animation.destroy();
             }
+        }
+
+        public _safeTimeout(f: () => void , millis: number) {
+            window.setTimeout(() => {
+                if (this.getState() == ControllerStateStarted) {
+                    f();
+                }
+            }, millis);
         }
     }
 

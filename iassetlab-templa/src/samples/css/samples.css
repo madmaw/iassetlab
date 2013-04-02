@@ -1,0 +1,44 @@
+﻿.selected {
+    font-weight: bold;
+}
+
+#tab_bar_container {
+    display: block;
+}
+
+#tab_bar_container > div {
+    display: inline-block;
+    text-align: center;
+    width: 25%;
+}
+
+#tab_pane {
+    overflow-x: hidden;
+}
+
+#tab_pane > div {
+    /*width: 1001px;*/
+    white-space: nowrap;
+}
+
+#tab_pane > div > div {
+    width:320px;
+    display: inline-block;
+    white-space:  normal;
+}
+
+#decorated_body {
+    overflow-y: auto;
+    /* ios gets 'sticky' if this isn't in here (it also looks better anyway)*/
+    -webkit-overflow-scrolling: touch;
+}
+
+#decorated_body {
+}
+
+body {
+    margin:0;
+    padding:0;
+    /* not sure about this one - might ruin compatibility somewhere */
+    /*overflow-y: hidden; */
+}

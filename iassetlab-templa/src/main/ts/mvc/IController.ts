@@ -38,8 +38,9 @@ module templa.mvc {
 
         removeOnChangeListener(listener: (source: IController, changeEvent: ControllerChangeEvent) => void );
 
-        addAnimation(animation:templa.animation.IAnimation);
+        addAnimation(animation: templa.animation.IAnimation);
 
+        layout(): void;
     }
 
 }

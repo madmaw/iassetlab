@@ -11,7 +11,7 @@ module templa.mvc.composite {
         private _stack: IController[];
 
         // Constructor
-        constructor() {
+        constructor(private _allowEmptyStack?:bool) {
             super();
             this._stack = [];
         }
@@ -29,7 +29,7 @@ module templa.mvc.composite {
         }
 
         public canPop(): bool {
-            return !this.isStackEmpty();
+            return !this.isStackEmpty() && this._allowEmptyStack || this._stack.length > 1;
         }
 
         public requestPop(): void {

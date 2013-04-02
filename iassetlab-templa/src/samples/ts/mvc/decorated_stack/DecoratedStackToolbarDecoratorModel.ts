@@ -7,9 +7,9 @@
 ///<reference path="../../../../main/ts/mvc/element/jquery/command/ToolbarCommandJQueryController.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/composite/StackJQueryController.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/composite/KeyedJQueryController.ts"/>
-///<reference path="../../../../main/ts/mvc/element/HandlebarsElementViewFactory.ts"/>
-///<reference path="../../../../main/ts/mvc/element/jquery/command/HandlebarsCommandJQueryViewDescriptionFactory.ts"/>
+///<reference path="../../../../main/ts/mvc/element/TemplateElementViewFactory.ts"/>
 ///<reference path="../../../../main/ts/animation/element/CSSElementClassAnimationFactory.ts"/>
+///<reference path="../../../../main/ts/util/Arrays.ts"/>
 ///<reference path="../controller/label/LabelController.ts"/>
 ///<reference path="../controller/label/ILabelModel.ts"/>
 ///<reference path="../controller/text_input/TextInputController.ts"/>
@@ -21,7 +21,7 @@ module templa.samples.mvc.decorated_stack {
 
     export class DecoratedStackToolbarDecoratorModel extends templa.mvc.AbstractModel implements templa.mvc.composite.IKeyedControllerModel {
 
-        constructor(private _toolbarController: templa.mvc.IController, private _toolbarControllerKey: string, private _otherController: templa.mvc.IController, private _otherControllerKey: string) {
+        constructor(private _toolbarController: templa.mvc.IController, private _toolbarControllerKey: string, private _otherControllers: templa.mvc.IController[], private _otherControllerKey: string) {
             super();
         }
 
@@ -35,8 +35,10 @@ module templa.samples.mvc.decorated_stack {
             return result;
         }
 
-        public getControllers(): templa.mvc.IController[] {
-            return [this._toolbarController, this._otherController];
+        public getControllers(): templa.mvc.IController[]{
+            var result = [this._toolbarController];
+            templa.util.Arrays.pushAll(result, this._otherControllers);
+            return result;
         }
     }
 

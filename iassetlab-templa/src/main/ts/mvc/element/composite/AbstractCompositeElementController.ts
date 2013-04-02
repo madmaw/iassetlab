@@ -19,9 +19,10 @@ module templa.mvc.element.composite {
             var controllers = compositeControllerModel.getControllers();
             for (var i in controllers) {
                 var controller = controllers[i];
-                this._add(controller, false);
+                this._add(controller, false, false);
             }
             this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
+            this.layout();
         }
 
         public clear(fireEvent?: bool) {
@@ -85,7 +86,7 @@ module templa.mvc.element.composite {
             return result;
         }
 
-        public _add(controller: templa.mvc.IController, fireEvent?: bool) {
+        public _add(controller: templa.mvc.IController, fireEvent?: bool, layout?:bool) {
             this._controllers.push(controller);
 
             var container: IElementReference = this.getControllerContainer(controller);
@@ -99,9 +100,12 @@ module templa.mvc.element.composite {
             if (fireEvent != false) {
                 this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
             }
+            if (layout != false) {
+                this.layout();
+            }
         }
 
-        public _remove(controller: templa.mvc.IController, detachView?: bool) {
+        public _remove(controller: templa.mvc.IController, detachView?: bool, layout?:bool) {
             var removed: bool = templa.util.Arrays.removeElement(this._controllers, controller);
             if (removed) {
                 var state: number = this.getState();
@@ -112,6 +116,9 @@ module templa.mvc.element.composite {
                     controller.destroy(detachView);
                 }
                 this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
+                if (layout != false) {
+                    this.layout();
+                }
             }
         }
 
@@ -142,6 +149,15 @@ module templa.mvc.element.composite {
                 }
             }
             return title;
+        }
+
+        public layout(): void {
+            super.layout();
+            // layout the children
+            for (var i in this._controllers) {
+                var controller: IController = this._controllers[i];
+                controller.layout();
+            }
         }
     }
 }

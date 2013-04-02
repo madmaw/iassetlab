@@ -96,6 +96,7 @@ module templa.mvc.element.jquery.composite {
             } else {
                 super._handleModelChangeEvent(event);
             }
+            this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
         }
 
         public _back() {
@@ -105,10 +106,14 @@ module templa.mvc.element.jquery.composite {
 
         public getCommands(): Command[]{
             var commands = super.getCommands();
-            if (commands == null) {
-                commands = [];
+            var stackControllerModel: templa.mvc.composite.IStackControllerModel = <templa.mvc.composite.IStackControllerModel>this._model;
+            if (stackControllerModel != null && stackControllerModel.canPop()) {
+                if (commands == null) {
+                    commands = [];
+                }
+                commands.push(this._backCommand);
             }
-            commands.push(this._backCommand);
+            
             return commands;
         }
     }

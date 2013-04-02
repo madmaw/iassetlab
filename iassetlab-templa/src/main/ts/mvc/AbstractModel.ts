@@ -10,10 +10,11 @@ module templa.mvc {
         }
 
         public addOnChangeListener(listener: (source: IModel, changeEvent: ModelChangeEvent) => void ) {
-            this._modelOnChangeListeners.push(listener);
-            if (this._modelOnChangeListeners.length > 0) {
+            if (this._modelOnChangeListeners.length == 0) {
+                // do this first as we don't want to fire events to all the just added listeners as they're (probably) about to do a load anyway
                 this._startedListening();
             }
+            this._modelOnChangeListeners.push(listener);
         }
 
         public removeOnChangeListener(listener: (source: IModel, changeEvent: ModelChangeEvent) => void ) {

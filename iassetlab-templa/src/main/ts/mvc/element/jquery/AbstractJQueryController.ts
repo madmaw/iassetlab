@@ -1,6 +1,7 @@
 ///<reference path="IJQuerySelectorHandler.ts"/>
 ///<reference path="JQueryElementReference.ts"/>
 ///<reference path="../AbstractElementController.ts"/>
+///<reference path="../DirectElementReference.ts"/>
 ///<reference path="../../../../d.ts/jquery.d.ts"/>
 
 // Module
@@ -19,8 +20,12 @@ module templa.mvc.element.jquery {
                 roots = this._view.getRoots();
             }
             // TODO I dislike parsing the selector twice, I also dislike marching the results twice though
-            var self: JQuery = $(<Element[]>roots).filter(selector);
-            return $(<Element[]>roots).find(selector).add(self);
+            if (selector) {
+                var self: JQuery = $(<Element[]>roots).filter(selector);
+                return $(<Element[]>roots).find(selector).add(self);
+            } else {
+                return $(<Element[]>roots);
+            }
         }
 
         public $reference(selector: string): IElementReference {
@@ -29,7 +34,7 @@ module templa.mvc.element.jquery {
             var query = this.$(selector);
             var result;
             if (query.length > 0) {
-                result = new DirectElementReference(query.get(0));
+                result = new templa.mvc.element.DirectElementReference(query.get(0));
             } else {
                 result = null;
             }
