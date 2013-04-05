@@ -5,10 +5,13 @@
 module templa.mvc.element {
     export class DocumentFragmentElementView implements IElementView {
 
-        public static createFromHTML(html: string, container: IElementReference, id: string) {
+        public static createFromHTML(html: string, container: IElementReference, id: string, divClass?:string) {
             var fragment: DocumentFragment = document.createDocumentFragment();
             var element = document.createElement("div");
             element.setAttribute("id", id);
+            if (divClass != null) {
+                element.setAttribute("class", divClass);
+            }
             if (html != null) {
                 element.innerHTML = html;
             }

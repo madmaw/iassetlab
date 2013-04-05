@@ -24,6 +24,10 @@ module templa.mvc {
             this._state = templa.mvc.ControllerStateUninitialized;
         }
 
+        public getModel(): IModel {
+            return this._model;
+        }
+
         public setModel(model: templa.mvc.IModel) {
             this._model = model;
         }

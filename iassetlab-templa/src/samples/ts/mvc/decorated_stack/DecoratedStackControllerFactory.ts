@@ -1,6 +1,6 @@
 ///<reference path="../../../../main/ts/mvc/composite/MappedKeyedControllerModel.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/composite/KeyedJQueryController.ts"/>
-///<reference path="../../../../main/ts/mvc/element/jquery/HeightSettingElementViewProxyFactory.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/DimensionSettingElementViewProxyFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/DocumentFragmentElementViewFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/TemplateElementViewFactory.ts"/>
 ///<reference path="../../../../main/ts/loading/ILoadable.ts"/>
@@ -11,9 +11,9 @@
 module templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory {
 
     // Class
-    export function create(loadables:templa.loading.ILoadable[], fixedHeightSelectors?:string[]): templa.mvc.IController {
+    export function create(loadables: templa.loading.ILoadable[], toolbarDecoratorFactory: (controllers: templa.mvc.IController[]) => templa.mvc.IController): templa.mvc.IController {
         // create the stack controller
-        var stackViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory();
+        var stackViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory(null, "content_slider");
         var pushAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-push-add", 2000);
         var pushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-push-remove", 2000);
         var popAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-stack-pop-add", 2000);
@@ -33,34 +33,6 @@ module templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory {
             { label_key: labelViewKey }
         );
 
-        var decoratorToolbarContainerKey = "decorated_toolbar_container";
-        var decoratorToolbarControllerKey = "decorated_toolbar";
-        var decoratorBodyControllerKey = "decorated_body";
-        var decoratorViewFactory:templa.mvc.element.IElementViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
-            "src/samples/handlebars/decorated_stack/decorator.html",
-            loadables,
-            { toolbar_key: decoratorToolbarControllerKey, view_key: decoratorBodyControllerKey, toolbar_container_key: decoratorToolbarContainerKey }
-        );
-        var localFixedHeightSelectors = ["#" + decoratorToolbarContainerKey];
-        if (fixedHeightSelectors != null) {
-            templa.util.Arrays.pushAll(localFixedHeightSelectors, fixedHeightSelectors);
-        }
-        decoratorViewFactory = new templa.mvc.element.jquery.HeightSettingElementViewProxyFactory(decoratorViewFactory, "#" + decoratorBodyControllerKey, localFixedHeightSelectors);
-
-
-        var toolbarBackViewKey = "back";
-        var toolbarGeneralViewKey = "general";
-        var toolbarViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
-            "src/samples/handlebars/decorated_stack/toolbar.html",
-            loadables,
-            { back_buttons: toolbarBackViewKey, general_buttons: toolbarGeneralViewKey }
-        );
-
-        var toolbarCommandElementViewFactory = templa.mvc.element.jquery.command.TemplateCommandJQueryViewDescriptionFactory.createFromURL(
-            "src/samples/handlebars/decorated_stack/command.html",
-            loadables
-        );
-
         // create the input controller
         var inputElementKey = "input_element";
         var inputButtonKey = "input_button";
@@ -76,14 +48,16 @@ module templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory {
             "[key='" + labelViewKey + "']",
             inputViewFactory,
             "[key='" + inputElementKey + "']",
-             "[key='" + inputButtonKey + "']",
+            "[key='" + inputButtonKey + "']",
+            toolbarDecoratorFactory
+            /*,
             decoratorViewFactory,
             decoratorBodyControllerKey,
             decoratorToolbarControllerKey,
             toolbarViewFactory,
             "[key='" + toolbarBackViewKey + "']",
             "[key='" + toolbarGeneralViewKey + "']",
-            toolbarCommandElementViewFactory
+            toolbarCommandElementViewFactory*/
         );
         stackModel.requestSubmit("Hello Decorated Stack!!");
         stackController.setModel(stackModel);

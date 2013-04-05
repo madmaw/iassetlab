@@ -3,10 +3,13 @@
 module templa.mvc {
 
     export class AbstractModel implements IModel {
-        private _modelOnChangeListeners: { (source: IModel, changeEvent:ModelChangeEvent) : void; }[];
+        private _modelOnChangeListeners: { (source: IModel, changeEvent: ModelChangeEvent): void; }[];
+        private _stateDescriptionChangeListeners: { (source: IModel): void; }[];
+        public _listeningForTokenChanges: bool;
 
         constructor() {
             this._modelOnChangeListeners = [];
+            this._stateDescriptionChangeListeners = [];
         }
 
         public addOnChangeListener(listener: (source: IModel, changeEvent: ModelChangeEvent) => void ) {
@@ -32,10 +35,10 @@ module templa.mvc {
 
         }
 
-        public _fireModelChangeEvent(changeDescription?: string);
-        public _fireModelChangeEvent(changeDescription?: ModelChangeDescription);
-        public _fireModelChangeEvent(changeEvent?: ModelChangeEvent);
-        public _fireModelChangeEvent(changeEvent?: any) {
+        public _fireModelChangeEvent(changeDescription?: string, suppressFireStateTokenChange?:bool);
+        public _fireModelChangeEvent(changeDescription?: ModelChangeDescription, suppressFireStateTokenChange?: bool);
+        public _fireModelChangeEvent(changeEvent?: ModelChangeEvent, suppressFireStateTokenChange?: bool);
+        public _fireModelChangeEvent(changeEvent?: any, suppressFireStateTokenChange?: bool) {
             if (changeEvent == null) {
                 changeEvent = new ModelChangeEvent();
             } else if (!(changeEvent instanceof ModelChangeEvent)) {
@@ -45,6 +48,66 @@ module templa.mvc {
                 var modelOnChangeListener = this._modelOnChangeListeners[i];
                 modelOnChangeListener(this, changeEvent);
             }
+            if (suppressFireStateTokenChange != true) {
+                // fire state token change event
+                this._fireStateDescriptionChangeEvent(this);
+            }
+        }
+
+        public addStateDescriptionChangeListener(listener: (source: IModel) => void ) {
+            this._stateDescriptionChangeListeners.push(listener);
+            if (this._stateDescriptionChangeListeners.length == 1) {
+                this._startedListeningForTokenChanges();
+            }
+        }
+
+        public removeStateDescriptionChangeListener(listener: (source: IModel) => void ) {
+            templa.util.Arrays.removeElement(this._stateDescriptionChangeListeners, listener);
+            if (this._stateDescriptionChangeListeners.length == 0) {
+                this._stoppedListeningForTokenChanges();
+            }
+        }
+
+        public _startedListeningForTokenChanges() {
+             
+        }
+
+        public _stoppedListeningForTokenChanges() {
+        }
+
+        public _fireStateDescriptionChangeEvent(source: IModel) {
+            var fired = [];
+            for (var i in this._stateDescriptionChangeListeners) {
+                var stateTokenChangeListener = this._stateDescriptionChangeListeners[i];
+                if (fired.indexOf(stateTokenChangeListener) < 0) {
+                    stateTokenChangeListener(source);
+                    // can end up with legitimate duplicates, don't want to fire them multiple times though
+                    fired.push(stateTokenChangeListener);
+                }
+            }
+        }
+
+
+        public createStateDescription(models?: IModel[]): any {
+            this._checkModels(models);
+            return null;
+        }
+
+        public loadStateDescription(description: any) {
+            // ignore
+        }
+
+        public _checkModels(models: IModel[]) {
+            if (models == null) {
+                models = [this];
+            } else {
+                if (models.indexOf(this) >= 0) {
+                    throw new Error("this model "+this+" has already been added");
+                } else {
+                    models.push(this);
+                }
+            }
+            return models;
         }
     }
 }

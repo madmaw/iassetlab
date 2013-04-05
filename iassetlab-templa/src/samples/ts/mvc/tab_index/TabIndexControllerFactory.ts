@@ -10,6 +10,7 @@
 ///<reference path="../hello_you/HelloYouControllerFactory.ts"/>
 ///<reference path="../basic_stack/BasicStackControllerFactory.ts"/>
 ///<reference path="../decorated_stack/DecoratedStackControllerFactory.ts"/>
+///<reference path="../controller/ToolbarDecoratorModel.ts"/>
 
 // Module
 module templa.samples.mvc.tab_index {
@@ -23,26 +24,91 @@ module templa.samples.mvc.tab_index {
 
         public create(): templa.mvc.IController {
 
-            // TODO we ignore this for now, but we shouldn't
-            
+            var loadingSwitcherViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory();
+            var loadingSwitcherController = new templa.mvc.element.jquery.composite.AbstractCompositeJQueryController(
+                loadingSwitcherViewFactory
+            );
+
             var loadables: templa.loading.ILoadable[] = [];
 
             var tabBarContainerId = "tab_bar_container";
             var tabBarKey = "tab_bar";
 
+            // create toolbar decorator
+
+            // TODO pass the decorator in as a parameter
+            var decoratorToolbarContainerKey = "decorated_toolbar_container";
+            var decoratorToolbarControllerKey = "decorated_toolbar";
+            var decoratorBodyControllerKey = "decorated_body";
+            var decoratorViewFactory: templa.mvc.element.IElementViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/decorated_stack/decorator.html",
+                loadables,
+                { toolbar_key: decoratorToolbarControllerKey, view_key: decoratorBodyControllerKey, toolbar_container_key: decoratorToolbarContainerKey },
+                "content_pane"
+            );
+            var localFixedHeightSelectors = ["#" + decoratorToolbarContainerKey, "#" + tabBarKey];
+            // for the height
+            decoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(decoratorViewFactory, "#" + decoratorBodyControllerKey, null, localFixedHeightSelectors);
+            // for the width
+            decoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(decoratorViewFactory, null, [], null);
+
+
+            var toolbarBackViewKey = "back";
+            var toolbarGeneralViewKey = "general";
+            var toolbarViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/decorated_stack/toolbar.html",
+                loadables,
+                { back_buttons: toolbarBackViewKey, general_buttons: toolbarGeneralViewKey }
+            );
+
+            var toolbarCommandElementViewFactory = templa.mvc.element.jquery.command.TemplateCommandJQueryViewDescriptionFactory.createFromURL(
+                "src/samples/handlebars/decorated_stack/command.html",
+                loadables
+            );
+
+            var decoratorFactory = function(controllers: templa.mvc.IController[]):templa.mvc.IController {
+                var toolbarController = new templa.mvc.element.jquery.command.ToolbarCommandJQueryController(
+                    toolbarViewFactory,
+                    toolbarCommandElementViewFactory,
+                    "[key='" + toolbarBackViewKey + "']",
+                    "[key='" + toolbarGeneralViewKey + "']"
+                );
+                toolbarController.setModel(new templa.mvc.command.CommandControllerModelAdapter(loadingSwitcherController));
+
+                var decoratorController = new templa.mvc.element.jquery.composite.KeyedJQueryController(
+                    decoratorViewFactory
+                );
+                decoratorController.setModel(
+                    new templa.samples.mvc.controller.ToolbarDecoratorModel(
+                        toolbarController,
+                        decoratorToolbarControllerKey,
+                        controllers,
+                        decoratorBodyControllerKey
+                    )
+                );
+                return decoratorController;
+            };
+
+
+            // create stuff
+
+
             var helloWorldControllerId = "hello_world";
-            var helloWorldController = templa.samples.mvc.hello_world.HelloWorldControllerFactory.create();
+            var helloWorldController: templa.mvc.IController = templa.samples.mvc.hello_world.HelloWorldControllerFactory.create();
+            helloWorldController = decoratorFactory([helloWorldController]);
 
             var helloYouControllerId = "hello_you";
             var helloYouControllerFactory = new templa.samples.mvc.hello_you.HelloYouControllerFactory();
-            var helloYouController = helloYouControllerFactory.create();
+            var helloYouController: templa.mvc.IController = helloYouControllerFactory.create();
+            helloYouController = decoratorFactory([helloYouController]);
 
             var basicStackControllerId = "basic_stack";
             var basicStackControllerFactory = new templa.samples.mvc.basic_stack.BasicStackControllerFactory();
-            var basicStackController = basicStackControllerFactory.create();
+            var basicStackController:templa.mvc.IController = basicStackControllerFactory.create();
+            basicStackController = decoratorFactory([basicStackController]);
 
             var decoratedStackControllerId = "decorated_stack";
-            var decoratedStackController = templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory.create(loadables, ["#" + tabBarKey]);
+            var decoratedStackController = templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory.create(loadables, decoratorFactory);
 
             var tabbedControllers = {};
             tabbedControllers[helloWorldControllerId] = helloWorldController;
@@ -125,10 +191,6 @@ module templa.samples.mvc.tab_index {
             loadingController.setModel(loadingModel);
 
             var loadingSwitcherModel = new templa.mvc.loading.SwitchOnLoadingCompositeControllerModel(loadingController, tabController, loadingModel);
-            var loadingSwitcherViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory();
-            var loadingSwitcherController = new templa.mvc.element.jquery.composite.AbstractCompositeJQueryController(
-                loadingSwitcherViewFactory
-            );
             loadingSwitcherController.setModel(loadingSwitcherModel);
 
             //return tabController; 

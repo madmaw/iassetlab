@@ -55,6 +55,33 @@ module templa.mvc.composite {
                 );
             }
         }
+
+        public _getDescribedControllers(): IController[] {
+            var result = super._getDescribedControllers();
+            for (var tabId in this._tabIdsToControllers) {
+                var controller = this._tabIdsToControllers[tabId];
+                if (result.indexOf(controller) < 0) {
+                    result.push(controller);
+                }
+            }
+            return result;
+        }
+
+        public _getDescribedControllerKey(controller: IController): string {
+            var result = this.getControllerKey(controller);
+            if (result == this._tabControllerKey || result == null) {
+                // need to differentiate
+                for (var key in this._tabIdsToControllers) {
+                    var tabController = this._tabIdsToControllers[key];
+                    if (tabController == controller) {
+                        result = key;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
+
     }
 
 }

@@ -13,13 +13,13 @@
 ///<reference path="../controller/label/LabelController.ts"/>
 ///<reference path="../controller/label/ILabelModel.ts"/>
 ///<reference path="../controller/text_input/TextInputController.ts"/>
-///<reference path="../controller/text_input/ITextInputModel.ts"/>
+///<reference path="text_input/ITextInputModel.ts"/>
 
 
 // Module
-module templa.samples.mvc.decorated_stack {
+module templa.samples.mvc.controller {
 
-    export class DecoratedStackToolbarDecoratorModel extends templa.mvc.AbstractModel implements templa.mvc.composite.IKeyedControllerModel {
+    export class ToolbarDecoratorModel extends templa.mvc.composite.AbstractCompositeControllerModel implements templa.mvc.composite.IKeyedControllerModel {
 
         constructor(private _toolbarController: templa.mvc.IController, private _toolbarControllerKey: string, private _otherControllers: templa.mvc.IController[], private _otherControllerKey: string) {
             super();
@@ -33,6 +33,11 @@ module templa.samples.mvc.decorated_stack {
                 result = this._otherControllerKey;
             }
             return result;
+        }
+
+        public _getDescribedControllers(): templa.mvc.IController[]{
+            // assume the toolbar is stateless
+            return this._otherControllers;
         }
 
         public getControllers(): templa.mvc.IController[]{

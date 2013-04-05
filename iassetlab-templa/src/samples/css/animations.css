@@ -1,9 +1,9 @@
 ﻿/** animations take into account the relative position of the views being added: the margin values interact with eachother, which is why the numbers look weird */
 
 .animation-stack-push-add {
-    -webkit-animation-duration: 2s;
-    -moz-animation-duration: 2s;
-    animation-duration: 2s;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
     -webkit-animation-name: animation-stack-push-add-keyframes;
     -moz-animation-name: animation-stack-push-add-keyframes;
     animation-name: animation-stack-push-add-keyframes;
@@ -38,9 +38,9 @@
 
 
 .animation-stack-push-remove {
-    -webkit-animation-duration: 2s;
-    -moz-animation-duration: 2s;
-    animation-duration: 2s;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
     -webkit-animation-name: animation-stack-push-remove-keyframes;    
     -moz-animation-name: animation-stack-push-remove-keyframes;    
     animation-name: animation-stack-push-remove-keyframes;    
@@ -76,9 +76,9 @@
 
 
 .animation-stack-pop-add {
-    -webkit-animation-duration: 2s;
-    -moz-animation-duration: 2s;
-    animation-duration: 2s;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
     -webkit-animation-name: animation-stack-pop-add-keyframes;    
     -moz-animation-name: animation-stack-pop-add-keyframes;    
     animation-name: animation-stack-pop-add-keyframes;    
@@ -113,9 +113,9 @@
 
 
 .animation-stack-pop-remove {
-    -webkit-animation-duration: 2s;
-    -moz-animation-duration: 2s;
-    animation-duration: 2s;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
     -webkit-animation-name: animation-stack-pop-remove-keyframes;    
     -moz-animation-name: animation-stack-pop-remove-keyframes;    
     animation-name: animation-stack-pop-remove-keyframes;    

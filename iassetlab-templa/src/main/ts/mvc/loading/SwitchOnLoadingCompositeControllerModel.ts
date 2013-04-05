@@ -1,15 +1,17 @@
 ///<reference path="ILoadingControllerModel.ts"/>
-///<reference path="../AbstractModel.ts"/>
+///<reference path="../composite/AbstractCompositeControllerModel.ts"/>
 ///<reference path="../composite/ICompositeControllerModel.ts"/>
 
 // Module
 module templa.mvc.loading {
 
     // Class
-    export class SwitchOnLoadingCompositeControllerModel extends AbstractModel implements templa.mvc.composite.ICompositeControllerModel {
+    export class SwitchOnLoadingCompositeControllerModel extends templa.mvc.composite.AbstractCompositeControllerModel implements templa.mvc.composite.ICompositeControllerModel {
 
         private _currentControllers: IController[];
         private _onChangeListener: (source: IModel, event: ModelChangeEvent) => void;
+
+        
 
         // Constructor
         constructor(private _loadingController: IController, private _contentController: IController, private _loadingModel:ILoadingControllerModel) {
@@ -31,6 +33,10 @@ module templa.mvc.loading {
 
         public getControllers(): IController[]{
             return this._currentControllers;
+        }
+
+        public _getDescribedControllers(): IController[]{
+            return [this._contentController];
         }
 
         public _checkCurrentController() {
@@ -56,6 +62,8 @@ module templa.mvc.loading {
                 this._fireModelChangeEvent(templa.mvc.composite.compositeControllerModelEventControllersChanged);
             }
         }
+
+
     }
 
 }

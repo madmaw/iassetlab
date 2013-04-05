@@ -1,3 +1,4 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "ht`tp://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
     <title>Templa Samples HelloWorld</title>
@@ -17,6 +18,15 @@
             var tabElement = document.getElementById("tab");
             var tabControllerFactory = new templa.samples.mvc.tab_index.TabIndexControllerFactory();
             var tabController = tabControllerFactory.create();
+
+
+            var tabModel = tabController.getModel();
+            tabModel.addStateDescriptionChangeListener(function () {
+                var stateDescription = tabModel.createStateDescription();
+                // TODO encapsulate in a string
+                var s = "" + stateDescription;
+                history.pushState(stateDescription, tabController.getTitle(), "http://localhost:49563/#!" + s);
+            });
 
             window.onresize = function () {
                 tabController.layout();

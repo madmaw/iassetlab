@@ -14,7 +14,6 @@
 ///<reference path="../controller/label/ImmutableLabelModel.ts"/>
 ///<reference path="../controller/text_input/TextInputController.ts"/>
 ///<reference path="../controller/text_input/ITextInputModel.ts"/>
-///<reference path="DecoratedStackToolbarDecoratorModel.ts"/>
 
 // Module
 module templa.samples.mvc.decorated_stack {
@@ -31,13 +30,7 @@ module templa.samples.mvc.decorated_stack {
             private _inputViewFactory: templa.mvc.element.IElementViewFactory,
             private _inputValueSelector: string,
             private _inputButtonSelector: string,
-            private _decoratorViewFactory: templa.mvc.element.IElementViewFactory,
-            private _decoratorBodyControllerKey: string,
-            private _decoratorToolbarControllerKey: string,
-            private _toolbarViewFactory: templa.mvc.element.IElementViewFactory,
-            private _toolbarBackViewSelector: string,
-            private _toolbarGeneralViewSelector: string,
-            private _toolbarCommandElementViewFactory: templa.mvc.element.jquery.command.ICommandJQueryViewDescriptionFactory
+            private _toolbarDecoratorFactory:(controllers:templa.mvc.IController[]) => templa.mvc.IController
         ) {
             super(false);
         }
@@ -50,34 +43,33 @@ module templa.samples.mvc.decorated_stack {
             // push a new controller
             if (value != null && value.length > 0) {
                 // create the label
-                var labelController = new templa.samples.mvc.controller.label.LabelController(this._labelViewFactory, this._labelViewSelector);
-                labelController.setModel(new templa.samples.mvc.controller.label.ImmutableLabelModel(value));
+                var decoratorController = this._createController(value);
 
-                // create an input controller
-                var inputController = new templa.samples.mvc.controller.text_input.TextInputController(this._inputViewFactory, this._inputValueSelector, this._inputButtonSelector);
-                inputController.setModel(this);
-
-                var toolbarController = new templa.mvc.element.jquery.command.ToolbarCommandJQueryController(
-                    this._toolbarViewFactory,
-                    this._toolbarCommandElementViewFactory,
-                    this._toolbarBackViewSelector,
-                    this._toolbarGeneralViewSelector
-                );
-                toolbarController.setModel(new templa.mvc.command.CommandControllerModelAdapter(this._topLevelController));
-
-                var decoratorController = new templa.mvc.element.jquery.composite.KeyedJQueryController(
-                    this._decoratorViewFactory
-                );
-                decoratorController.setModel(
-                    new DecoratedStackToolbarDecoratorModel(
-                        toolbarController,
-                        this._decoratorToolbarControllerKey,
-                        [labelController, inputController],
-                        this._decoratorBodyControllerKey
-                    )
-                );
-                this._push(decoratorController);
+                this._push(decoratorController, value);
             }
+        }
+
+        public _createController(value: string): templa.mvc.IController {
+            var labelController = new templa.samples.mvc.controller.label.LabelController(this._labelViewFactory, this._labelViewSelector);
+            labelController.setModel(new templa.samples.mvc.controller.label.ImmutableLabelModel(value));
+
+            // create an input controller
+            var inputController = new templa.samples.mvc.controller.text_input.TextInputController(this._inputViewFactory, this._inputValueSelector, this._inputButtonSelector);
+            inputController.setModel(this);
+
+            return this._toolbarDecoratorFactory([labelController, inputController]);
+        }
+
+        public _entryToDescription(entry: templa.mvc.composite.IAbstractStackControllerModelEntry): any {
+            return entry.data;
+        }
+
+        public _parseEntryDescription(description: string): templa.mvc.composite.IAbstractStackControllerModelEntry {
+            var controller = this._createController(description);
+            return {
+                controller: controller,
+                data: description
+            };
         }
     }
 

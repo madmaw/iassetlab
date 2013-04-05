@@ -28,6 +28,17 @@ module templa.samples.mvc.hello_you {
             this._name = value;
             this._fireModelChangeEvent(new templa.mvc.ModelChangeEvent());
         }
+
+        public createStateDescription(models?: templa.mvc.IModel[]): any {
+            models = this._checkModels(models);
+            return this._name;
+        }
+
+        public loadStateDescription(description: any) {
+            this._name = description;
+        }
+
+
     }
 
 }

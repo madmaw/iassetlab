@@ -16,21 +16,23 @@
     overflow-x: hidden;
 }
 
-#tab_pane > div {
-    /*width: 1001px;*/
+.content_slider {
     white-space: nowrap;
 }
 
-#tab_pane > div > div {
-    width:320px;
+.content_pane {
     display: inline-block;
     white-space:  normal;
+    vertical-align: top;
 }
 
 #decorated_body {
     overflow-y: auto;
     /* ios gets 'sticky' if this isn't in here (it also looks better anyway)*/
     -webkit-overflow-scrolling: touch;
+    /* set the vertical alignment back to baseline */
+    vertical-align: baseline;
+
 }
 
 #decorated_body {
@@ -41,4 +43,5 @@ body {
     padding:0;
     /* not sure about this one - might ruin compatibility somewhere */
     /*overflow-y: hidden; */
+    overflow-y: hidden;
 }

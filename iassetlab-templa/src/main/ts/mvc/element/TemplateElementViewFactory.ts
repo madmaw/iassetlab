@@ -10,25 +10,25 @@ module templa.mvc.element {
     // Class
     export class TemplateElementViewFactory extends DocumentFragmentElementViewFactory {
 
-        public static createFromString(templateString: string, loadables?: templa.loading.ILoadable[], options?:any) {
+        public static createFromString(templateString: string, loadables?: templa.loading.ILoadable[], options?:any, divClass?:string) {
             var templateSource = new templa.template.StringHandlebarsTemplateSource(templateString);
             if (loadables != null) {
                 loadables.push(templateSource);
             }
-            return new TemplateElementViewFactory(templateSource, options);
+            return new TemplateElementViewFactory(templateSource, options, divClass);
         }
 
-        public static createFromURL(templateURL: string, loadables?: templa.loading.ILoadable[], options?: any) {
+        public static createFromURL(templateURL: string, loadables?: templa.loading.ILoadable[], options?: any, divClass?: string) {
             var templateSource = new templa.template.ExternalHandlebarsTemplateSource(templateURL);
             if (loadables != null) {
                 loadables.push(templateSource);
             }
-            return new TemplateElementViewFactory(templateSource, options);
+            return new TemplateElementViewFactory(templateSource, options, divClass);
         }
 
         // Constructor
-        constructor(private _templateSource: templa.template.ITemplateSource, private _options: any) {
-            super();
+        constructor(private _templateSource: templa.template.ITemplateSource, private _options: any, divClass?:string) {
+            super(null, divClass);
         }
 
         public create(container:IElementReference): templa.mvc.element.IElementView {

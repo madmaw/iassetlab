@@ -14,6 +14,8 @@ module templa.mvc {
 
     export interface IController {
 
+        getModel(): IModel;
+
         setModel(model:IModel);
 
         init(container:IElementReference):bool;
