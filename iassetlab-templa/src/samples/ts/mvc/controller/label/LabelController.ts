@@ -18,6 +18,16 @@ module templa.samples.mvc.controller.label {
             var label = labelModel.getLabel();
             this.$(this._labelElementSelector).text(label);
         }
+
+        public getTitle(): string {
+            var labelModel: ILabelModel = <ILabelModel>this.getModel();
+            return labelModel.getLabel();
+        }
+
+        public _handleModelChangeEvent(event: templa.mvc.ModelChangeEvent) {
+            super._handleModelChangeEvent(event);
+            this._fireControllerChangeEvent(new templa.mvc.ControllerChangeEvent(false, true));
+        }
     }
 
 

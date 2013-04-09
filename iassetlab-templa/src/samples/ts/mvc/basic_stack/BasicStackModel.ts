@@ -35,9 +35,27 @@ module templa.samples.mvc.basic_stack {
         requestSubmit(value: string) {
             // push a new controller
             // TODO  this should probably be created via a factory rather than explicitly done here
-            var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, "[key='"+this.labelViewKey+"']");
-            labelController.setModel(new templa.samples.mvc.controller.label.ImmutableLabelModel(value));
+            var labelController = this._createController(value);
             this._push(labelController);
         }
+
+        private _createController(value:string): templa.mvc.IController {
+            var labelController = new templa.samples.mvc.controller.label.LabelController(this.labelViewFactory, "[key='" + this.labelViewKey + "']");
+            labelController.setModel(new templa.samples.mvc.controller.label.ImmutableLabelModel(value));
+            return labelController;
+        }
+
+        public _entryToDescription(entry: templa.mvc.composite.IAbstractStackControllerModelEntry): any {
+            var model:templa.samples.mvc.controller.label.ImmutableLabelModel = <any>entry.controller.getModel();
+            return model.getLabel();
+        }
+
+        public _createEntryFromDescription(description: string): templa.mvc.composite.IAbstractStackControllerModelEntry {
+            var controller = this._createController(description);
+            return {
+                controller: controller
+            };
+        }
+
     }
 }

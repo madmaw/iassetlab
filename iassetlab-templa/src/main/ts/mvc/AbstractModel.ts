@@ -4,7 +4,7 @@ module templa.mvc {
 
     export class AbstractModel implements IModel {
         private _modelOnChangeListeners: { (source: IModel, changeEvent: ModelChangeEvent): void; }[];
-        private _stateDescriptionChangeListeners: { (source: IModel): void; }[];
+        private _stateDescriptionChangeListeners: { (source: IModel, change: IModelStateChange): void; }[];
         public _listeningForTokenChanges: bool;
 
         constructor() {
@@ -54,33 +54,33 @@ module templa.mvc {
             }
         }
 
-        public addStateDescriptionChangeListener(listener: (source: IModel) => void ) {
+        public addStateDescriptionChangeListener(listener: (source: IModel, change: IModelStateChange) => void ) {
             this._stateDescriptionChangeListeners.push(listener);
             if (this._stateDescriptionChangeListeners.length == 1) {
-                this._startedListeningForTokenChanges();
+                this._startedListeningForDescriptionChanges();
             }
         }
 
-        public removeStateDescriptionChangeListener(listener: (source: IModel) => void ) {
+        public removeStateDescriptionChangeListener(listener: (source: IModel, change: IModelStateChange) => void ) {
             templa.util.Arrays.removeElement(this._stateDescriptionChangeListeners, listener);
             if (this._stateDescriptionChangeListeners.length == 0) {
-                this._stoppedListeningForTokenChanges();
+                this._stoppedListeningForDescriptionChanges();
             }
         }
 
-        public _startedListeningForTokenChanges() {
+        public _startedListeningForDescriptionChanges() {
              
         }
 
-        public _stoppedListeningForTokenChanges() {
+        public _stoppedListeningForDescriptionChanges() {
         }
 
-        public _fireStateDescriptionChangeEvent(source: IModel) {
+        public _fireStateDescriptionChangeEvent(source: IModel, change?: IModelStateChange) {
             var fired = [];
             for (var i in this._stateDescriptionChangeListeners) {
                 var stateTokenChangeListener = this._stateDescriptionChangeListeners[i];
                 if (fired.indexOf(stateTokenChangeListener) < 0) {
-                    stateTokenChangeListener(source);
+                    stateTokenChangeListener(source, change);
                     // can end up with legitimate duplicates, don't want to fire them multiple times though
                     fired.push(stateTokenChangeListener);
                 }

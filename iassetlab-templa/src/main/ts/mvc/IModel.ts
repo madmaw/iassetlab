@@ -1,4 +1,5 @@
 ///<reference path="ModelChangeEvent.ts"/>
+///<reference path="IModelStateChange.ts"/>
 module templa.mvc {
     export interface IModel {
 
@@ -6,9 +7,9 @@ module templa.mvc {
 
         removeOnChangeListener(listener: (source: IModel, changeEvent: ModelChangeEvent) => void );
 
-        addStateDescriptionChangeListener(listener: (source: IModel) => void );
+        addStateDescriptionChangeListener(listener: (source: IModel, change:IModelStateChange) => void );
 
-        removeStateDescriptionChangeListener(listener: (source: IModel) => void );
+        removeStateDescriptionChangeListener(listener: (source: IModel, change: IModelStateChange) => void );
 
         createStateDescription(models?:IModel[]):any;
 

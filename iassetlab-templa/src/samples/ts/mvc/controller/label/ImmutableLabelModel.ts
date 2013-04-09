@@ -20,6 +20,8 @@ module templa.samples.mvc.controller.label {
         public getLabel(): string {
             return this._label;
         }
+
+        
     }
 
 }

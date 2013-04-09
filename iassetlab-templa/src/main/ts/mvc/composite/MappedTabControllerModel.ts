@@ -40,20 +40,35 @@ module templa.mvc.composite {
             this._setSelectedTabId(tabId);
         }
 
-        public _setSelectedTabId(tabId: string) {
+        public _setSelectedTabId(tabId: string, suppressModelChangeEvent?:bool) {
             if (this._selectedTabId != tabId) {
                 this._selectedTabId = tabId;
                 var selectedTabController = this._tabIdsToControllers[tabId];
                 this.setController(this._tabControllerKey, selectedTabController, true);
-                this._fireModelChangeEvent(
-                    new templa.mvc.ModelChangeEvent(
-                        [
-                            new templa.mvc.ModelChangeDescription(templa.mvc.tab.tabBarModelEventSelectedTabChange),
-                            new templa.mvc.ModelChangeDescription(templa.mvc.composite.compositeControllerModelEventControllersChanged)
-                        ]
-                    )
-                );
+                if (suppressModelChangeEvent != true) {
+                    this._fireModelChangeEvent(
+                        new templa.mvc.ModelChangeEvent(
+                            [
+                                new templa.mvc.ModelChangeDescription(templa.mvc.tab.tabBarModelEventSelectedTabChange),
+                                new templa.mvc.ModelChangeDescription(templa.mvc.composite.compositeControllerModelEventControllersChanged)
+                            ]
+                        )
+                    );
+                }
             }
+        }
+
+        public createStateDescription(models?: IModel[]): any {
+            var result = super.createStateDescription(models);
+
+            result["_selectedTabId"] = this._selectedTabId;
+
+            return result;
+        }
+
+        public loadStateDescription(description: any) {
+            super.loadStateDescription(description);
+            this._setSelectedTabId(description["_selectedTabId"], true);
         }
 
         public _getDescribedControllers(): IController[] {
@@ -68,7 +83,7 @@ module templa.mvc.composite {
         }
 
         public _getDescribedControllerKey(controller: IController): string {
-            var result = this.getControllerKey(controller);
+            var result = super._getDescribedControllerKey(controller);
             if (result == this._tabControllerKey || result == null) {
                 // need to differentiate
                 for (var key in this._tabIdsToControllers) {
@@ -78,6 +93,14 @@ module templa.mvc.composite {
                         break;
                     }
                 }
+            }
+            return result;
+        }
+
+        public _getDescribedController(key: string): IController {
+            var result = super._getDescribedController(key);
+            if (result == null) {
+                result = this._tabIdsToControllers[key];
             }
             return result;
         }

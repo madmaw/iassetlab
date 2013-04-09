@@ -64,7 +64,7 @@ module templa.samples.mvc.decorated_stack {
             return entry.data;
         }
 
-        public _parseEntryDescription(description: string): templa.mvc.composite.IAbstractStackControllerModelEntry {
+        public _createEntryFromDescription(description: string): templa.mvc.composite.IAbstractStackControllerModelEntry {
             var controller = this._createController(description);
             return {
                 controller: controller,

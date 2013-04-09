@@ -45,7 +45,7 @@ module templa.mvc.composite {
                 if (oldController != null) {
                     var oldModel = oldController.getModel();
                     if (oldModel != null) {
-                        oldModel.removeStateDescriptionChangeListener(this._stateTokenChangeListener);
+                        oldModel.removeStateDescriptionChangeListener(this._stateDescriptionChangeListener);
                     }
                 }
             }
@@ -53,7 +53,7 @@ module templa.mvc.composite {
             if (controller != null) {
                 var model = controller.getModel();
                 if (model != null) {
-                    model.addStateDescriptionChangeListener(this._stateTokenChangeListener);
+                    model.addStateDescriptionChangeListener(this._stateDescriptionChangeListener);
                 }
             }
             if (doNotFireEvent != true) {
@@ -64,6 +64,11 @@ module templa.mvc.composite {
         public _getDescribedControllerKey(controller:IController): string {
             return this.getControllerKey(controller);
         }
+
+        public _getDescribedController(key: string): IController {
+            return this._controllerMap[key];
+        }
+
 
         public createStateDescription(models?: IModel[]): any {
             models = this._checkModels(models);
@@ -87,14 +92,14 @@ module templa.mvc.composite {
 
         public loadStateDescription(description: any) {
             var result = {};
-            var controllers = this._getDescribedControllers();
-            for (var i in controllers) {
-                var controller: IController = controllers[i];
-                var model = controller.getModel();
-                if (model != null) {
-                    var key = this._getDescribedControllerKey(controller);
-                    var modelDescription = description[key];
-                    model.loadStateDescription(modelDescription);
+            for (var key in description) {
+                var controller: IController = this._getDescribedController(key);
+                if (controller != null) {
+                    var model = controller.getModel();
+                    if (model != null) {
+                        var modelDescription = description[key];
+                        model.loadStateDescription(modelDescription);
+                    }
                 }
             }
         }

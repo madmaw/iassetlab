@@ -6,14 +6,14 @@ module templa.mvc.composite {
     // Class
     export class AbstractCompositeControllerModel extends AbstractModel implements ICompositeControllerModel {
 
-        public _stateTokenChangeListener: (source: IModel) => void;
+        public _stateDescriptionChangeListener: (source: IModel, change:IModelStateChange) => void;
 
         constructor() {
             super();
-            this._stateTokenChangeListener = (source: IModel) => {
+            this._stateDescriptionChangeListener = (source: IModel, change: IModelStateChange) => {
                 if (source != this) {
                     // models can be shared between controllers so we need to be careful we don't propogate our own events 
-                    this._fireStateDescriptionChangeEvent(source);
+                    this._fireStateDescriptionChangeEvent(source, change);
                 }
             };
         }
@@ -35,8 +35,8 @@ module templa.mvc.composite {
             return [];
         }
 
-        public _startedListeningForTokenChanges() {
-            super._startedListeningForTokenChanges();
+        public _startedListeningForDescriptionChanges() {
+            super._startedListeningForDescriptionChanges();
             var controllers = this._getDescribedControllers();
             if (controllers != null) {
                 // listen on the models for all the controllers
@@ -44,21 +44,21 @@ module templa.mvc.composite {
                     var controller = controllers[i];
                     var model: IModel = controller.getModel();
                     if (model != null) {
-                        model.addStateDescriptionChangeListener(this._stateTokenChangeListener);
+                        model.addStateDescriptionChangeListener(this._stateDescriptionChangeListener);
                     }
                 }
             }
         }
 
-        public _stoppedListeningForTokenChanges() {
-            super._startedListeningForTokenChanges();
+        public _stoppedListeningForDescriptionChanges() {
+            super._startedListeningForDescriptionChanges();
             var controllers = this._getDescribedControllers();
             if (controllers != null) {
                 for (var i in controllers) {
                     var controller = controllers[i];
                     var model: IModel = controller.getModel();
                     if (model != null) {
-                        model.removeStateDescriptionChangeListener(this._stateTokenChangeListener);
+                        model.removeStateDescriptionChangeListener(this._stateDescriptionChangeListener);
                     }
                 }
             }
@@ -96,6 +96,7 @@ module templa.mvc.composite {
                 }
             }
         }
+
     }
 
 }

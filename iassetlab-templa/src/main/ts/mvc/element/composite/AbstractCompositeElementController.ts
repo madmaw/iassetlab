@@ -6,10 +6,14 @@ module templa.mvc.element.composite {
     export class AbstractCompositeElementController extends templa.mvc.element.AbstractElementController {
 
         public _controllers: templa.mvc.IController[];
+        private _controllerOnChangeListener: (controller:IController, event:ControllerChangeEvent) => void;
 
         constructor(viewFactory: templa.mvc.element.IElementViewFactory) {
             super(viewFactory);
             this._controllers = [];
+            this._controllerOnChangeListener = (controller: IController, event: ControllerChangeEvent) => {
+                this._fireControllerChangeEvent(event);
+            };
         }
 
         public _doLoad(model: templa.mvc.IModel) {
@@ -30,9 +34,11 @@ module templa.mvc.element.composite {
                 var state = this.getState();
                 for (var i in this._controllers) {
                     var controller = this._controllers[i];
+
                     // check state
                     if (state >= templa.mvc.ControllerStateInitialized) {
                         if (state >= templa.mvc.ControllerStateStarted) {
+                            controller.removeOnChangeListener(this._controllerOnChangeListener);
                             controller.stop();
                         }
                         controller.destroy();
@@ -94,6 +100,7 @@ module templa.mvc.element.composite {
             if (state >= ControllerStateInitialized) {
                 controller.init(container);
                 if (state >= ControllerStateStarted) {
+                    controller.addOnChangeListener(this._controllerOnChangeListener);
                     controller.start();
                 }
             }
@@ -112,6 +119,7 @@ module templa.mvc.element.composite {
                 if (state >= ControllerStateInitialized) {
                     if (state >= ControllerStateStarted) {
                         controller.stop();
+                        controller.removeOnChangeListener(this._controllerOnChangeListener);
                     }
                     controller.destroy(detachView);
                 }
@@ -122,10 +130,14 @@ module templa.mvc.element.composite {
             }
         }
 
+        public _handleModelChangeEvent(event: templa.mvc.ModelChangeEvent) {
+            super._handleModelChangeEvent(event);
+            this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
+        }
+
         public getControllerContainer(controller: templa.mvc.IController): IElementReference {
             return new ViewRootElementReference(this._view);;
         }
-
 
         public getCommands(): templa.mvc.Command[] {
             var commands: templa.mvc.Command[] = [];

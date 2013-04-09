@@ -11,6 +11,32 @@ module templa.mvc.composite {
         data?: any;
     }
 
+    export class AbstractStackControllerModelPushChange implements IModelStateChange {
+        constructor(private _model: AbstractStackControllerModel, private _entry: IAbstractStackControllerModelEntry) {
+        }
+
+        public undo() {
+            this._model._deStack(this._entry.controller, false, true);
+        }
+
+        public redo() {
+            this._model._pushEntry(this._entry, false, true);
+        }
+    }
+
+    export class AbstractStackControllerModelPopChange implements IModelStateChange {
+        constructor(private _model: AbstractStackControllerModel, private _entry: IAbstractStackControllerModelEntry) {
+        }
+
+        public undo() {
+            this._model._pushEntry(this._entry, false, true);
+        }
+
+        public redo() {
+            this._model._deStack(this._entry.controller, false, true);
+        }
+    }
+
     // Class
     export class AbstractStackControllerModel extends AbstractCompositeControllerModel implements IStackControllerModel {
 
@@ -46,12 +72,35 @@ module templa.mvc.composite {
             this._pop();
         }
 
-        public _pop(): bool {
+        public _deStack(controller: IController, suppressFireModelChangeEvent?:bool, suppressFireDescriptionChangeEvent?:bool): void {
+            // pop or just silently remove as required
+            if (this.peek == controller) {
+                this._pop(suppressFireModelChangeEvent, suppressFireDescriptionChangeEvent);
+            } else {
+                // just remove it silently
+                for (var i in this._stack) {
+                    var entry = this._stack[i];
+                    if (entry.controller == controller) {
+                        this._stack.splice(<any>i, 1);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public _pop(suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): bool {
             var result;
             if (this._stack.length > 0) {
                 var previousController = this._stack[this._stack.length - 1].controller;
-                this._stack.splice(this._stack.length - 1, 1);
-                this._fireModelChangeEvent(new StackControllerModelChangeDescription(stackControllerModelEventPopped, previousController, this.peek));
+                var entries = this._stack.splice(this._stack.length - 1, 1);
+                if (suppressFireModelChangeEvent != true) {
+                    var changeDescription = new StackControllerModelChangeDescription(stackControllerModelEventPopped, previousController, this.peek);
+                    // TODO need a popchange (reverse of push change)
+                    this._fireModelChangeEvent(changeDescription, true);
+                    if (suppressFireDescriptionChangeEvent != true) {
+                        this._fireStateDescriptionChangeEvent(this, new AbstractStackControllerModelPopChange(this, entries[0]));
+                    }
+                }
                 result = true;
             } else {
                 result = false;
@@ -65,12 +114,15 @@ module templa.mvc.composite {
                 data: data
             });
         }
-        public _pushEntry(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?:bool) {
+        public _pushEntry(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool) {
             var previousController = this.peek;
             this._stack.push(entry);
             if (suppressFireModelChangeEvent != true) {
                 var description = new StackControllerModelChangeDescription(stackControllerModelEventPushed, previousController, entry.controller);
-                this._fireModelChangeEvent(description);
+                this._fireModelChangeEvent(description, true);
+                if (suppressFireDescriptionChangeEvent != true) {
+                    this._fireStateDescriptionChangeEvent(this, new AbstractStackControllerModelPushChange(this, entry));
+                }
             }
         }
 
@@ -97,9 +149,13 @@ module templa.mvc.composite {
 
         public loadStateDescription(description: any) {
             var descriptions: any[] = description;
+            // remove everything (TODO would be nice if we tried to reuse the controllers instead)
+            while (!this.isStackEmpty()) {
+                this._pop(true);
+            }
             for (var i in descriptions) {
                 var controllerDescription = descriptions[i];
-                var entry = this._loadEntryFromDescription(controllerDescription);
+                var entry = this._createEntryFromDescription(controllerDescription);
                 if (entry != null) {
                     this._pushEntry(entry, true);
                 }
@@ -110,7 +166,7 @@ module templa.mvc.composite {
             return null;
         }
 
-        public _loadEntryFromDescription(description: any): IAbstractStackControllerModelEntry {
+        public _createEntryFromDescription(description: any): IAbstractStackControllerModelEntry {
             return null;
         }
     }
