@@ -5,17 +5,24 @@
 module templa.mvc.element {
     export class DocumentFragmentElementView implements IElementView {
 
-        public static createFromHTML(html: string, container: IElementReference, id: string, divClass?:string) {
+        public static createFromHTML(html: string, container: IElementReference, id: string) {
             var fragment: DocumentFragment = document.createDocumentFragment();
             var element = document.createElement("div");
-            element.setAttribute("id", id);
-            if (divClass != null) {
-                element.setAttribute("class", divClass);
-            }
             if (html != null) {
                 element.innerHTML = html;
             }
-            fragment.appendChild(element);
+            var childNodes = element.childNodes;
+            for (var i in childNodes) {
+                var childNode: Node = childNodes[i];
+                if (childNode instanceof Element) {
+                    //element.removeChild(childNode);
+                    // don't actually need to clone it
+                    //var clone:Element = <any>childNode;
+                    var clone: Element = <any>childNode.cloneNode(true);
+                    clone.setAttribute("view_id", id);
+                    fragment.appendChild(clone);
+                }
+            }
 
             return new DocumentFragmentElementView(fragment, container, id);
         }
@@ -24,6 +31,9 @@ module templa.mvc.element {
 
         constructor(private _fragment:DocumentFragment, private _container: IElementReference, private _id: string) {
             this._attached = false;
+            if (this._container == null) {
+                throw new Error("no container!");
+            }
         }
 
         public attach() {
@@ -32,9 +42,10 @@ module templa.mvc.element {
         }
 
         public detach() {
-            var element = this._element;
-            if (element != null) {
-                var container:Node = this._container.resolve();
+            var elements = this.getRoots();
+            var container: Node = this._container.resolve();
+            for (var i in elements) {
+                var element = elements[i];
                 container.removeChild(element);
             }
             this._attached = false;
@@ -53,15 +64,25 @@ module templa.mvc.element {
         }
 
         public getRoots():Node[] {
-            var element = this._element;
             var roots = [];
-            if (element != null) {
-                roots.push(element);
+            var childNodes;
+            if (this._attached) {
+                var container = this._container.resolve();
+                childNodes = container.childNodes;
+            } else {
+                childNodes = this._fragment.childNodes;
+            }
+            for (var i in childNodes) {
+                var childNode: Element = childNodes[i];
+                if (childNode instanceof Element && childNode.getAttribute("view_id") == this._id) {
+                    roots.push(childNode);
+                }
             }
             return roots;
             //return this.getChildren();
         }
 
+        /*
         public get _element(): Node {
             // find ourselves
             var childNodes;
@@ -79,5 +100,6 @@ module templa.mvc.element {
             }
             return null;
         }
+    */
     }
 }

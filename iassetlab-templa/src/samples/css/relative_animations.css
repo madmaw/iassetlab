@@ -1,15 +1,15 @@
 ﻿/** animations take into account the relative position of the views being added: the margin values interact with eachother, which is why the numbers look weird */
 
-.animation-stack-push-add {
+.animation-relative-push-add {
     -webkit-animation-duration: 1s;
     -moz-animation-duration: 1s;
     animation-duration: 1s;
-    -webkit-animation-name: animation-stack-push-add-keyframes;
-    -moz-animation-name: animation-stack-push-add-keyframes;
-    animation-name: animation-stack-push-add-keyframes;
+    -webkit-animation-name: animation-relative-push-add-keyframes;
+    -moz-animation-name: animation-relative-push-add-keyframes;
+    animation-name: animation-relative-push-add-keyframes;
 }
 
-@-webkit-keyframes animation-stack-push-add-keyframes{
+@-webkit-keyframes animation-relative-push-add-keyframes{
     from {
         margin-left: 0%;
     }
@@ -18,7 +18,7 @@
     }
 }
 
-@-moz-keyframes animation-stack-push-add-keyframes{
+@-moz-keyframes animation-relative-push-add-keyframes{
     from {
         margin-left: 0%;
     }
@@ -27,7 +27,7 @@
     }
 }
 
-@keyframes animation-stack-push-add-keyframes{
+@keyframes animation-relative-push-add-keyframes{
     from {
         margin-left: 0%;
     }
@@ -37,17 +37,17 @@
 }
 
 
-.animation-stack-push-remove {
+.animation-relative-push-remove {
     -webkit-animation-duration: 1s;
     -moz-animation-duration: 1s;
     animation-duration: 1s;
-    -webkit-animation-name: animation-stack-push-remove-keyframes;    
-    -moz-animation-name: animation-stack-push-remove-keyframes;    
-    animation-name: animation-stack-push-remove-keyframes;    
+    -webkit-animation-name: animation-relative-push-remove-keyframes;    
+    -moz-animation-name: animation-relative-push-remove-keyframes;    
+    animation-name: animation-relative-push-remove-keyframes;    
 }
 
 
-@-webkit-keyframes animation-stack-push-remove-keyframes{
+@-webkit-keyframes animation-relative-push-remove-keyframes{
     from {
         margin-left: 0%;
     }
@@ -56,7 +56,7 @@
     }
 }
 
-@-moz-keyframes animation-stack-push-remove-keyframes{
+@-moz-keyframes animation-relative-push-remove-keyframes{
     from {
         margin-left: 0%;
     }
@@ -65,7 +65,7 @@
     }
 }
 
-@keyframes animation-stack-push-remove-keyframes{
+@keyframes animation-relative-push-remove-keyframes{
     from {
         margin-left: 0%;
     }
@@ -75,16 +75,16 @@
 }
 
 
-.animation-stack-pop-add {
+.animation-relative-pop-add {
     -webkit-animation-duration: 1s;
     -moz-animation-duration: 1s;
     animation-duration: 1s;
-    -webkit-animation-name: animation-stack-pop-add-keyframes;    
-    -moz-animation-name: animation-stack-pop-add-keyframes;    
-    animation-name: animation-stack-pop-add-keyframes;    
+    -webkit-animation-name: animation-relative-pop-add-keyframes;    
+    -moz-animation-name: animation-relative-pop-add-keyframes;    
+    animation-name: animation-relative-pop-add-keyframes;    
 }
 
-@-webkit-keyframes animation-stack-pop-add-keyframes{
+@-webkit-keyframes animation-relative-pop-add-keyframes{
     from {
         margin-left: -200%;
     }
@@ -93,7 +93,7 @@
     }
 }
 
-@-moz-keyframes animation-stack-pop-add-keyframes{
+@-moz-keyframes animation-relative-pop-add-keyframes{
     from {
         margin-left: -200%;
     }
@@ -102,7 +102,7 @@
     }
 }
 
-@keyframes animation-stack-pop-add-keyframes{
+@keyframes animation-relative-pop-add-keyframes{
     from {
         margin-left: -200%;
     }
@@ -112,16 +112,16 @@
 }
 
 
-.animation-stack-pop-remove {
+.animation-relative-pop-remove {
     -webkit-animation-duration: 1s;
     -moz-animation-duration: 1s;
     animation-duration: 1s;
-    -webkit-animation-name: animation-stack-pop-remove-keyframes;    
-    -moz-animation-name: animation-stack-pop-remove-keyframes;    
-    animation-name: animation-stack-pop-remove-keyframes;    
+    -webkit-animation-name: animation-relative-pop-remove-keyframes;    
+    -moz-animation-name: animation-relative-pop-remove-keyframes;    
+    animation-name: animation-relative-pop-remove-keyframes;    
 }
 
-@-webkit-keyframes animation-stack-pop-remove-keyframes{
+@-webkit-keyframes animation-relative-pop-remove-keyframes{
     from {
         margin-left: 0%;
     }
@@ -130,7 +130,7 @@
     }
 }
 
-@-moz-keyframes animation-stack-pop-remove-keyframes{
+@-moz-keyframes animation-relative-pop-remove-keyframes{
     from {
         margin-left: 0%;
     }
@@ -140,7 +140,7 @@
 }
 
 
-@keyframes animation-stack-pop-remove-keyframes{
+@keyframes animation-relative-pop-remove-keyframes{
     from {
         margin-left: 0%;
     }

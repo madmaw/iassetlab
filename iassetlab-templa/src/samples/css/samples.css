@@ -1,18 +1,48 @@
-﻿.selected {
+﻿* {
+    font-family: 'Trebuchet MS', Verdana, Arial, sans-serif;
+}
+
+html, body, #tab, .loading_container, .tab_pane, .content_pane, .decorated_body {
+}
+
+.selected {
     font-weight: bold;
 }
 
-#tab_bar_container {
+.decorated_toolbar_container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.tab_bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.tab_bar_container {
     display: block;
 }
 
-#tab_bar_container > div {
+.tab_bar_button {
+    color: #ffffff;
+}
+
+.toolbar_button_normal, .toolbar_button_back {
+    color: #dddddd;
+    font-size: small;
+}
+
+.tab_bar_container > div {
     display: inline-block;
     text-align: center;
     width: 25%;
 }
 
-#tab_pane {
+.tab_pane {
     overflow-x: hidden;
 }
 
@@ -24,18 +54,23 @@
     display: inline-block;
     white-space:  normal;
     vertical-align: top;
+    width:100%; 
 }
 
-#decorated_body {
-    overflow-y: auto;
-    /* ios gets 'sticky' if this isn't in here (it also looks better anyway)*/
-    -webkit-overflow-scrolling: touch;
+.decorated_body {
     /* set the vertical alignment back to baseline */
     vertical-align: baseline;
+    z-index:1;
 
 }
 
-#decorated_body {
+.decorated_toolbar {
+    display:table;
+    width: 100%;
+}
+.toolbar_buttons_container {
+    display:table-cell;
+    vertical-align:middle;
 }
 
 body {
@@ -43,5 +78,7 @@ body {
     padding:0;
     /* not sure about this one - might ruin compatibility somewhere */
     /*overflow-y: hidden; */
-    overflow-y: hidden;
+    /* ios gets 'sticky' if this isn't in here (it also looks better anyway)*/
+    -webkit-overflow-scrolling: touch;
+
 }

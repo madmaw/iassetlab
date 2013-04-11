@@ -7,6 +7,15 @@
 
 //  this doesn't actually use an JQuery features
 module templa.mvc.element.jquery.composite {
+
+    export interface IStackAnimationFactoryBundle {
+        popAddAnimationFactory?: templa.animation.element.IElementAnimationFactory;
+        popRemoveAnimationFactory?: templa.animation.element.IElementAnimationFactory;
+        pushAddAnimationFactory?: templa.animation.element.IElementAnimationFactory;
+        pushRemoveAnimationFactory?: templa.animation.element.IElementAnimationFactory;
+        selector?: string;
+    }
+
     export class StackJQueryController extends AbstractCompositeJQueryController {
 
         private _backCommand: Command;
@@ -15,10 +24,7 @@ module templa.mvc.element.jquery.composite {
 
         constructor(
             viewFactory: templa.mvc.element.IElementViewFactory,
-            private _popAddAnimationFactory?: templa.animation.element.IElementAnimationFactory,
-            private _popRemoveAnimationFactory?: templa.animation.element.IElementAnimationFactory,
-            private _pushAddAnimationFactory?: templa.animation.element.IElementAnimationFactory,
-            private _pushRemoveAnimationFactory?: templa.animation.element.IElementAnimationFactory
+            private _animationFactoryBundles:IStackAnimationFactoryBundle[]
         ) {
             super(viewFactory);
             this.removedAnimatedChildren = [];
@@ -40,25 +46,41 @@ module templa.mvc.element.jquery.composite {
             if ( stackChangeDescription != null ) {
                 var stackDescription: templa.mvc.composite.StackControllerModelChangeDescription = stackChangeDescription;
 
-                var addAnimationFactory;
-                var removeAnimationFactory;
+                var addAnimationFactoryName:string;
+                var removeAnimationFactoryName:string;
                 
                 if (stackDescription.changeType == templa.mvc.composite.stackControllerModelEventPushed) {
-                    addAnimationFactory = this._pushAddAnimationFactory;
-                    removeAnimationFactory = this._pushRemoveAnimationFactory;
+                    addAnimationFactoryName = "pushAddAnimationFactory";
+                    removeAnimationFactoryName = "pushRemoveAnimationFactory";
                 } else {
-                    addAnimationFactory = this._popAddAnimationFactory;
-                    removeAnimationFactory = this._popRemoveAnimationFactory;
+                    addAnimationFactoryName = "popAddAnimationFactory";
+                    removeAnimationFactoryName = "popRemoveAnimationFactory";
                 }
 
                 var hiddenController = stackDescription.previousController;
                 if (hiddenController != null) {
                     var maxState: number;
                     var hiddenView: IElementView;
-                    if (removeAnimationFactory != null && this.getState() >= ControllerStateInitialized ) {
+                    if (this.getState() >= ControllerStateInitialized ) {
                         var container = this.getControllerContainer(hiddenController);
-                        hiddenView = <any>hiddenController.getView();
                         maxState = ControllerStateInitialized;
+                        hiddenView = <any>hiddenController.getView();
+                        var animated = this._animate(
+                            container,
+                            hiddenView,
+                            removeAnimationFactoryName,
+                            this,
+                            (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => {
+                                if (event.animationState == templa.animation.animationStateFinished) {
+                                    hiddenView.detach();
+                                }
+                            }
+                        );
+                        if (!animated) {
+                            // remove immediately
+                            hiddenView = null;
+                        }
+                        /*
                         var roots: Node[] = hiddenView.getRoots();
                         for (var i in roots) {
                             var root = roots[i];
@@ -70,6 +92,7 @@ module templa.mvc.element.jquery.composite {
                             });
                             this._addAnimation(animation, false);
                         }
+                        */
                     } else {
                         maxState = null;
                         hiddenView = null;
@@ -81,17 +104,18 @@ module templa.mvc.element.jquery.composite {
                 if (pushedController != null) {
 
                     this._add(pushedController);
-                    if (addAnimationFactory != null) {
-                        var pushedView: IElementView = <any>pushedController.getView();
-                        var container = this.getControllerContainer(pushedController);
-                        var roots: Node[] = pushedView.getRoots();
-                        for (var i in roots) {
-                            var root = roots[i];
-                            var animation = addAnimationFactory.create(<any>container, <any>root);
-                            // add it to the controller so it can manage its own animations
-                            pushedController.addAnimation(animation);
-                        }
+                    var pushedView: IElementView = <any>pushedController.getView();
+                    var container = this.getControllerContainer(pushedController);
+                    this._animate(container, pushedView, addAnimationFactoryName, <AbstractController>pushedController);
+                    /*
+                    var roots: Node[] = pushedView.getRoots();
+                    for (var i in roots) {
+                        var root = roots[i];
+                        var animation = addAnimationFactory.create(<any>container, <any>root);
+                        // add it to the controller so it can manage its own animations
+                        pushedController.addAnimation(animation);
                     }
+                        */
                 }
             } else {
                 super._handleModelChangeEvent(event);
@@ -115,6 +139,37 @@ module templa.mvc.element.jquery.composite {
             }
             
             return commands;
+        }
+
+        private _animate(container: IElementReference, view: IElementView, animationFactoryName: string, ownerController: AbstractController, animationCompletionListener?: (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => void ): bool {
+            var result: bool = false;
+
+            var roots: Node[] = view.getRoots();
+            for (var i in this._animationFactoryBundles) {
+                var animationFactoryBundle:IStackAnimationFactoryBundle = this._animationFactoryBundles[i];
+                var animationFactory = animationFactoryBundle[animationFactoryName];
+                if (animationFactory != null) {
+                    var selector = animationFactoryBundle.selector;
+                    var jquery: JQuery = $(<Element[]>roots);
+                    if (selector != null) {
+                        var self: JQuery = $(<Element[]>roots).filter(selector);
+                        jquery = jquery.find(selector).add(self);
+                    }
+                    var containerElement = container.resolve();
+                    for (var j = 0; j < jquery.length; j++) {
+                        var toAnimate = jquery.get(j);
+                        var animation = animationFactory.create(containerElement, <any>toAnimate);
+                        result = true;
+                        if (animationCompletionListener) {
+                            // TODO aggregate all the animation completions into one callback
+                            animation.addAnimationListener(animationCompletionListener);
+                        }
+                        ownerController._addAnimation(animation, false);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

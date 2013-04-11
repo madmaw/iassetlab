@@ -18,13 +18,15 @@ import java.io.File;
 public class FileFrameConsumerFactory implements FrameConsumerFactory {
 
     private File directory;
+    private boolean append;
 
-    public FileFrameConsumerFactory(File directory) {
+    public FileFrameConsumerFactory(File directory, boolean append) {
         this.directory = directory;
+        this.append = append;
     }
 
     @Override
     public FrameConsumer create(AssetContext context) {
-        return new FileFrameConsumer(directory);
+        return new FileFrameConsumer(directory, append);
     }
 }

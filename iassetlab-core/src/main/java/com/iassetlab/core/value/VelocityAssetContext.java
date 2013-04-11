@@ -4,6 +4,7 @@ import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.util.AssetContextHelper;
 import org.apache.velocity.context.AbstractContext;
+import org.apache.velocity.context.Context;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,12 +25,17 @@ public class VelocityAssetContext extends AbstractContext {
 
     public class NamedValue {
         private AssetValue value;
+        private String ref;
 
-        public NamedValue(AssetValue value) {
+        public NamedValue(AssetValue value, String ref) {
             this.value = value;
+            this.ref = ref;
         }
 
         public String getValue() {
+            if( value == null ) {
+                throw new RuntimeException("missing value! "+ref);
+            }
             return value.getValue(assetContext);
         }
 
@@ -44,7 +50,8 @@ public class VelocityAssetContext extends AbstractContext {
     };
 
 
-    public VelocityAssetContext(AssetContext assetContext) {
+    public VelocityAssetContext(AssetContext assetContext, Context context) {
+        super(context);
         this.assetContext = assetContext;
         this.internalVariables = new HashMap<>();
     }
@@ -54,7 +61,9 @@ public class VelocityAssetContext extends AbstractContext {
         Object result = this.internalVariables.get(s);
         if( result == null ) {
             AssetValue value = this.assetContext.get(s);
-            result = new NamedValue(value);
+            if( value != null ) {
+                result = new NamedValue(value, s);
+            }
         }
         return result;
     }

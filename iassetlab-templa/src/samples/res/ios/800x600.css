@@ -1,0 +1,72 @@
+.decorated_toolbar {
+    background:url('800x600/toolbar_background.png');
+}
+
+.tab_bar {
+    background:url('800x600/tabbar_background.png');
+}
+
+.toolbar_button_normal {
+    -ms-border-image:url('800x600/toolbar_button_normal.png') 8 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    -moz-border-image:url('800x600/toolbar_button_normal.png') 8 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    -webkit-border-image:url('800x600/toolbar_button_normal.png') 8 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    -o-border-image:url('800x600/toolbar_button_normal.png') 8 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+    border-image:url('800x600/toolbar_button_normal.png') 8 $toolbar_button_rounding_times $toolbar_button_rounding_times $toolbar_button_rounding_times fill stretch stretch;
+}
+
+.toolbar_button_back {
+    -ms-border-image:url('800x600/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+    -moz-border-image:url('800x600/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+    -webkit-border-image:url('800x600/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+    -o-border-image:url('800x600/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+    border-image:url('800x600/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+}
+
+.tab_bar {
+    height:60px;
+}
+
+.decorated_toolbar {
+    height:60px;
+}
+
+.toolbar_buttons_container {
+    padding-bottom:4px;
+}
+
+.toolbar_buttons_container {
+    padding-left:16px;
+}
+
+.toolbar_buttons_container {
+    padding-right:16px;
+}
+
+.toolbar_button_normal {
+    border-width:8px 8px 8px 8px;
+}
+
+.toolbar_button_back {
+    border-width:8px 8px 8px 16px;
+}
+
+.decorated_body {
+    padding-right:16px;
+}
+
+.decorated_body {
+    padding-left:16px;
+}
+
+.decorated_body {
+    background:#dddddd;
+}
+
+.decorated_body {
+    padding-top:60px;
+}
+
+.decorated_body {
+    padding-bottom:60px;
+}
+

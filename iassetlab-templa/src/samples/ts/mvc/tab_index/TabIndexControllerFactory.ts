@@ -4,6 +4,7 @@
 ///<reference path="../../../../main/ts/mvc/loading/LoadableProxyingLoadingControllerModel.ts"/>
 ///<reference path="../../../../main/ts/mvc/loading/SwitchOnLoadingCompositeControllerModel.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/loading/ProgressBarLoadingJQueryUIController.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/command/IdDelegatingCommandJQueryViewDescriptionFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/tab/TabBarJQueryController.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/tab/MappedTabBarTabJQueryViewDescriptionFactory.ts"/>
 ///<reference path="../hello_world/HelloWorldControllerFactory.ts"/>
@@ -24,7 +25,9 @@ module templa.samples.mvc.tab_index {
 
         public create(): templa.mvc.IController {
 
-            var loadingSwitcherViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory();
+            var loadingSwitcherViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/tab_index/loading_container.html"
+            );
             var loadingSwitcherController = new templa.mvc.element.jquery.composite.AbstractCompositeJQueryController(
                 loadingSwitcherViewFactory
             );
@@ -43,27 +46,36 @@ module templa.samples.mvc.tab_index {
             var decoratorViewFactory: templa.mvc.element.IElementViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
                 "src/samples/handlebars/decorated_stack/decorator.html",
                 loadables,
-                { toolbar_key: decoratorToolbarControllerKey, view_key: decoratorBodyControllerKey, toolbar_container_key: decoratorToolbarContainerKey },
-                "content_pane"
+                { toolbar_key: decoratorToolbarControllerKey, view_key: decoratorBodyControllerKey, toolbar_container_key: decoratorToolbarContainerKey }
+                
             );
-            var localFixedHeightSelectors = ["#" + decoratorToolbarContainerKey, "#" + tabBarKey];
+            var localFixedHeightSelectors = ["." + decoratorToolbarContainerKey, "." + tabBarKey];
             // for the height
-            decoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(decoratorViewFactory, "#" + decoratorBodyControllerKey, null, localFixedHeightSelectors);
+            //decoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(decoratorViewFactory, "#" + decoratorBodyControllerKey, null, localFixedHeightSelectors);
             // for the width
-            decoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(decoratorViewFactory, null, [], null);
+            //decoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(decoratorViewFactory, null, [], null);
 
 
             var toolbarBackViewKey = "back";
             var toolbarGeneralViewKey = "general";
             var toolbarViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
-                "src/samples/handlebars/decorated_stack/toolbar.html",
+                "src/samples/handlebars/toolbar/toolbar.html",
                 loadables,
                 { back_buttons: toolbarBackViewKey, general_buttons: toolbarGeneralViewKey }
             );
 
-            var toolbarCommandElementViewFactory = templa.mvc.element.jquery.command.TemplateCommandJQueryViewDescriptionFactory.createFromURL(
-                "src/samples/handlebars/decorated_stack/command.html",
+            var toolbarNormalCommandElementViewFactory = templa.mvc.element.jquery.command.TemplateCommandJQueryViewDescriptionFactory.createFromURL(
+                "src/samples/handlebars/toolbar/button_normal.html",
                 loadables
+            );
+            var toolbarBackCommandElementViewFactory:templa.mvc.element.jquery.command.ICommandJQueryViewDescriptionFactory = templa.mvc.element.jquery.command.TemplateCommandJQueryViewDescriptionFactory.createFromURL(
+                "src/samples/handlebars/toolbar/button_back.html",
+                loadables
+            );
+
+            var toolbarCommandElementViewFactory = new templa.mvc.element.jquery.command.IdDelegatingCommandJQueryViewDescriptionFactory(
+                toolbarNormalCommandElementViewFactory,
+                <any>{ back: toolbarBackCommandElementViewFactory }
             );
 
             var decoratorFactory = function(controllers: templa.mvc.IController[]):templa.mvc.IController {
@@ -144,12 +156,12 @@ module templa.samples.mvc.tab_index {
                 ".tab_bar_button_root"
             );
             var tabBarViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory(
-                "<div id = '" + tabBarContainerId + "' > </div>"
+                "<div class = '" + tabBarContainerId + "' > </div>"
             );
             var tabBarController = new templa.mvc.element.jquery.tab.TabBarJQueryController(
                 tabBarViewFactory,
                 tabBarViewDescriptionFactory,
-                "#" + tabBarContainerId,
+                "." + tabBarContainerId,
                 "selected"
             );
 

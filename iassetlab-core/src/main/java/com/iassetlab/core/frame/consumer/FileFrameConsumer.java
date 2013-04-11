@@ -20,9 +20,13 @@ import java.util.Comparator;
 public class FileFrameConsumer extends AbstractFrameConsumer {
 
     private File directory;
+    private boolean append;
+    private boolean first;
 
-    public FileFrameConsumer(File directory) {
+    public FileFrameConsumer(File directory, boolean append) {
         this.directory = directory;
+        this.append = append;
+        this.first = true;
     }
 
     @Override
@@ -47,7 +51,8 @@ public class FileFrameConsumer extends AbstractFrameConsumer {
         fileDirectory.mkdirs();
         File file = new File(fileDirectory, fileFilename);
 
-        OutputStream outs = new FileOutputStream(file);
+        OutputStream outs = new FileOutputStream(file, this.append && !this.first);
+        this.first = false;
         try {
             IOUtils.copy(frameData, outs);
         } finally {

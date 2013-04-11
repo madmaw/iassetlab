@@ -15,7 +15,7 @@ module templa.samples.mvc.hello_you {
 
         public createLabelController(): templa.mvc.IController {
 
-            var labelViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory("Hello <span key='name_element'></span>!");
+            var labelViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory("<div>Hello <span key='name_element'></span>!</div>");
             var labelController = new templa.samples.mvc.controller.label.LabelController(labelViewFactory, "[key='name_element']");
             labelController.setModel(this._model);
             return labelController;
@@ -40,7 +40,7 @@ module templa.samples.mvc.hello_you {
             );
 
             var viewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory(
-                "<div id = '" + idOutput + "' > </div><div id = '" + idInput + "' > </div>"
+                "<div class = '" + idOutput + "' > </div><div class = '" + idInput + "' > </div>"
             );
 
             var controller = new templa.mvc.element.jquery.composite.KeyedJQueryController(

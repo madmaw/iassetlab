@@ -10,8 +10,10 @@ module templa.mvc.element {
 
     export class DocumentFragmentElementViewFactory implements IElementViewFactory {
 
-        constructor(private _html?:string, private _class?:string) {
-
+        constructor(private _html?:string) {
+            if (this._html == null) {
+                this._html = "<div></div>";
+            }
         }
 
         public create(container: IElementReference): IElementView {
@@ -22,7 +24,7 @@ module templa.mvc.element {
             var count: number = divElementCount;
             var id = "__div_ele_" + count;
             divElementCount++;
-            return DocumentFragmentElementView.createFromHTML(html, container, id, this._class);
+            return DocumentFragmentElementView.createFromHTML(html, container, id);
         }
     }
 }

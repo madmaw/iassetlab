@@ -5,6 +5,7 @@ import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.DataPath;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.context.Context;
 
 import java.io.StringWriter;
 
@@ -21,12 +22,20 @@ public class VelocityAssetValue implements AssetValue {
     private DataPath sourceDataPath;
     private String valueTemplate;
     private String nameTemplate;
+    private Context globalContext;
 
-    public VelocityAssetValue(VelocityEngine velocityEngine, DataPath sourceDataPath, String nameTemplate, String valueTemplate) {
+    public VelocityAssetValue(
+            VelocityEngine velocityEngine,
+            Context globalContext,
+            DataPath sourceDataPath,
+            String nameTemplate,
+            String valueTemplate
+    ) {
         this.velocityEngine = velocityEngine;
         this.sourceDataPath = sourceDataPath;
         this.valueTemplate = valueTemplate;
         this.nameTemplate = nameTemplate;
+        this.globalContext = globalContext;
     }
 
     @Override
@@ -38,8 +47,12 @@ public class VelocityAssetValue implements AssetValue {
     public String getValue(AssetContext context) {
         // evaluate
         StringWriter sw = new StringWriter();
-        VelocityAssetContext velocityContext = new VelocityAssetContext(context);
-        this.velocityEngine.evaluate(velocityContext, sw, VelocityAssetValue.class.getSimpleName(), this.valueTemplate);
+        VelocityAssetContext velocityContext = new VelocityAssetContext(context, this.globalContext);
+        try {
+            this.velocityEngine.evaluate(velocityContext, sw, VelocityAssetValue.class.getSimpleName(), this.valueTemplate);
+        } catch( RuntimeException ex ) {
+            throw new RuntimeException("unable to execute template "+this.valueTemplate, ex);
+        }
         return sw.toString();
     }
 
@@ -47,7 +60,7 @@ public class VelocityAssetValue implements AssetValue {
     public String getName(AssetContext context) {
         // evaluate
         StringWriter sw = new StringWriter();
-        VelocityAssetContext velocityContext = new VelocityAssetContext(context);
+        VelocityAssetContext velocityContext = new VelocityAssetContext(context, this.globalContext);
         this.velocityEngine.evaluate(velocityContext, sw, VelocityAssetValue.class.getSimpleName(), this.nameTemplate);
         return sw.toString();
     }
