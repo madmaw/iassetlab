@@ -8,18 +8,25 @@ module templa.mvc.composite {
     export class StackControllerModelChangeDescription extends ModelChangeDescription {
 
         // Constructor
-        constructor(changeType:string, private _previousController: templa.mvc.IController, private _topController: templa.mvc.IController) {
+        constructor(changeType:string, private _removedController: templa.mvc.IController, private _addedController: templa.mvc.IController, private _silentRemovedControllers?:templa.mvc.IController[], private _silentAddedControllers?:templa.mvc.IController[]) {
             super(changeType);
         }
 
-        public get previousController(): templa.mvc.IController {
-            return this._previousController;
+        public get removedController(): templa.mvc.IController {
+            return this._removedController;
         }
 
-        public get topController(): templa.mvc.IController {
-            return this._topController;
+        public get addedController(): templa.mvc.IController {
+            return this._addedController;
         }
 
+        public get silentRemovedControllers(): templa.mvc.IController[]{
+            return this._silentRemovedControllers;
+        }
+
+        public get silentAddedControllers(): templa.mvc.IController[]{
+            return this._silentAddedControllers;
+        }
     }
 
 }

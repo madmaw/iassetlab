@@ -1,0 +1,64 @@
+.toolbar_decorator_toolbar_container {
+    background:url('640w/toolbar_background.png');
+}
+
+.statusbar_decorator_statusbar {
+    background:url('640w/statusbar_background.png');
+}
+
+.toolbar_button_normal {
+    -ms-border-image:url('640w/toolbar_button_normal.png') 6 12 12 12 fill stretch stretch;
+    -moz-border-image:url('640w/toolbar_button_normal.png') 6 12 12 12 fill stretch stretch;
+    -webkit-border-image:url('640w/toolbar_button_normal.png') 6 12 12 12 fill stretch stretch;
+    -o-border-image:url('640w/toolbar_button_normal.png') 6 12 12 12 fill stretch stretch;
+    border-image:url('640w/toolbar_button_normal.png') 6 12 12 12 fill stretch stretch;
+}
+
+.toolbar_button_back {
+    -ms-border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+    -moz-border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+    -webkit-border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+    -o-border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+    border-image:url('640w/toolbar_button_back.png') 6 6 6 12 fill stretch stretch;
+}
+
+.statusbar_decorator_statusbar {
+    height:32px;
+}
+
+.toolbar_decorator_toolbar_container {
+    height:40px;
+}
+
+.toolbar_buttons_container {
+    padding-bottom:11px;
+}
+
+.toolbar_buttons_container {
+    padding-left:${page_margin_left}px;
+}
+
+.toolbar_buttons_container {
+    padding-right:${page_margin_right}px;
+}
+
+.toolbar_button_normal {
+    border-width:6px 6px 6px 6px;
+}
+
+.toolbar_button_back {
+    border-width:6px 6px 6px 12px;
+}
+
+.toolbar_decorator_content_container {
+    padding-top:40px;
+}
+
+.statusbar_decorator_content {
+    padding-top:32px;
+}
+
+.toolbar_decorator_toolbar_container {
+    top:32px;
+}
+

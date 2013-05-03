@@ -23,7 +23,7 @@ module templa.mvc.element.jquery.composite {
             var key: string = model.getControllerKey(controller);
             var selector: string = this._keysToSelectors[key];
             if (selector == null && key != null) {
-                selector = "." + key;
+                selector = key;
             }
             return selector;
         }

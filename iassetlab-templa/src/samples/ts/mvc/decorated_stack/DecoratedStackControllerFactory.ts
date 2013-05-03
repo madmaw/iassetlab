@@ -12,33 +12,34 @@ module templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory {
 
     // Class
     export function create(loadables: templa.loading.ILoadable[], toolbarDecoratorFactory: (controllers: templa.mvc.IController[]) => templa.mvc.IController): templa.mvc.IController {
+        // TODO should probably replace this with a JQuery animation thing, that way it will be (more) cross-platform (but not hardware accelerated)
         // create the stack controller
         var stackViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory("<div class='content_slider'></div>");
-        var relativePushAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-push-add", 2000);
-        var relativePushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-push-remove", 2000);
-        var relativePopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-pop-add", 2000);
-        var relativePopRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-pop-remove", 2000);
+        var relativePushAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-push-add", 1000);
+        var relativePushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-push-remove", 1000);
+        var relativePopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-pop-add", 1000);
+        var relativePopRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-pop-remove", 1000);
 
-        var absolutePushAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-push-add", 2000);
-        var absolutePushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-push-remove", 2000);
-        var absolutePopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-pop-add", 2000);
-        var absolutePopRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-pop-remove", 2000);
+        var absolutePushAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-push-add", 1000);
+        var absolutePushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-push-remove", 1000);
+        var absolutePopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-pop-add", 1000);
+        var absolutePopRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-pop-remove", 1000);
 
         var stackController = new templa.mvc.element.jquery.composite.StackJQueryController(
             stackViewFactory,
             [{
-                popAddAnimationFactory: relativePopAddAnimationFactory,
-                popRemoveAnimationFactory: relativePopRemoveAnimationFactory,
-                pushAddAnimationFactory: relativePushAddAnimationFactory,
-                pushRemoveAnimationFactory: relativePushRemoveAnimationFactory,
-                selector: ".content_pane"
-            }, {
-                popAddAnimationFactory: absolutePopAddAnimationFactory,
-                popRemoveAnimationFactory: absolutePopRemoveAnimationFactory,
-                pushAddAnimationFactory: absolutePushAddAnimationFactory,
-                pushRemoveAnimationFactory: absolutePushRemoveAnimationFactory,
-                selector: ".decorated_toolbar_container "
-            }]
+               popAddAnimationFactory: relativePopAddAnimationFactory,
+               popRemoveAnimationFactory: relativePopRemoveAnimationFactory,
+               pushAddAnimationFactory: relativePushAddAnimationFactory,
+               pushRemoveAnimationFactory: relativePushRemoveAnimationFactory,
+               selector: ".content_pane"
+           }, {
+               popAddAnimationFactory: absolutePopAddAnimationFactory,
+               popRemoveAnimationFactory: absolutePopRemoveAnimationFactory,
+               pushAddAnimationFactory: absolutePushAddAnimationFactory,
+               pushRemoveAnimationFactory: absolutePushRemoveAnimationFactory,
+               selector: ".decorated_toolbar_container "
+           }]
         );
 
         var labelViewKey = "label";

@@ -10,7 +10,7 @@ module templa.mvc.composite {
      */
     export class MappedKeyedControllerModel extends AbstractCompositeControllerModel implements IKeyedControllerModel {
 
-        constructor(private _controllerMap?: { string: IController; }) {
+        constructor(public _controllerMap?: { string: IController; }) {
             super();
             this._listeningForTokenChanges = false;
             if (this._controllerMap == null) {

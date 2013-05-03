@@ -54,7 +54,7 @@ module templa.mvc.element.jquery.command {
             }
             var template: (any) => string = this._templateSource.resolve();
             var html = template(options);
-            var view = DocumentFragmentElementView.createFromHTML(html, _container, id);
+            var view = DocumentFragmentElementView.createFromHTML(html, _container, false, id);
             return new CommandJQueryViewDescription(view, "[view_id='" + id+"']");
         }
     }

@@ -40,18 +40,33 @@ module templa.mvc.composite {
     // Class
     export class AbstractStackControllerModel extends AbstractCompositeControllerModel implements IStackControllerModel {
 
-        private _stack: IAbstractStackControllerModelEntry[];
+        public _stack: IAbstractStackControllerModelEntry[];
 
         // Constructor
-        constructor(private _allowEmptyStack?:bool) {
+        constructor(private _allowEmptyStack?:bool, public _controllersToDisplay?:number) {
             super();
             this._stack = [];
+            if (this._controllersToDisplay == null) {
+                this._controllersToDisplay = 1;
+            }
+        }
+
+        public _setControllersToDisplay(_controllersToDisplay: number) {
+            if (this._controllersToDisplay != _controllersToDisplay) {
+                this._controllersToDisplay = _controllersToDisplay;
+                // assume everything changed
+                 this._fireModelChangeEvent();
+            }
         }
 
         public getControllers(): IController[]{
             var result: templa.mvc.IController[] = [];
-            if (this._stack.length > 0) {
-                result.push(this._stack[this._stack.length - 1].controller);
+            var remainingControllers = this._controllersToDisplay;
+            var index = Math.max(0, this._stack.length - this._controllersToDisplay);
+            while (remainingControllers > 0 && index < this._stack.length) {
+                result.push(this._stack[index].controller);
+                remainingControllers--;
+                index++;
             }
             return result;
         }
@@ -65,11 +80,13 @@ module templa.mvc.composite {
         }
 
         public canPop(): bool {
-            return !this.isStackEmpty() && this._allowEmptyStack || this._stack.length > 1;
+            return !this.isStackEmpty() && this._allowEmptyStack || this._stack.length > this._controllersToDisplay;
         }
 
         public requestPop(): void {
-            this._pop();
+            if (this.canPop()) {
+                this._pop();
+            }
         }
 
         public _deStack(controller: IController, suppressFireModelChangeEvent?:bool, suppressFireDescriptionChangeEvent?:bool): void {
@@ -82,13 +99,14 @@ module templa.mvc.composite {
                     var entry = this._stack[i];
                     if (entry.controller == controller) {
                         this._stack.splice(<any>i, 1);
+                        // TODO check that it isn't visible?!
                         break;
                     }
                 }
             }
         }
 
-        public _pop(suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): bool {
+        public _pop(suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): templa.mvc.IController {
             var result;
             if (this._stack.length > 0) {
                 var previousController = this._stack[this._stack.length - 1].controller;
@@ -101,9 +119,9 @@ module templa.mvc.composite {
                         this._fireStateDescriptionChangeEvent(this, new AbstractStackControllerModelPopChange(this, entries[0]));
                     }
                 }
-                result = true;
+                result = previousController;
             } else {
-                result = false;
+                result = null;
             }
             return result;
         }
@@ -114,6 +132,19 @@ module templa.mvc.composite {
                 data: data
             });
         }
+
+        public _contains(controller: IController): bool {
+            var result = false;
+            for (var i in this._stack) {
+                var c = this._stack[i].controller;
+                if (c == controller) {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
+
         public _pushEntry(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool) {
             var previousController = this.peek;
             this._stack.push(entry);

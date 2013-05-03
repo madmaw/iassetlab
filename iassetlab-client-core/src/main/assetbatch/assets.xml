@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="assets">
+
+    <property key="css_prefixes_all">-moz- -webkit- -ms- -o-</property>
+
+    <diversifier key="size">
+        <configuration name="320w">
+
+            <!-- toolbar -->
+            <property key="toolbar_width">12</property>
+            <property key="toolbar_height">32</property>
+            <property key="toolbar_shadow_width">3</property>
+            <property key="toolbar_dark_width">5</property>
+
+            <!-- toolbar button -->
+            <property key="toolbar_button_width">20</property>
+            <property key="toolbar_button_height">20</property>
+            <property key="toolbar_button_rounding">4</property>
+            <property key="toolbar_button_etch_width">1</property>
+
+            <!-- statusbar -->
+            <property key="statusbar_width">12</property>
+            <property key="statusbar_height">24</property>
+            <property key="statusbar_etch_width">1</property>
+        </configuration>
+        <configuration name="640w">
+
+            <!-- toolbar -->
+            <property key="toolbar_width">12</property>
+            <property key="toolbar_height">40</property>
+            <property key="toolbar_shadow_width">4</property>
+            <property key="toolbar_dark_width">7</property>
+
+            <!-- toolbar button -->
+            <property key="toolbar_button_width">30</property>
+            <property key="toolbar_button_height">30</property>
+            <property key="toolbar_button_rounding">6</property>
+            <property key="toolbar_button_etch_width">1</property>
+
+            <!-- statusbar -->
+            <property key="statusbar_width">12</property>
+            <property key="statusbar_height">32</property>
+            <property key="statusbar_etch_width">1</property>
+        </configuration>
+        <configuration name="1536w">
+            <!-- toolbar -->
+            <property key="toolbar_width">12</property>
+            <property key="toolbar_height">50</property>
+            <property key="toolbar_shadow_width">4</property>
+            <property key="toolbar_dark_width">8</property>
+
+            <!-- toolbar button -->
+            <property key="toolbar_button_width">40</property>
+            <property key="toolbar_button_height">40</property>
+            <property key="toolbar_button_rounding">8</property>
+            <property key="toolbar_button_etch_width">1</property>
+
+            <!-- statusbar -->
+            <property key="statusbar_width">12</property>
+            <property key="statusbar_height">40</property>
+            <property key="statusbar_etch_width">1</property>
+
+        </configuration>
+    </diversifier>
+
+    <property key="toolbar_button_rounding_times_2">#set($value = $math.mul($toolbar_button_rounding, 2))$value</property>
+
+
+    <diversifier key="style">
+        <configuration name="ios">
+            <property key="background_color">#ffffff</property>
+            <property key="foreground_color">#222222</property>
+            <property key="panel_color">#6666DD</property>
+            <property key="panel_dark_color">#222299</property>
+            <property key="panel_light_color">#9999FF</property>
+            <property key="shadow_color">#000000</property>
+
+            <property key="toolbar_button_upper_min">$panel_color</property>
+            <property key="toolbar_button_upper_max">$panel_light_color</property>
+            <property key="toolbar_button_lower_min">$panel_dark_color</property>
+            <property key="toolbar_button_lower_max">$panel_color</property>
+            <property key="toolbar_button_back">false</property>
+            <property key="toolbar_button_forward">false</property>
+            <property key="toolbar_button_etch_highlight">$panel_light_color</property>
+            <property key="toolbar_button_etch_shadow">$panel_dark_color</property>
+            <property key="toolbar_button_etch_stroke">$panel_color</property>
+
+        </configuration>
+    </diversifier>
+
+    <diversifier key="asset-type">
+
+        <configuration name="image">
+            <diversifier key="asset">
+                <configuration name="toolbar_background">
+                    <property key="lab_template_xsl">toolbar_background.xslt</property>
+                    <property key="toolbar_background_color">$panel_color</property>
+                    <property key="toolbar_dark_color">$panel_dark_color</property>
+                    <property key="toolbar_shadow_color">$shadow_color</property>
+
+                    <property key="css_selector">.toolbar_decorator_toolbar_container</property>
+                    <property key="css_attribute">background</property>
+                </configuration>
+                <configuration name="statusbar_background">
+                    <property key="lab_template_xsl">statusbar_background.xslt</property>
+                    <property key="statusbar_upper_color">#444444</property>
+                    <property key="statusbar_middle_color">#222222</property>
+                    <property key="statusbar_lower_color">#111111</property>
+                    <property key="statusbar_etch_color">#888888</property>
+
+                    <property key="css_selector">.statusbar_decorator_statusbar</property>
+                    <property key="css_attribute">background</property>
+                    <property key="css_value_is_url">true</property>
+                </configuration>
+                <configuration name="toolbar_button_normal">
+                    <property key="lab_template_xsl">toolbar_button.xslt</property>
+
+                    <property key="css_selector">.toolbar_button_normal</property>
+                    <property key="css_attribute">border-image</property>
+                    <!-- TODO FF will reject the entire line because of the fill parameter! -->
+                    <property key="css_value_postfix">$toolbar_button_rounding $toolbar_button_rounding_times_2 $toolbar_button_rounding_times_2 $toolbar_button_rounding_times_2 fill stretch stretch</property>
+                    <property key="css_attribute_prefixes">-ms- -moz- -webkit- -o-</property>
+
+                </configuration>
+
+                <configuration name="toolbar_button_back">
+                    <property key="lab_template_xsl">toolbar_button.xslt</property>
+                    <property key="toolbar_button_back">true</property>
+
+                    <property key="css_selector">.toolbar_button_back</property>
+                    <property key="css_attribute">border-image</property>
+                    <!-- TODO FF will reject the entire line because of the fill parameter! -->
+                    <property key="css_value_postfix">$toolbar_button_rounding $toolbar_button_rounding $toolbar_button_rounding $toolbar_button_rounding_times_2 fill stretch stretch</property>
+                    <property key="css_attribute_prefixes">-ms- -moz- -webkit- -o-</property>
+
+                </configuration>
+            </diversifier>
+
+            <diversifier key="output">
+                <configuration name="png">
+                    <property key="lab_output_extension">png</property>
+                    <property key="lab_output_name">$style/$size/$asset</property>
+                    <property key="lab_template_xsl_output_mime_type">image/svg+xml</property>
+                    <!-- just outputs the asset as normal -->
+                </configuration>
+                <configuration name="css">
+                    <!-- outputs CSS about the asset -->
+                    <property key="lab_template_xsl">css.xslt</property>
+                    <property key="css_value">$size/${asset}.png</property>
+                    <property key="css_value_is_url">true</property>
+                    <property key="lab_output_name">$style/$size</property>
+                    <property key="lab_output_extension">css</property>
+                    <property key="lab_output_type_mime">text/css</property>
+                    <property key="lab_template_xsl_output_mime_type">text/css</property>
+                </configuration>
+
+            </diversifier>
+
+        </configuration>
+        <!-- second configuration for general CSS entries -->
+        <configuration name="css">
+            <property key="lab_template_xsl">css.xslt</property>
+            <property key="lab_output_name">$style/$size</property>
+            <property key="lab_output_extension">css</property>
+            <property key="lab_output_type_mime">text/css</property>
+            <property key="lab_template_xsl_output_mime_type">text/css</property>
+
+            <diversifier key="line">
+                <configuration>
+                    <property key="css_selector">.statusbar_decorator_statusbar</property>
+                    <property key="css_attribute">height</property>
+                    <property key="css_value">${statusbar_height}px</property>
+                </configuration>
+                <configuration>
+                    <property key="css_selector">.toolbar_decorator_toolbar_container</property>
+                    <property key="css_attribute">height</property>
+                    <property key="css_value">${toolbar_height}px</property>
+                </configuration>
+                <configuration>
+                    <property key="css_selector">.toolbar_buttons_container</property>
+                    <property key="css_attribute">padding-bottom</property>
+                    <property key="css_value">
+                        #set($padding = $math.toInteger($math.add($toolbar_shadow_width, $toolbar_dark_width)))
+                        ${padding}px
+                    </property>
+                </configuration>
+                <configuration>
+                    <property key="css_selector">.toolbar_buttons_container</property>
+                    <property key="css_attribute">padding-left</property>
+                    <property key="css_value">${page_margin_left}px</property>
+                </configuration>
+                <configuration>
+                    <property key="css_selector">.toolbar_buttons_container</property>
+                    <property key="css_attribute">padding-right</property>
+                    <!-- TODO subtract rounding so the text (not the buttons) line up -->
+                    <property key="css_value">${page_margin_right}px</property>
+                </configuration>
+                <configuration>
+                    <property key="css_selector">.toolbar_button_normal</property>
+                    <property key="css_attribute">border-width</property>
+                    <property key="css_value">${toolbar_button_rounding}px ${toolbar_button_rounding}px ${toolbar_button_rounding}px ${toolbar_button_rounding}px</property>
+                </configuration>
+
+                <configuration>
+                    <property key="css_selector">.toolbar_button_back</property>
+                    <property key="css_attribute">border-width</property>
+                    <property key="css_value">${toolbar_button_rounding}px ${toolbar_button_rounding}px ${toolbar_button_rounding}px ${toolbar_button_rounding_times_2}px</property>
+                </configuration>
+
+                <configuration>
+                    <property key="css_selector">.toolbar_decorator_content_container</property>
+                    <property key="css_attribute">padding-top</property>
+                    <property key="css_value">${toolbar_height}px</property>
+                </configuration>
+
+                <configuration>
+                    <property key="css_selector">.statusbar_decorator_content</property>
+                    <property key="css_attribute">padding-top</property>
+                    <property key="css_value">${statusbar_height}px</property>
+                </configuration>
+
+                <configuration>
+                    <property key="css_selector">.toolbar_decorator_toolbar_container</property>
+                    <property key="css_attribute">top</property>
+                    <property key="css_value">${statusbar_height}px</property>
+                </configuration>
+
+            </diversifier>
+        </configuration>
+
+    </diversifier>
+
+
+</configuration>

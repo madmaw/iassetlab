@@ -5,6 +5,10 @@
 html, body, #tab, .loading_container, .tab_pane, .content_pane, .decorated_body {
 }
 
+html, body, #tab, .loading_container {
+    height: 100%
+}
+
 .selected {
     font-weight: bold;
 }
@@ -12,14 +16,23 @@ html, body, #tab, .loading_container, .tab_pane, .content_pane, .decorated_body 
 .decorated_toolbar_container {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     z-index: 1000;
 }
 
-.tab_bar {
+.tab_bar_horizontal {
     position: fixed;
     bottom: 0;
     width: 100%;
+    z-index: 1000;
+}
+
+.tab_bar_vertical {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
     z-index: 1000;
 }
 
@@ -36,7 +49,7 @@ html, body, #tab, .loading_container, .tab_pane, .content_pane, .decorated_body 
     font-size: small;
 }
 
-.tab_bar_container > div {
+.tab_bar_horizontal div {
     display: inline-block;
     text-align: center;
     width: 25%;
@@ -54,7 +67,7 @@ html, body, #tab, .loading_container, .tab_pane, .content_pane, .decorated_body 
     display: inline-block;
     white-space:  normal;
     vertical-align: top;
-    width:100%; 
+    width: 100%;
 }
 
 .decorated_body {

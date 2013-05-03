@@ -57,22 +57,22 @@ module templa.mvc {
         public addStateDescriptionChangeListener(listener: (source: IModel, change: IModelStateChange) => void ) {
             this._stateDescriptionChangeListeners.push(listener);
             if (this._stateDescriptionChangeListeners.length == 1) {
-                this._startedListeningForDescriptionChanges();
+                this._startedListeningForStateDescriptionChanges();
             }
         }
 
         public removeStateDescriptionChangeListener(listener: (source: IModel, change: IModelStateChange) => void ) {
             templa.util.Arrays.removeElement(this._stateDescriptionChangeListeners, listener);
             if (this._stateDescriptionChangeListeners.length == 0) {
-                this._stoppedListeningForDescriptionChanges();
+                this._stoppedListeningForStateDescriptionChanges();
             }
         }
 
-        public _startedListeningForDescriptionChanges() {
+        public _startedListeningForStateDescriptionChanges() {
              
         }
 
-        public _stoppedListeningForDescriptionChanges() {
+        public _stoppedListeningForStateDescriptionChanges() {
         }
 
         public _fireStateDescriptionChangeEvent(source: IModel, change?: IModelStateChange) {

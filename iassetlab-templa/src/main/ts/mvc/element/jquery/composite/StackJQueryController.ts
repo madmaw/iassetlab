@@ -39,17 +39,38 @@ module templa.mvc.element.jquery.composite {
         }
 
         public _handleModelChangeEvent(event: templa.mvc.ModelChangeEvent) {
+            var pushed: bool;
             var stackChangeDescription = event.lookup(templa.mvc.composite.stackControllerModelEventPushed);
             if (stackChangeDescription == null) {
                 stackChangeDescription = event.lookup(templa.mvc.composite.stackControllerModelEventPopped);
+                pushed = false;
+            } else {
+                pushed = true;
             }
             if ( stackChangeDescription != null ) {
                 var stackDescription: templa.mvc.composite.StackControllerModelChangeDescription = stackChangeDescription;
 
+                // remove all the silent ones (if any)
+                var silentRemovedControllers = stackDescription.silentRemovedControllers;
+                if (silentRemovedControllers != null) {
+                    for (var i in silentRemovedControllers) {
+                        var silentRemovedController = silentRemovedControllers[i];
+                        this._remove(silentRemovedController);
+                    }
+                }
+                // add all the silent ones (if any)
+                var silentAddedControllers = stackDescription.silentAddedControllers;
+                if (silentAddedControllers != null) {
+                    for (var i in silentAddedControllers) {
+                        var silentAddedController = silentAddedControllers[i];
+                        this._add(silentAddedController);
+                    }
+                }
+
                 var addAnimationFactoryName:string;
                 var removeAnimationFactoryName:string;
                 
-                if (stackDescription.changeType == templa.mvc.composite.stackControllerModelEventPushed) {
+                if (pushed) {
                     addAnimationFactoryName = "pushAddAnimationFactory";
                     removeAnimationFactoryName = "pushRemoveAnimationFactory";
                 } else {
@@ -57,7 +78,7 @@ module templa.mvc.element.jquery.composite {
                     removeAnimationFactoryName = "popRemoveAnimationFactory";
                 }
 
-                var hiddenController = stackDescription.previousController;
+                var hiddenController = stackDescription.removedController;
                 if (hiddenController != null) {
                     var maxState: number;
                     var hiddenView: IElementView;
@@ -100,13 +121,13 @@ module templa.mvc.element.jquery.composite {
                     this._remove(hiddenController, hiddenView == null);
                 }
 
-                var pushedController = stackDescription.topController;
-                if (pushedController != null) {
+                var addedController = stackDescription.addedController;
+                if (addedController != null) {
 
-                    this._add(pushedController);
-                    var pushedView: IElementView = <any>pushedController.getView();
-                    var container = this.getControllerContainer(pushedController);
-                    this._animate(container, pushedView, addAnimationFactoryName, <AbstractController>pushedController);
+                    this._add(addedController, true, true, !pushed);
+                    var pushedView: IElementView = <any>addedController.getView();
+                    var container = this.getControllerContainer(addedController);
+                    this._animate(container, pushedView, addAnimationFactoryName, <AbstractController>addedController);
                     /*
                     var roots: Node[] = pushedView.getRoots();
                     for (var i in roots) {

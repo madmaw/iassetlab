@@ -5,7 +5,7 @@
 module templa.mvc.element {
     export class DocumentFragmentElementView implements IElementView {
 
-        public static createFromHTML(html: string, container: IElementReference, id: string) {
+        public static createFromHTML(html: string, container: IElementReference, prepend: bool, id: string) {
             var fragment: DocumentFragment = document.createDocumentFragment();
             var element = document.createElement("div");
             if (html != null) {
@@ -24,12 +24,12 @@ module templa.mvc.element {
                 }
             }
 
-            return new DocumentFragmentElementView(fragment, container, id);
+            return new DocumentFragmentElementView(fragment, container, prepend, id);
         }
 
         private _attached: bool;
 
-        constructor(private _fragment:DocumentFragment, private _container: IElementReference, private _id: string) {
+        constructor(private _fragment: DocumentFragment, private _container: IElementReference, private _prepend: bool, private _id: string) {
             this._attached = false;
             if (this._container == null) {
                 throw new Error("no container!");
@@ -37,7 +37,12 @@ module templa.mvc.element {
         }
 
         public attach() {
-            this._container.resolve().appendChild(this._fragment);
+            var containerElement = this._container.resolve();
+            if (this._prepend) {
+                containerElement.insertBefore(this._fragment, containerElement.firstChild);
+            } else {
+                containerElement.appendChild(this._fragment);
+            }
             this._attached = true;
         }
 

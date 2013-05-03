@@ -7,11 +7,14 @@
 ///<reference path="../../../../main/ts/mvc/element/jquery/command/IdDelegatingCommandJQueryViewDescriptionFactory.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/tab/TabBarJQueryController.ts"/>
 ///<reference path="../../../../main/ts/mvc/element/jquery/tab/MappedTabBarTabJQueryViewDescriptionFactory.ts"/>
+///<reference path="../../../../main/ts/mvc/element/jquery/BorrowedElementViewFactory.ts"/>
+///<reference path="../../../../main/ts/mvc/element/ModeElementViewFactoryProxy.ts"/>
 ///<reference path="../hello_world/HelloWorldControllerFactory.ts"/>
 ///<reference path="../hello_you/HelloYouControllerFactory.ts"/>
 ///<reference path="../basic_stack/BasicStackControllerFactory.ts"/>
 ///<reference path="../decorated_stack/DecoratedStackControllerFactory.ts"/>
 ///<reference path="../controller/ToolbarDecoratorModel.ts"/>
+
 
 // Module
 module templa.samples.mvc.tab_index {
@@ -49,7 +52,7 @@ module templa.samples.mvc.tab_index {
                 { toolbar_key: decoratorToolbarControllerKey, view_key: decoratorBodyControllerKey, toolbar_container_key: decoratorToolbarContainerKey }
                 
             );
-            var localFixedHeightSelectors = ["." + decoratorToolbarContainerKey, "." + tabBarKey];
+            //var localFixedHeightSelectors = ["." + decoratorToolbarContainerKey, "." + tabBarKey];
             // for the height
             //decoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(decoratorViewFactory, "#" + decoratorBodyControllerKey, null, localFixedHeightSelectors);
             // for the width
@@ -93,9 +96,9 @@ module templa.samples.mvc.tab_index {
                 decoratorController.setModel(
                     new templa.samples.mvc.controller.ToolbarDecoratorModel(
                         toolbarController,
-                        decoratorToolbarControllerKey,
+                        "." + decoratorToolbarControllerKey,
                         controllers,
-                        decoratorBodyControllerKey
+                        "." + decoratorBodyControllerKey
                     )
                 );
                 return decoratorController;
@@ -155,13 +158,11 @@ module templa.samples.mvc.tab_index {
                 ".tab_bar_button",
                 ".tab_bar_button_root"
             );
-            var tabBarViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory(
-                "<div class = '" + tabBarContainerId + "' > </div>"
-            );
+            var tabBarViewFactory = new templa.mvc.element.jquery.BorrowedElementViewFactory(null);
             var tabBarController = new templa.mvc.element.jquery.tab.TabBarJQueryController(
                 tabBarViewFactory,
                 tabBarViewDescriptionFactory,
-                "." + tabBarContainerId,
+                null,
                 "selected"
             );
 
@@ -177,9 +178,28 @@ module templa.samples.mvc.tab_index {
             );
 
 
-            var tabViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
-                "src/samples/handlebars/tab_index/tab_container.html",
+            var tabViewFactoryHorizontal = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/tab_index/tab_container_horizontal.html",
                 loadables
+            );
+            var tabViewFactoryVertical = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/samples/handlebars/tab_index/tab_container_vertical.html",
+                loadables
+            );
+            var tabViewFactory = new templa.mvc.element.ModeElementViewFactoryProxy(
+                function () {
+                    var result;
+                    if (window.innerWidth > window.innerHeight) {
+                        result = "wide";
+                    } else {
+                        result = "narrow";
+                    }
+                    return result;
+                },
+                <any>{
+                    wide: tabViewFactoryVertical,
+                    narrow: tabViewFactoryHorizontal
+                }
             );
             /*
             var tabViewFactory = new templa.mvc.element.DocumentFragmentElementViewFactory(

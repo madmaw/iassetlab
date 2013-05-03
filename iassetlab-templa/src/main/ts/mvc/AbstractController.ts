@@ -12,6 +12,8 @@ module templa.mvc {
         public _model: templa.mvc.IModel;
         private _commands: templa.mvc.Command[];
         private _state: number;
+        private _viewContainer: IElementReference;
+        private _viewPrepend: bool;
 
         private _animations: templa.animation.IAnimation[];
         private _animationListener: (source: templa.animation.IAnimation, changeEvent: templa.animation.AnimationStateChangeEvent) => void;
@@ -32,10 +34,12 @@ module templa.mvc {
             this._model = model;
         }
 
-        public init(container: IElementReference): bool {
+        public init(container: IElementReference, prepend?: bool): bool {
             var result: bool;
+            this._viewContainer = container;
+            this._viewPrepend = prepend;
             if (this._state == templa.mvc.ControllerStateUninitialized) {
-                result = this._doInit(container);
+                result = this._doInit(container, prepend);
                 if (result) {
                     this._state = templa.mvc.ControllerStateInitialized;
                     // kick off any pending animations
@@ -53,7 +57,7 @@ module templa.mvc {
             return result;
         }
 
-        public _doInit(container: IElementReference): bool {
+        public _doInit(container: IElementReference, prepend: bool): bool {
             return true;
         }
 
@@ -193,10 +197,20 @@ module templa.mvc {
         public layout(): void {
             var view = this.getView();
             if (view != null) {
-                var reload = view.layout();
+                var recreate = view.layout();
                 var state = this.getState();
-                if (reload && state == ControllerStateStarted) {
-                    this.load();
+                // just loading isn't enough, need to re-create
+                if (recreate) {
+                    if (state >= ControllerStateStarted) {
+                        this.stop();
+                    }
+                    if (state >= ControllerStateInitialized) {
+                        this.destroy();
+                        this.init(this._viewContainer, this._viewPrepend);
+                    }
+                    if (state >= ControllerStateStarted) {
+                        this.start();
+                    }
                 }
             }
         }

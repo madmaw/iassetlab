@@ -22,8 +22,8 @@ module templa.mvc.element {
             return this._view;
         }
 
-        public _doInit(container: IElementReference): bool {
-            this._view = this._viewFactory.create(container);
+        public _doInit(container: IElementReference, prepend: bool): bool {
+            this._view = this._viewFactory.create(container, prepend);
             this._view.attach();
             return true;
         }

@@ -18,7 +18,7 @@ module templa.mvc {
 
         setModel(model:IModel);
 
-        init(container:IElementReference):bool;
+        init(container:IElementReference, prepend?:bool):bool;
 
         load();
 

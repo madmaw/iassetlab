@@ -35,8 +35,8 @@ module templa.mvc.composite {
             return [];
         }
 
-        public _startedListeningForDescriptionChanges() {
-            super._startedListeningForDescriptionChanges();
+        public _startedListeningForStateDescriptionChanges() {
+            super._startedListeningForStateDescriptionChanges();
             var controllers = this._getDescribedControllers();
             if (controllers != null) {
                 // listen on the models for all the controllers
@@ -50,8 +50,8 @@ module templa.mvc.composite {
             }
         }
 
-        public _stoppedListeningForDescriptionChanges() {
-            super._startedListeningForDescriptionChanges();
+        public _stoppedListeningForStateDescriptionChanges() {
+            super._startedListeningForStateDescriptionChanges();
             var controllers = this._getDescribedControllers();
             if (controllers != null) {
                 for (var i in controllers) {

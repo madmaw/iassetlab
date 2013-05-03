@@ -18,8 +18,9 @@
 
         <fileset dir="." id="tsFiles">
             <include name="src/main/ts/**/*.ts"/>
+            <!--
             <include name="src/samples/ts/**/*.ts"/>
-            <include name="src/client/ts/**/*.ts"/>
+            -->
         </fileset>
       
         <pathconvert property="tsFilesArg" refid="tsFiles" pathsep="' '"/>
@@ -28,7 +29,7 @@
         <exec executable="tsc" failonerror="true">
 
             <arg value="-out"/>
-            <arg path="target/dist/templa-all.js"/>
+            <arg path="target/dist/iassetlab-templa.js"/>
             <arg value="--target"/>
             <arg value="ES5"/>
             <arg value="--declaration"/>
@@ -47,4 +48,30 @@
         <!-- Concatenate all required CSS, JS files -->
         <!-- Compress built CSS, JS files -->
     </target>
+
+
+    <target name="samples" depends="build">
+
+
+        <fileset dir="." id="tsSampleFiles">
+            <include name="src/samples/ts/**/*.ts"/>
+        </fileset>
+
+        <pathconvert property="tsSampleFilesArg" refid="tsSampleFiles" pathsep="' '"/>
+        <echo message="'${tsSampleFilesArg}'"/>
+        <!-- Compile all .ts files -->
+        <exec executable="tsc" failonerror="true">
+
+            <arg value="-out"/>
+            <arg path="target/dist/iassetlab-templa-samples.js"/>
+            <arg value="--target"/>
+            <arg value="ES5"/>
+            <arg value="--declaration"/>
+            <arg value="--module"/>
+            <arg value="commonjs"/>
+            <arg line="'${tsSampleFilesArg}'"/>
+
+        </exec>
+    </target>
+
 </project>

@@ -44,6 +44,7 @@ module templa.mvc.element.jquery.tab {
                 clickableElements.click(tabId, (e:JQueryEventObject) => {
                     this._requestSelectTabId(e.data);
                 });
+                this._tabIdsToDescriptions[tabId] = description;
             }
         }
 

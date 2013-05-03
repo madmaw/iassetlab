@@ -31,7 +31,7 @@ module templa.mvc.element {
             super(null);
         }
 
-        public create(container:IElementReference): templa.mvc.element.IElementView {
+        public create(container:IElementReference, prepend?:bool): templa.mvc.element.IElementView {
             var options = {};
             if (this._options != null) {
                 for (var key in this._options) {
@@ -41,7 +41,7 @@ module templa.mvc.element {
             }
             var template = this._templateSource.resolve();
             var html: string = template(options);
-            return this._createDiv(container, html);
+            return this._createDiv(container, prepend, html);
         }
     }
 

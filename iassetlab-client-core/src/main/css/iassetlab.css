@@ -1,0 +1,111 @@
+﻿body {
+    padding:0;
+    margin:0;
+}
+
+.toolbar_decorator_toolbar_container {
+    position: fixed;
+    z-index: 1000;   
+}
+
+.statusbar_decorator_statusbar {
+    position: fixed;
+    top: 0;
+    width:100%;
+    z-index: 1000;   
+}
+
+.statusbar_decorator_content {
+    overflow: hidden;
+}
+
+.stack_horizontal {
+    margin-left: -30%;
+    width:160%;
+}
+
+.stack_horizontal .toolbar_decorator_content_container {
+    width: 25%;
+}
+
+.stack_horizontal .toolbar_decorator_toolbar_container {
+    width: 40%;
+}
+
+.stack_horizontal .toolbar_decorator_toolbar_container:nth-of-type(1) {
+    left:-30%;
+}
+
+.stack_horizontal .toolbar_decorator_toolbar_container:nth-of-type(3) {
+    left:10%;
+}
+
+.stack_horizontal .toolbar_decorator_toolbar_container:nth-of-type(5) {
+    left:50%;
+}
+
+.stack_horizontal .toolbar_decorator_toolbar_container:nth-of-type(7) {
+    left:90%;
+}
+
+.stack_horizontal .toolbar_decorator_toolbar_container:nth-of-type(9) {
+    left:130%;
+}
+
+.stack_vertical  {
+    margin-left: -50%;
+    width: 200%;
+}
+
+.stack_vertical .toolbar_decorator_content_container {
+    width: 33%;
+}
+
+.stack_vertical .toolbar_decorator_toolbar_container {
+    width: 66%;
+}
+
+.stack_vertical .toolbar_decorator_toolbar_container:nth-of-type(1) {
+    left:-50%;
+}
+
+.stack_vertical .toolbar_decorator_toolbar_container:nth-of-type(3) {
+    left:16%;
+}
+
+.stack_vertical .toolbar_decorator_toolbar_container:nth-of-type(5) {
+    left:82%;
+}
+
+.stack_vertical .toolbar_decorator_toolbar_container:nth-of-type(7) {
+    left:148%;
+}
+
+.toolbar_decorator_content_container {
+    display: inline-block;
+
+}
+
+.home_item {
+    display:block;
+}
+
+.context_summary .home_item {
+    display:inline-block;
+}
+
+.content_home {
+    background: #eeeeff;
+}
+
+.content_empty_starter {
+    background: #ffeeee;
+}
+
+.content_empty_ender {
+    background: #eeffee;
+}
+
+.displayed {
+    font-weight: bold;
+}

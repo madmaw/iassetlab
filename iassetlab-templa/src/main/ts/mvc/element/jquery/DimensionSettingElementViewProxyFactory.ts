@@ -10,8 +10,8 @@ module templa.mvc.element.jquery {
         constructor(private _proxied:IElementViewFactory, private _variableDimensionSelector:string, private _fixedWidthSelectors:string[], private _fixedHeightSelectors:string[]) {
         }
 
-        public create(container: IElementReference): IElementView {
-            var proxied = this._proxied.create(container);
+        public create(container: IElementReference, prepend?:bool): IElementView {
+            var proxied = this._proxied.create(container, prepend);
             return new DimensionSettingElementViewProxy(proxied, this._variableDimensionSelector, this._fixedWidthSelectors, this._fixedHeightSelectors);
         }
     }

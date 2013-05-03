@@ -69,12 +69,12 @@ module templa.mvc.element.composite {
             return result;
         }
 
-        public _doInit(container: IElementReference): bool {
-            var result: bool = super._doInit(container);
+        public _doInit(container: IElementReference, prepend: bool): bool {
+            var result: bool = super._doInit(container, prepend);
             for (var i in this._controllers) {
                 var controller = this._controllers[i];
                 var controllerContainer = this.getControllerContainer(controller);
-                result = result && controller.init(<any>controllerContainer);
+                result = result && controller.init(<any>controllerContainer, false);
             }
             return result;
         }
@@ -92,13 +92,13 @@ module templa.mvc.element.composite {
             return result;
         }
 
-        public _add(controller: templa.mvc.IController, fireEvent?: bool, layout?:bool) {
+        public _add(controller: templa.mvc.IController, fireEvent?: bool, layout?:bool, prepend?:bool) {
             this._controllers.push(controller);
 
             var container: IElementReference = this.getControllerContainer(controller);
             var state: number = this.getState();
             if (state >= ControllerStateInitialized) {
-                controller.init(container);
+                controller.init(container, prepend);
                 if (state >= ControllerStateStarted) {
                     controller.addOnChangeListener(this._controllerOnChangeListener);
                     controller.start();
