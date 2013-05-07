@@ -89,6 +89,21 @@ module templa.mvc.composite {
             }
         }
 
+        public _ensureVisible(controller: IController): bool {
+            // pop back to this controller
+            var result;
+            var index = this._indexOf(controller);
+            if (index != null) {
+                result = true;
+                while (index < this._stack.length - this._controllersToDisplay) {
+                    this._pop();
+                }
+            } else {
+                result = false;
+            }
+            return result;
+        }
+
         public _deStack(controller: IController, suppressFireModelChangeEvent?:bool, suppressFireDescriptionChangeEvent?:bool): void {
             // pop or just silently remove as required
             if (this.peek == controller) {
@@ -106,39 +121,46 @@ module templa.mvc.composite {
             }
         }
 
-        public _pop(suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): templa.mvc.IController {
+        public _pop(suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): IAbstractStackControllerModelEntry {
             var result;
             if (this._stack.length > 0) {
-                var previousController = this._stack[this._stack.length - 1].controller;
+                var previousEntry = this._stack[this._stack.length - 1];
                 var entries = this._stack.splice(this._stack.length - 1, 1);
                 if (suppressFireModelChangeEvent != true) {
-                    var changeDescription = new StackControllerModelChangeDescription(stackControllerModelEventPopped, previousController, this.peek);
+                    var changeDescription = new StackControllerModelChangeDescription(stackControllerModelEventPopped, previousEntry.controller, this.peek);
                     // TODO need a popchange (reverse of push change)
                     this._fireModelChangeEvent(changeDescription, true);
                     if (suppressFireDescriptionChangeEvent != true) {
                         this._fireStateDescriptionChangeEvent(this, new AbstractStackControllerModelPopChange(this, entries[0]));
                     }
                 }
-                result = previousController;
+                result = previousEntry;
             } else {
                 result = null;
             }
             return result;
         }
 
-        public _push(controller: IController, data?: any): void {
+        public _push(controller: IController, data?: any, suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): void {
             this._pushEntry({
-                controller: controller,
-                data: data
-            });
+                    controller: controller,
+                    data: data
+                },
+                suppressFireModelChangeEvent,
+                suppressFireDescriptionChangeEvent
+            );
         }
 
         public _contains(controller: IController): bool {
-            var result = false;
+            return this._indexOf(controller) != null;
+        }
+
+        public _indexOf(controller: IController): number {
+            var result = null;
             for (var i in this._stack) {
                 var c = this._stack[i].controller;
                 if (c == controller) {
-                    result = true;
+                    result = i;
                     break;
                 }
             }

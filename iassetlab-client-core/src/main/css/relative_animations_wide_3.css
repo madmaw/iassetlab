@@ -1,0 +1,75 @@
+﻿/** animations take into account the relative position of the views being added: the margin values interact with eachother, which is why the numbers look weird */
+
+.animation-relative-wide-3-push {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-relative-wide-3-push-keyframes;    
+    -moz-animation-name: animation-relative-wide-3-push-keyframes;    
+    animation-name: animation-relative-push-wide-3-keyframes;    
+}
+
+
+@-webkit-keyframes animation-relative-wide-3-push-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -33%;
+    }
+}
+
+@-moz-keyframes animation-relative-wide-3-push-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -33%;
+    }
+}
+
+@keyframes animation-relative-wide-3-push-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -33%;
+    }
+}
+
+
+.animation-relative-wide-3-pop {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-relative-wide-3-pop-keyframes;    
+    -moz-animation-name: animation-relative-wide-3-pop-keyframes;    
+    animation-name: animation-relative-wide-3-pop-keyframes;    
+}
+
+@-webkit-keyframes animation-relative-wide-3-pop-keyframes{
+    from {
+        margin-left: -33%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@-moz-keyframes animation-relative-wide-3-pop-keyframes{
+    from {
+        margin-left: -33%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@keyframes animation-relative-wide-3-pop-keyframes{
+    from {
+        margin-left: -33%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}

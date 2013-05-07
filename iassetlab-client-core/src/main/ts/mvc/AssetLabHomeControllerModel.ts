@@ -13,7 +13,7 @@ module iassetlab.client.core.mvc {
         private _displayedOption: string;
 
         // Constructor
-        constructor(private _stackModel: AssetLabStackControllerModel, private _optionIdsToControllers: { string: templa.mvc.IController; }) {
+        constructor(private _owner:templa.mvc.IController, private _stackModel: AssetLabStackControllerModel, private _optionIdsToControllers: { string: templa.mvc.IController; }) {
             super();
         }
 
@@ -25,7 +25,7 @@ module iassetlab.client.core.mvc {
             // show the controller for this 
             var controller: templa.mvc.IController = this._optionIdsToControllers[option];
             if (controller != null) {
-                if (this._stackModel._pushSafe(controller)) {
+                if (this._stackModel._pushPair(this._owner, controller)) {
                     this._displayedOption = option;
                     this._fireModelChangeEvent();
                 }

@@ -50,7 +50,7 @@
     border-width:8px 8px 8px 16px;
 }
 
-.toolbar_decorator_content_container {
+.stack_narrow .toolbar_decorator_content_container {
     padding-top:50px;
 }
 

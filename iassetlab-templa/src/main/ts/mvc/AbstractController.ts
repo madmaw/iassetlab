@@ -12,7 +12,7 @@ module templa.mvc {
         public _model: templa.mvc.IModel;
         private _commands: templa.mvc.Command[];
         private _state: number;
-        private _viewContainer: IElementReference;
+        public _viewContainer: IElementReference;
         private _viewPrepend: bool;
 
         private _animations: templa.animation.IAnimation[];
@@ -31,7 +31,15 @@ module templa.mvc {
         }
 
         public setModel(model: templa.mvc.IModel) {
+            if (this._state >= ControllerStateStarted && this._model != null) {
+                this._model.removeOnChangeListener(this._modelOnChangeListener);
+            }
             this._model = model;
+            if (this._state >= ControllerStateStarted && this._model != null) {
+                this._doLoad(model);
+                this._model.addOnChangeListener(this._modelOnChangeListener);
+            }
+
         }
 
         public init(container: IElementReference, prepend?: bool): bool {

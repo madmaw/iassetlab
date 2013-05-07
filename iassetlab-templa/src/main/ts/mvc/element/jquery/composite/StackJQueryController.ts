@@ -9,10 +9,8 @@
 module templa.mvc.element.jquery.composite {
 
     export interface IStackAnimationFactoryBundle {
-        popAddAnimationFactory?: templa.animation.element.IElementAnimationFactory;
-        popRemoveAnimationFactory?: templa.animation.element.IElementAnimationFactory;
-        pushAddAnimationFactory?: templa.animation.element.IElementAnimationFactory;
-        pushRemoveAnimationFactory?: templa.animation.element.IElementAnimationFactory;
+        popAnimationFactory?: templa.animation.element.IElementAnimationFactory;
+        pushAnimationFactory?: templa.animation.element.IElementAnimationFactory;
         selector?: string;
     }
 
@@ -38,6 +36,10 @@ module templa.mvc.element.jquery.composite {
             );
         }
 
+        public set animationFactoryBundles(_animationFactoryBundles: IStackAnimationFactoryBundle[]) {
+            this._animationFactoryBundles = _animationFactoryBundles;
+        }
+
         public _handleModelChangeEvent(event: templa.mvc.ModelChangeEvent) {
             var pushed: bool;
             var stackChangeDescription = event.lookup(templa.mvc.composite.stackControllerModelEventPushed);
@@ -55,7 +57,7 @@ module templa.mvc.element.jquery.composite {
                 if (silentRemovedControllers != null) {
                     for (var i in silentRemovedControllers) {
                         var silentRemovedController = silentRemovedControllers[i];
-                        this._remove(silentRemovedController);
+                        this._remove(silentRemovedController, true, false);
                     }
                 }
                 // add all the silent ones (if any)
@@ -63,44 +65,25 @@ module templa.mvc.element.jquery.composite {
                 if (silentAddedControllers != null) {
                     for (var i in silentAddedControllers) {
                         var silentAddedController = silentAddedControllers[i];
-                        this._add(silentAddedController);
+                        this._add(silentAddedController, false, false, false);
                     }
                 }
 
-                var addAnimationFactoryName:string;
-                var removeAnimationFactoryName:string;
+                var animationFactoryName:string;
                 
                 if (pushed) {
-                    addAnimationFactoryName = "pushAddAnimationFactory";
-                    removeAnimationFactoryName = "pushRemoveAnimationFactory";
+                    animationFactoryName = "pushAnimationFactory";
                 } else {
-                    addAnimationFactoryName = "popAddAnimationFactory";
-                    removeAnimationFactoryName = "popRemoveAnimationFactory";
+                    animationFactoryName = "popAnimationFactory";
                 }
 
                 var hiddenController = stackDescription.removedController;
+                var hiddenView: IElementView;
                 if (hiddenController != null) {
                     var maxState: number;
-                    var hiddenView: IElementView;
                     if (this.getState() >= ControllerStateInitialized ) {
-                        var container = this.getControllerContainer(hiddenController);
                         maxState = ControllerStateInitialized;
                         hiddenView = <any>hiddenController.getView();
-                        var animated = this._animate(
-                            container,
-                            hiddenView,
-                            removeAnimationFactoryName,
-                            this,
-                            (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => {
-                                if (event.animationState == templa.animation.animationStateFinished) {
-                                    hiddenView.detach();
-                                }
-                            }
-                        );
-                        if (!animated) {
-                            // remove immediately
-                            hiddenView = null;
-                        }
                         /*
                         var roots: Node[] = hiddenView.getRoots();
                         for (var i in roots) {
@@ -126,8 +109,6 @@ module templa.mvc.element.jquery.composite {
 
                     this._add(addedController, true, true, !pushed);
                     var pushedView: IElementView = <any>addedController.getView();
-                    var container = this.getControllerContainer(addedController);
-                    this._animate(container, pushedView, addAnimationFactoryName, <AbstractController>addedController);
                     /*
                     var roots: Node[] = pushedView.getRoots();
                     for (var i in roots) {
@@ -138,6 +119,26 @@ module templa.mvc.element.jquery.composite {
                     }
                         */
                 }
+                var animated;
+                if (addedController != null || hiddenController != null) {
+                    animated = this._animate(
+                        animationFactoryName,
+                        (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => {
+                            if (event.animationState == templa.animation.animationStateFinished) {
+                                hiddenView.detach();
+                            }
+                        }
+                    );
+                } else {
+                    animated = false;
+                }
+                if (!animated && hiddenView != null) {
+                    // remove immediately
+                    hiddenView.detach();
+                }
+                this.layout();
+                this._fireControllerChangeEvent(new ControllerChangeEvent(true, true));
+
             } else {
                 super._handleModelChangeEvent(event);
             }
@@ -162,10 +163,13 @@ module templa.mvc.element.jquery.composite {
             return commands;
         }
 
-        private _animate(container: IElementReference, view: IElementView, animationFactoryName: string, ownerController: AbstractController, animationCompletionListener?: (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => void ): bool {
+        private _animate(animationFactoryName: string, animationCompletionListener?: (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => void ): bool {
             var result: bool = false;
 
-            var roots: Node[] = view.getRoots();
+            var count = 0;
+            var completionCount = 0;
+
+            var roots: Node[] = this._view.getRoots();
             for (var i in this._animationFactoryBundles) {
                 var animationFactoryBundle:IStackAnimationFactoryBundle = this._animationFactoryBundles[i];
                 var animationFactory = animationFactoryBundle[animationFactoryName];
@@ -176,20 +180,34 @@ module templa.mvc.element.jquery.composite {
                         var self: JQuery = $(<Element[]>roots).filter(selector);
                         jquery = jquery.find(selector).add(self);
                     }
-                    var containerElement = container.resolve();
+                    // TODO work out which element has a root
+                    var containerElement = this._view.getRoots()[0];
                     for (var j = 0; j < jquery.length; j++) {
                         var toAnimate = jquery.get(j);
                         var animation = animationFactory.create(containerElement, <any>toAnimate);
+                        count++;
                         result = true;
                         if (animationCompletionListener) {
-                            // TODO aggregate all the animation completions into one callback
-                            animation.addAnimationListener(animationCompletionListener);
+                            // aggregate all the animation completions into one callback
+                            animation.addAnimationListener(
+                                function (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) {
+                                    if (event.animationState == templa.animation.animationStateFinished) {
+                                        completionCount++;
+                                        if (completionCount == count) {
+                                            animationCompletionListener(source, event);
+                                        }
+                                    }
+                                }
+                            );
                         }
-                        ownerController._addAnimation(animation, false);
+                        this._addAnimation(animation, false);
                     }
                 }
             }
-
+            if (count == 0 && animationCompletionListener != null) {
+                // animation is complete now
+                animationCompletionListener(null, new templa.animation.AnimationStateChangeEvent(templa.animation.animationStateFinished));
+            }
             return result;
         }
     }

@@ -208,7 +208,7 @@
                 </configuration>
 
                 <configuration>
-                    <property key="css_selector">.toolbar_decorator_content_container</property>
+                    <property key="css_selector">.stack_narrow .toolbar_decorator_content_container</property>
                     <property key="css_attribute">padding-top</property>
                     <property key="css_value">${toolbar_height}px</property>
                 </configuration>

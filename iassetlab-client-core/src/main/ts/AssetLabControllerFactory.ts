@@ -5,6 +5,7 @@
 ///<reference path="mvc/about/IAboutControllerModel.ts"/>
 ///<reference path="mvc/statusbar/StatusbarController.ts"/>
 ///<reference path="mvc/statusbar/IStatusbarControllerModel.ts"/>
+///<reference path="mvc/stack/BackForwardStackController.ts"/>
 ///<reference path="mvc/filter/FilteringKeyedControllerModelProxy.ts"/>
 
 ///<reference path="../../../../iassetlab-templa/src/main/ts/loading/ILoadable.ts"/>
@@ -33,6 +34,7 @@ module iassetlab.client.core {
     export class AssetLabControllerFactory {
 
         private _modeFunction: () => string;
+        private _animationBundleFactory: () => templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle[];
         private _decoratorFactory: (controllers:templa.mvc.IController[]) => templa.mvc.IController;
 
         private _stackViewFactory: templa.mvc.element.IElementViewFactory;
@@ -64,6 +66,13 @@ module iassetlab.client.core {
         private _contextMainClass = "context_main";
         private _contextViewFactory: templa.mvc.element.IElementViewFactory;
 
+        private _relativeAnimationBundleWide3: templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle;
+        private _relativeAnimationBundleWide4: templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle;
+        private _relativeAnimationBundleNarrow: templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle;
+
+        private _absoluteAnimationBundlesWide3: templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle[];
+        private _absoluteAnimationBundlesNarrow: templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle[];
+
         constructor() {
         }
 
@@ -71,28 +80,129 @@ module iassetlab.client.core {
             this._modeFunction = function () {
                 var result;
                 // TODO factor in small landscape and portrait modes too
-                if (window.innerWidth > window.innerHeight * 2) {
-                    result = "wide";
-                    //result = "narrow";
+                if (window.innerWidth > window.innerHeight) {
+                    if (window.innerWidth >= 1000) {
+                        result = "wide_4";
+                        //result = "wide_3";
+                    } else {
+                        result = "wide_3";
+                        //result = "narrow";
+                    }
                 } else {
                     result = "narrow";
                 }
                 return result;
             };
+            this._animationBundleFactory = () => {
+                var mode = this._modeFunction();
+                var result = [];
+                if (mode == "wide_3") {
+                    result.push(this._relativeAnimationBundleWide3);
+                    templa.util.Arrays.pushAll(result, this._absoluteAnimationBundlesWide3);
+                } else if (mode == "wide_4") {
+                    result.push(this._relativeAnimationBundleWide4);
+                } else {
+                    result.push(this._relativeAnimationBundleNarrow);
+                    templa.util.Arrays.pushAll(result, this._absoluteAnimationBundlesNarrow);
+                }
+                return result;
+            };
+            
 
-            var stackViewFactoryHorizontal = templa.mvc.element.TemplateElementViewFactory.createFromURL(
-                "src/main/handlebars/stack/stack_horizontal.html",
+            var slideTime = 1000;
+
+            var relativeWide3PushRemoveAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeWide3PopAddAnimationFactory: templa.animation.element.IElementAnimationFactory;
+
+            var relativeWide4PushRemoveAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeWide4PopAddAnimationFactory: templa.animation.element.IElementAnimationFactory;
+
+            var relativeNarrowPushRemoveAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeNarrowPopAddAnimationFactory: templa.animation.element.IElementAnimationFactory;
+
+            relativeWide3PushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-push", slideTime);
+            relativeWide3PopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-pop", slideTime);
+
+            relativeWide4PushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-4-push", slideTime);
+            relativeWide4PopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-4-pop", slideTime);
+
+            relativeNarrowPushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-narrow-push", slideTime);
+            relativeNarrowPopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-narrow-pop", slideTime);
+
+            var absoluteNarrowPushAnimationFactory1 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-narrow-push-1", slideTime);
+            var absoluteNarrowPushAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-narrow-push-2", slideTime);
+            var absoluteNarrowPopAnimationFactory1 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-narrow-pop-1", slideTime);
+            var absoluteNarrowPopAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-narrow-pop-2", slideTime);
+
+            var absoluteWide3PushAnimationFactory1 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-push-1", slideTime);
+            var absoluteWide3PushAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-push-2", slideTime);
+            var absoluteWide3PushAnimationFactory3 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-push-3", slideTime);
+            var absoluteWide3PushAnimationFactory4 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-push-4", slideTime);
+            var absoluteWide3PopAnimationFactory1 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-pop-1", slideTime);
+            var absoluteWide3PopAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-pop-2", slideTime);
+            var absoluteWide3PopAnimationFactory3 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-pop-3", slideTime);
+            var absoluteWide3PopAnimationFactory4 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-pop-4", slideTime);
+
+            this._relativeAnimationBundleWide3 = {
+                popAnimationFactory: relativeWide3PopAddAnimationFactory,
+                pushAnimationFactory: relativeWide3PushRemoveAnimationFactory,
+                selector: ".toolbar_decorator_content_container:nth-of-type(2)"
+            };
+            this._relativeAnimationBundleWide4 = {
+                popAnimationFactory: relativeWide4PopAddAnimationFactory,
+                pushAnimationFactory: relativeWide4PushRemoveAnimationFactory,
+                selector: ".toolbar_decorator_content_container:nth-of-type(2)"
+            };
+            this._relativeAnimationBundleNarrow = {
+                popAnimationFactory: relativeNarrowPopAddAnimationFactory,
+                pushAnimationFactory: relativeNarrowPushRemoveAnimationFactory,
+                selector: ".toolbar_decorator_content_container:nth-of-type(2)"
+            };
+            this._absoluteAnimationBundlesNarrow = [{
+                popAnimationFactory: absoluteNarrowPopAnimationFactory1,
+                pushAnimationFactory: absoluteNarrowPushAnimationFactory1,
+                selector: ".toolbar_decorator_toolbar_container:nth-of-type(1)"
+            },{
+                popAnimationFactory: absoluteNarrowPopAnimationFactory2,
+                pushAnimationFactory: absoluteNarrowPushAnimationFactory2,
+                selector: ".toolbar_decorator_toolbar_container:nth-of-type(3)"
+            }];
+            this._absoluteAnimationBundlesWide3 = [{
+                popAnimationFactory: absoluteWide3PopAnimationFactory1,
+                pushAnimationFactory: absoluteWide3PushAnimationFactory1,
+                selector: ".toolbar_decorator_toolbar_container:nth-of-type(1)"
+            }, {
+                popAnimationFactory: absoluteWide3PopAnimationFactory2,
+                pushAnimationFactory: absoluteWide3PushAnimationFactory2,
+                selector: ".toolbar_decorator_toolbar_container:nth-of-type(3)"
+            }, {
+                popAnimationFactory: absoluteWide3PopAnimationFactory3,
+                pushAnimationFactory: absoluteWide3PushAnimationFactory3,
+                selector: ".toolbar_decorator_toolbar_container:nth-of-type(5)"
+            }, {
+                popAnimationFactory: absoluteWide3PopAnimationFactory4,
+                pushAnimationFactory: absoluteWide3PushAnimationFactory4,
+                selector: ".toolbar_decorator_toolbar_container:nth-of-type(7)"
+            }];
+
+            var stackViewFactoryWide4 = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/main/handlebars/stack/stack_wide_4.html",
                 loadables
             );
-            var stackViewFactoryVertical = templa.mvc.element.TemplateElementViewFactory.createFromURL(
-                "src/main/handlebars/stack/stack_vertical.html",
+            var stackViewFactoryWide3 = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/main/handlebars/stack/stack_wide_3.html",
+                loadables
+            );
+            var stackViewFactoryNarrow = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/main/handlebars/stack/stack_narrow.html",
                 loadables
             );
             this._stackViewFactory = new templa.mvc.element.ModeElementViewFactoryProxy(
                 this._modeFunction,
                 <any>{
-                    wide: stackViewFactoryHorizontal,
-                    narrow: stackViewFactoryVertical
+                    wide_4: stackViewFactoryWide4,
+                    wide_3: stackViewFactoryWide3,
+                    narrow: stackViewFactoryNarrow
                 }
             );
             this._emptyStarterViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
@@ -159,22 +269,28 @@ module iassetlab.client.core {
             );
 
             var toolbarDecoratorParameters = { toolbar_decorator_class: this._toolbarDecoratorClass, toolbar_decorator_content_class: this._toolbarDecoratorContentClass };
-            var decoratorViewFactoryHorizontal: templa.mvc.element.IElementViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
-                "src/main/handlebars/toolbar/toolbar_decorator_horizontal.html",
+            var decoratorViewFactoryWide4: templa.mvc.element.IElementViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/main/handlebars/toolbar/toolbar_decorator_wide_4.html",
                 loadables,
                 toolbarDecoratorParameters
 
             );
-            var decoratorViewFactoryVertical: templa.mvc.element.IElementViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
-                "src/main/handlebars/toolbar/toolbar_decorator_vertical.html",
+            var decoratorViewFactoryWide3: templa.mvc.element.IElementViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/main/handlebars/toolbar/toolbar_decorator_wide_3.html",
+                loadables,
+                toolbarDecoratorParameters
+            );
+            var decoratorViewFactoryNarrow: templa.mvc.element.IElementViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/main/handlebars/toolbar/toolbar_decorator_narrow.html",
                 loadables,
                 toolbarDecoratorParameters
             );
             this._decoratorViewFactory = new templa.mvc.element.ModeElementViewFactoryProxy(
                 this._modeFunction,
                 <any>{
-                    wide: decoratorViewFactoryHorizontal,
-                    narrow: decoratorViewFactoryVertical
+                    wide_4: decoratorViewFactoryWide4,
+                    wide_3: decoratorViewFactoryWide3,
+                    narrow: decoratorViewFactoryNarrow
                 }
             );
 
@@ -219,18 +335,27 @@ module iassetlab.client.core {
 
 
             var getControllersToDisplay = () => {
-                var result:number = 1;
-                if (this._modeFunction() == "wide") {
+                var result: number = 1;
+                var mode = this._modeFunction();
+                if (mode == "wide_4") {
                     result = 2;
+                } else if (mode == "wide_3") {
+                    result = 1;
                 }
                 return result;
             };
 
+            var getPadding = () => {
+                var mode = this._modeFunction();
+                return mode != "narrow";
+            }
 
 
-            var stackController = new templa.mvc.element.jquery.composite.StackJQueryController(
+            var stackController = new iassetlab.client.core.mvc.stack.BackForwardStackController(
                 this._stackViewFactory,
-                [{}]
+                this._animationBundleFactory(),
+                ".stack_wing_left",
+                ".stack_wing_right"
             );
 
             var decoratorFactory = this.createToolbarDecoratorFactory(stackController);
@@ -248,19 +373,23 @@ module iassetlab.client.core {
                     var emptyModel = new templa.mvc.AbstractModel();
                     emptyController.setModel(emptyModel);
                     return decoratorFactory([emptyController]);
-                }
+                },
+                getPadding()
             );
-            stackModel.padControllers = true;
 
 
             var homeOptionIdsToControllers: { string: templa.mvc.IController; } = <any>{};
+            var homeController = this.createHomeController(this._homeViewFactory, null);
+            var decoratedHomeController = decoratorFactory([homeController]);
             var homeModel = new iassetlab.client.core.mvc.AssetLabHomeControllerModel(
+                decoratedHomeController,
                 stackModel,
                 homeOptionIdsToControllers
             );
-            var homeController = this.createHomeController(this._homeViewFactory, homeModel);
+            homeController.setModel(homeModel);
 
-            stackModel._push(decoratorFactory([homeController]));
+
+            stackModel._push(decoratedHomeController);
             stackController.setModel(stackModel);
 
 
@@ -285,16 +414,18 @@ module iassetlab.client.core {
 
 
             // do this after, otherwise the stack order will be wrong
-            homeModel.requestDisplayOption(iassetlab.client.core.mvc.home.HomeController._selectorAbout);
+            //homeModel.requestDisplayOption(iassetlab.client.core.mvc.home.HomeController._selectorAbout);
 
             // TODO actual statusbar model
             var statusbarModel = new templa.mvc.AbstractModel();
             var decoratedStackController = this.createStatusbarDecoratorFactory(<any>statusbarModel)([stackController]);
 
-            window.onresize = function () {
+            window.onresize = () => {
                 decoratedStackController.layout();
                 // adjust the number of visible controllers
-                stackModel._setControllersToDisplay( getControllersToDisplay() );
+                stackModel._setControllersToDisplay(getControllersToDisplay(), getPadding());
+                // adjust the animation factory
+                stackController.animationFactoryBundles = this._animationBundleFactory();
             };
 
             return decoratedStackController;
@@ -302,7 +433,9 @@ module iassetlab.client.core {
 
         public createHomeController(homeViewFactory: templa.mvc.element.IElementViewFactory, homeModel:iassetlab.client.core.mvc.home.IHomeControllerModel) {
             var homeController = new iassetlab.client.core.mvc.home.HomeController(homeViewFactory);
-            homeController.setModel(homeModel);
+            if (homeModel != null) {
+                homeController.setModel(homeModel);
+            }
             return homeController;
         }
 
@@ -335,7 +468,7 @@ module iassetlab.client.core {
                 (controller: templa.mvc.IController) => {
                     var result;
                     if (controller == summaryController) {
-                        result = this._modeFunction() == "narrow";
+                        result = this._modeFunction() == "narrow" && window.innerHeight > 640;
                     } else {
                         result = true;
                     }

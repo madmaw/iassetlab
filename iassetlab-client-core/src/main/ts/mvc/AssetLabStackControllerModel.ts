@@ -1,36 +1,51 @@
+///<reference path="stack/IBackForwardStackControllerModel.ts"/>
+
 ///<reference path="../../../../../iassetlab-templa/src/main/ts/mvc/composite/AbstractStackControllerModel.ts"/>
+
 
 
 // Module
 module iassetlab.client.core.mvc {
 
     // Class
-    export class AssetLabStackControllerModel extends templa.mvc.composite.AbstractStackControllerModel {
+    export class AssetLabStackControllerModel extends templa.mvc.composite.AbstractStackControllerModel implements iassetlab.client.core.mvc.stack.IBackForwardStackControllerModel {
 
-        private _prefixedControllers: templa.mvc.IController[];
-        private _postfixedControllers: templa.mvc.IController[];
-        private _poppedControllers: templa.mvc.IController[];
-        private _padControllers: bool;
+        private _prefixedControllerEntries: templa.mvc.composite.IAbstractStackControllerModelEntry[];
+        private _postfixedControllerEntries: templa.mvc.composite.IAbstractStackControllerModelEntry[];
+        private _poppedControllerEntries: templa.mvc.composite.IAbstractStackControllerModelEntry[];
 
         // Constructor
-        constructor(controllersToDisplay: number, private _prefixControllerFactory: () => templa.mvc.IController, private _postfixControllerFactory: () => templa.mvc.IController) {
+        constructor(
+            controllersToDisplay: number,
+            private _prefixControllerFactory: () => templa.mvc.IController,
+            private _postfixControllerFactory: () => templa.mvc.IController,
+            private _padControllers:bool
+        ) {
             // TODO it's somehow going to have to manage the number of visible entries
             super(false, controllersToDisplay);
-            this._prefixedControllers = [];
-            this._postfixedControllers = [];
-            this._poppedControllers = [];
-            this._padControllers = false;
+            this._prefixedControllerEntries = [];
+            this._postfixedControllerEntries = [];
+            this._poppedControllerEntries = [];
+            this._recalculateControllers(controllersToDisplay, _padControllers);
+        }
+
+        public canPush(): bool {
+            var result;
+            if (this._postfixedControllerEntries.length > 0) {
+                var postfixedControllerEntry = this._postfixedControllerEntries[0];
+                result = (postfixedControllerEntry["padding"] != true);
+            } else {
+                result = false;
+            }
+            return result;
+        }
+
+        public requestPush(): void {
+            this._pushEntry(this._postfixedControllerEntries[0]);
         }
 
         public get padControllers(): bool {
             return this._padControllers;
-        }
-
-        public _setControllersToDisplay(_controllersToDisplay: number) {
-            if (this._controllersToDisplay != _controllersToDisplay) {
-                this._recalculateControllers(_controllersToDisplay, false);
-                super._setControllersToDisplay(_controllersToDisplay);
-            }
         }
 
         public set padControllers(_padControllers: bool) {
@@ -40,33 +55,67 @@ module iassetlab.client.core.mvc {
             }
         }
 
+        public _setControllersToDisplay(_controllersToDisplay: number, _padControllers?:bool) {
+            if (this._controllersToDisplay != _controllersToDisplay) {
+                if (_padControllers != null) {
+                    this._padControllers = _padControllers;
+                }
+                this._recalculateControllers(_controllersToDisplay, false);
+                super._setControllersToDisplay(_controllersToDisplay);
+            } else if (_padControllers != this._padControllers) {
+                this.padControllers = _padControllers;
+            }
+        }
+
         private _recalculateControllers(controllersToDisplay: number, fireModelChangeEvent:bool) {
             // calculate the controllers we need to add
-            this._prefixedControllers = [this._createPrefixController(controllersToDisplay)];
-            this._postfixedControllers = [];
-            var i = 0;
-            while (this._postfixedControllers.length + Math.min(controllersToDisplay, this._stack.length) + this._prefixedControllers.length < controllersToDisplay + 2) {
-                var postfixedController;
-                if (i >= this._poppedControllers.length) {
-                    postfixedController = this._postfixControllerFactory();
-                } else {
-                    postfixedController = this._poppedControllers[i];
-                    i++;
+            this._prefixedControllerEntries = [];
+            this._postfixedControllerEntries = [];
+            if (this._padControllers) {
+                this._prefixedControllerEntries.push(this._createPrefixControllerEntry(controllersToDisplay));
+                var i = 0;
+                while (this._postfixedControllerEntries.length + Math.min(controllersToDisplay, this._stack.length) + this._prefixedControllerEntries.length < controllersToDisplay + 2) {
+                    var postfixedControllerEntry;
+                    if (i >= this._poppedControllerEntries.length) {
+                        postfixedControllerEntry = {
+                            controller: this._postfixControllerFactory(),
+                            padding: true
+                        }
+                    } else {
+                        postfixedControllerEntry = this._poppedControllerEntries[i];
+                        i++;
+                    }
+                    this._postfixedControllerEntries.push(postfixedControllerEntry);
                 }
-                this._postfixedControllers.push(postfixedController);
             }
-
             if (fireModelChangeEvent) {
                 // invalidate
                 this._fireModelChangeEvent();
             }
         }
 
-        public _pushSafe(controller: templa.mvc.IController): bool {
+        public _pushPair(previous: templa.mvc.IController, controller: templa.mvc.IController): bool {
+            // is the controller already ontop
             var result;
             // check that the controller isn't already in the stack
             if (!this._contains(controller)) {
-                this._push(controller);
+                var fullReload = false;
+                if (!this._contains(previous)) {
+                    this._push(previous);
+                    fullReload = true;
+                } else {
+                    // pop back to the previous controller
+                    while (this.peek != previous) {
+                        // do not animate
+                        this._pop(true, true);
+                        fullReload = true;
+                    }
+                }
+                this._push(controller, null, fullReload, fullReload);
+                if (fullReload) {
+                    this._fireModelChangeEvent();
+                    this._fireStateDescriptionChangeEvent(this);
+                }
                 result = true;
             } else {
                 result = false;
@@ -78,46 +127,53 @@ module iassetlab.client.core.mvc {
         public getControllers(): templa.mvc.IController[]{
             var result = super.getControllers();
             if (this._padControllers) {
-                for (var i in this._prefixedControllers) {
-                    result.splice(parseInt(i), 0, this._prefixedControllers[i]);
+                for (var i in this._prefixedControllerEntries) {
+                    result.splice(parseInt(i), 0, this._prefixedControllerEntries[i].controller);
                 }
-                for (var i in this._postfixedControllers) {
-                    result.push(this._postfixedControllers[i]);
+                for (var i in this._postfixedControllerEntries) {
+                    result.push(this._postfixedControllerEntries[i].controller);
                 }
             }
             return result;
         }
 
-        private _createPrefixController(controllersToDisplay:number) {
-            var prefixController;
+        private _createPrefixControllerEntry(controllersToDisplay:number): templa.mvc.composite.IAbstractStackControllerModelEntry {
+            var prefixControllerEntry;
+            var supportsBack;
             if (this._stack.length > controllersToDisplay) {
-                prefixController = this._stack[this._stack.length - controllersToDisplay - 1].controller;
+                prefixControllerEntry = this._stack[this._stack.length - controllersToDisplay - 1];
+                supportsBack = true;
             } else {
-                prefixController = this._prefixControllerFactory()
+                var prefixController = this._prefixControllerFactory()
+                var prefixControllerEntry = {
+                    controller: prefixController
+                };
+                supportsBack = false;
             }
-            return prefixController;
+            return prefixControllerEntry;
         }
 
-        public _pop(suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): templa.mvc.IController {
+        public _pop(suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): templa.mvc.composite.IAbstractStackControllerModelEntry {
             var popped = super._pop(this._padControllers || suppressFireModelChangeEvent == true, suppressFireDescriptionChangeEvent);
             if (popped != null) {
-                this._poppedControllers.splice(0, 0, popped);
+                this._poppedControllerEntries.splice(0, 0, popped);
             }
             // save it up 
             if (this._padControllers) {
                 if (popped != null) {
-                    this._postfixedControllers.splice(0, 0, popped);
+                    this._postfixedControllerEntries.splice(0, 0, popped);
                     var removed;
-                    if (this._postfixedControllers.length + Math.min(this._controllersToDisplay, this._stack.length) + this._prefixedControllers.length >= this._controllersToDisplay + 2) {
-                        removed = this._postfixedControllers[this._postfixedControllers.length - 1];
-                        this._postfixedControllers.splice(this._postfixedControllers.length - 1, 1);
+                    if (this._postfixedControllerEntries.length + Math.min(this._controllersToDisplay, this._stack.length) + this._prefixedControllerEntries.length >= this._controllersToDisplay + 2) {
+                        removed = this._postfixedControllerEntries[this._postfixedControllerEntries.length - 1].controller;
+                        this._postfixedControllerEntries.splice(this._postfixedControllerEntries.length - 1, 1);
                     } else {
                         removed = null;
                     }
                     var added;
                     if (removed != null) {
-                        added = this._createPrefixController(this._controllersToDisplay);
-                        this._prefixedControllers = [added];
+                        var addedEntry = this._createPrefixControllerEntry(this._controllersToDisplay);
+                        added = addedEntry.controller;
+                        this._prefixedControllerEntries = [addedEntry];
                     } else {
                         added = null;
                     }
@@ -133,39 +189,64 @@ module iassetlab.client.core.mvc {
         }
 
         public _pushEntry(entry: templa.mvc.composite.IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool) {
+            var originalStackLength = this._stack.length;
             super._pushEntry(entry, this._padControllers || suppressFireModelChangeEvent, suppressFireDescriptionChangeEvent);
-            // TODO override so it fires the correct events
+            // override so it fires the correct events
             if (this._padControllers) {
-                var removed;
-                if (this._prefixedControllers.length > 0) {
-                    removed = this._prefixedControllers[0];
-                } else {
-                    removed = null;
-                }
-                this._prefixedControllers = [this._createPrefixController(this._controllersToDisplay)];
                 var added;
+                var removed;
                 var silentAdded = [];
                 var silentRemoved = [];
-                // is the added controller the same as the controller that we had buffered?
-                if (entry.controller != this._postfixedControllers[0]) {
-                    silentAdded.push(entry.controller);
-                    while (this._postfixedControllers.length + this._prefixedControllers.length + Math.min(this._stack.length, this._controllersToDisplay) >= this._controllersToDisplay + 2) {
-                        silentRemoved.push(this._postfixedControllers[0]);
-                        this._postfixedControllers.splice(0, 1);
+                // note, we just added a controller, so we are comparing a +1
+                if (this._postfixedControllerEntries.length <= 1) {
+                    // is the added controller the same as the controller that we had buffered?
+                    if (this._prefixedControllerEntries.length > 0) {
+                        removed = this._prefixedControllerEntries[0].controller;
+                    } else {
+                        removed = null;
                     }
-                    this._poppedControllers = [];
+                    this._prefixedControllerEntries = [this._createPrefixControllerEntry(this._controllersToDisplay)];
+
+                    if (entry.controller != this._postfixedControllerEntries[0].controller) {
+                        silentAdded.push(entry.controller);
+                        while (this._postfixedControllerEntries.length + this._prefixedControllerEntries.length + Math.min(this._stack.length, this._controllersToDisplay) >= this._controllersToDisplay + 2) {
+                            silentRemoved.push(this._postfixedControllerEntries[0].controller);
+                            this._postfixedControllerEntries.splice(0, 1);
+                        }
+                        this._poppedControllerEntries = [];
+                    } else {
+                        this._poppedControllerEntries.splice(0, 1);
+                    }
+                    // maintain a list of popped controllers
+                    var addedEntry;
+                    if (this._poppedControllerEntries.length > 0) {
+                        addedEntry = this._poppedControllerEntries[0];
+                    } else {
+                        addedEntry = {
+                            controller: this._postfixControllerFactory(),
+                            padding: true
+                        };
+                    }
+                    this._postfixedControllerEntries = [addedEntry];
+                    added = addedEntry.controller;
                 } else {
-                    this._poppedControllers.splice(0, 1);
+                    // replace the next postfix
+                    // remove all the postfixed controllers
+                    for (var i in this._postfixedControllerEntries) {
+                        silentRemoved.push(this._postfixedControllerEntries[i].controller);
+                    }
+                    this._postfixedControllerEntries.splice(0, 1);
+                    silentAdded.push(entry.controller);
+                    // add them back in (for ordering only) 
+                    for (var i in this._postfixedControllerEntries) {
+                        silentAdded.push(this._postfixedControllerEntries[i].controller);
+                    }
+                    added = null;
+                    removed = null;
+                    this._poppedControllerEntries = [];
                 }
-                // TODO maintain a list of popped controllers
-                if (this._poppedControllers.length > 0) {
-                    added = this._poppedControllers[0];
-                } else {
-                    added = this._postfixControllerFactory();
-                }
-                this._postfixedControllers.push(added);
                 if (suppressFireModelChangeEvent != true) {
-                    var changeDescription = new templa.mvc.composite.StackControllerModelChangeDescription(templa.mvc.composite.stackControllerModelEventPushed, removed, added, silentAdded, silentRemoved);
+                    var changeDescription = new templa.mvc.composite.StackControllerModelChangeDescription(templa.mvc.composite.stackControllerModelEventPushed, removed, added, silentRemoved, silentAdded);
                     this._fireModelChangeEvent(changeDescription, true);
 
                 }
