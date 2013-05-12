@@ -22,6 +22,12 @@
             <property key="statusbar_width">12</property>
             <property key="statusbar_height">24</property>
             <property key="statusbar_etch_width">1</property>
+
+            <!-- rounded panel background -->
+            <property key="rounded_panel_rounding">6</property>
+            <property key="rounded_panel_width">18</property>
+            <property key="rounded_panel_height">18</property>
+
         </configuration>
         <configuration name="640w">
 
@@ -41,6 +47,11 @@
             <property key="statusbar_width">12</property>
             <property key="statusbar_height">32</property>
             <property key="statusbar_etch_width">1</property>
+
+            <!-- rounded panel background -->
+            <property key="rounded_panel_rounding">9</property>
+            <property key="rounded_panel_width">27</property>
+            <property key="rounded_panel_height">27</property>
         </configuration>
         <configuration name="1536w">
             <!-- toolbar -->
@@ -60,10 +71,16 @@
             <property key="statusbar_height">40</property>
             <property key="statusbar_etch_width">1</property>
 
+            <!-- rounded panel background -->
+            <property key="rounded_panel_rounding">12</property>
+            <property key="rounded_panel_width">36</property>
+            <property key="rounded_panel_height">36</property>
+
         </configuration>
     </diversifier>
 
     <property key="toolbar_button_rounding_times_2">#set($value = $math.mul($toolbar_button_rounding, 2))$value</property>
+    <property key="rounded_panel_rounding_times_4">#set($value = $math.mul($rounded_panel_rounding, 4))$value</property>
 
 
     <diversifier key="style">
@@ -84,6 +101,9 @@
             <property key="toolbar_button_etch_highlight">$panel_light_color</property>
             <property key="toolbar_button_etch_shadow">$panel_dark_color</property>
             <property key="toolbar_button_etch_stroke">$panel_color</property>
+
+            <!-- rounded panel background -->
+            <property key="rounded_panel_color">#ffffff</property>
 
         </configuration>
     </diversifier>
@@ -134,6 +154,18 @@
                     <property key="css_attribute_prefixes">-ms- -moz- -webkit- -o-</property>
 
                 </configuration>
+
+                <configuration name="rounded_panel_background">
+                    <property key="lab_template_xsl">rounded_panel_background.xslt</property>
+
+                    <property key="css_selector">.content_pane_wide_4, .content_pane_wide_3</property>
+                    <property key="css_attribute">border-image</property>
+                    <!-- TODO FF will reject the entire line because of the fill parameter! -->
+                    <property key="css_value_postfix">$rounded_panel_rounding $rounded_panel_rounding $rounded_panel_rounding $rounded_panel_rounding fill stretch stretch</property>
+                    <property key="css_attribute_prefixes">-ms- -moz- -webkit- -o-</property>
+
+                </configuration>
+
             </diversifier>
 
             <diversifier key="output">
@@ -223,6 +255,21 @@
                     <property key="css_selector">.toolbar_decorator_toolbar_container</property>
                     <property key="css_attribute">top</property>
                     <property key="css_value">${statusbar_height}px</property>
+                </configuration>
+                <configuration>
+                    <property key="css_selector">.content_pane_wide_4, .content_pane_wide_3</property>
+                    <property key="css_attribute">margin</property>
+                    <property key="css_value">${rounded_panel_rounding}px</property>
+                </configuration>
+                <configuration>
+                    <property key="css_selector">.content_pane_wide_4, .content_pane_wide_3</property>
+                    <property key="css_attribute">border-width</property>
+                    <property key="css_value">${rounded_panel_rounding}px</property>
+                </configuration>
+                <configuration>
+                    <property key="css_selector">#content_padding_measure</property>
+                    <property key="css_attribute">height</property>
+                    <property key="css_value">${rounded_panel_rounding_times_4}px</property>
                 </configuration>
 
             </diversifier>

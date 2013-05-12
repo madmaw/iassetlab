@@ -7,8 +7,21 @@ module templa.mvc.element.jquery {
     // Class
     export class DimensionSettingElementViewProxy implements IElementView {
         // Constructor
-        constructor(private _proxied:IElementView, private _variableDimensionSelector:string, private _fixedWidthSelectors:string[], private _fixedHeightSelectors:string[]) {
-
+        constructor(
+            private _proxied: IElementView,
+            private _variableDimensionSelector: string,
+            private _fixedWidthSelectors: string[],
+            private _fixedHeightSelectors: string[],
+            private _widthAttribute?: string,
+            private _heightAttribute?: string,
+            private _maxHeightSelectors?:string[]
+        ) {
+            if (this._widthAttribute == null) {
+                this._widthAttribute = "width";
+            }
+            if (this._heightAttribute == null) {
+                this._heightAttribute = "height";
+            }
         }
 
         public getRoots(): Node[]{
@@ -40,7 +53,21 @@ module templa.mvc.element.jquery {
                 }
                 var windowHeight = window.innerHeight;
                 var height = windowHeight - fixedHeight;
-                variableDimensionElement.height(height);
+                if (this._maxHeightSelectors != null) {
+                    var maxHeight = height;
+                    for (var i in this._maxHeightSelectors) {
+                        var maxHeightSelector = this._maxHeightSelectors[i];
+                        var allVariableDimensionElements = $(maxHeightSelector);
+                        var newHeight = Math.max.apply(null, allVariableDimensionElements.map(function () { return $(this).height(); }).get());
+                        if (newHeight > maxHeight) {
+                            maxHeight = newHeight;
+                        }
+                    }
+                    if (height < maxHeight) {
+                        height = maxHeight;
+                    }
+                }
+                variableDimensionElement.css(this._heightAttribute, height + "px");
             }
             if (this._fixedWidthSelectors != null) {
                 var fixedWidth = 0;
@@ -51,7 +78,7 @@ module templa.mvc.element.jquery {
                 }
                 var windowWidth = window.innerWidth;
                 var width = windowWidth - fixedWidth;
-                variableDimensionElement.width(width);
+                variableDimensionElement.css(this._widthAttribute, width + "px");
             }
             return result;
         }

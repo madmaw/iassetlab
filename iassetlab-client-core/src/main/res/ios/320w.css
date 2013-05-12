@@ -22,6 +22,14 @@
     border-image:url('320w/toolbar_button_back.png') 4 4 4 8 fill stretch stretch;
 }
 
+.content_pane_wide_4, .content_pane_wide_3 {
+    -ms-border-image:url('320w/rounded_panel_background.png') 6 6 6 6 fill stretch stretch;
+    -moz-border-image:url('320w/rounded_panel_background.png') 6 6 6 6 fill stretch stretch;
+    -webkit-border-image:url('320w/rounded_panel_background.png') 6 6 6 6 fill stretch stretch;
+    -o-border-image:url('320w/rounded_panel_background.png') 6 6 6 6 fill stretch stretch;
+    border-image:url('320w/rounded_panel_background.png') 6 6 6 6 fill stretch stretch;
+}
+
 .statusbar_decorator_statusbar {
     height:24px;
 }
@@ -60,5 +68,17 @@
 
 .toolbar_decorator_toolbar_container {
     top:24px;
+}
+
+.content_pane_wide_4, .content_pane_wide_3 {
+    margin:6px;
+}
+
+.content_pane_wide_4, .content_pane_wide_3 {
+    border-width:6px;
+}
+
+#content_padding_measure {
+    height:24px;
 }
 

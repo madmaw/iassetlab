@@ -38,7 +38,7 @@ module templa.samples.mvc.tab_index {
             var loadables: templa.loading.ILoadable[] = [];
 
             var tabBarContainerId = "tab_bar_container";
-            var tabBarKey = "tab_bar";
+            var tabBarKey = ".tab_bar";
 
             // create toolbar decorator
 
@@ -59,12 +59,12 @@ module templa.samples.mvc.tab_index {
             //decoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(decoratorViewFactory, null, [], null);
 
 
-            var toolbarBackViewKey = "back";
-            var toolbarGeneralViewKey = "general";
+            var toolbarBackViewKey = "toolbar_buttons_back";
+            var toolbarGeneralViewKey = "toolbar_buttons_general";
             var toolbarViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
                 "src/samples/handlebars/toolbar/toolbar.html",
                 loadables,
-                { back_buttons: toolbarBackViewKey, general_buttons: toolbarGeneralViewKey }
+                { toolbar_buttons_back_class: toolbarBackViewKey, toolbar_buttons_general_class: toolbarGeneralViewKey }
             );
 
             var toolbarNormalCommandElementViewFactory = templa.mvc.element.jquery.command.TemplateCommandJQueryViewDescriptionFactory.createFromURL(
@@ -85,8 +85,8 @@ module templa.samples.mvc.tab_index {
                 var toolbarController = new templa.mvc.element.jquery.command.ToolbarCommandJQueryController(
                     toolbarViewFactory,
                     toolbarCommandElementViewFactory,
-                    "[key='" + toolbarBackViewKey + "']",
-                    "[key='" + toolbarGeneralViewKey + "']"
+                    "." + toolbarBackViewKey,
+                    "." + toolbarGeneralViewKey
                 );
                 toolbarController.setModel(new templa.mvc.command.CommandControllerModelAdapter(loadingSwitcherController));
 
@@ -166,7 +166,7 @@ module templa.samples.mvc.tab_index {
                 "selected"
             );
 
-            var tabPaneKey = "tab_pane";
+            var tabPaneKey = ".tab_pane";
             var tabControllers = {};
             tabControllers[tabBarKey] = tabBarController;
 

@@ -73,6 +73,9 @@ module templa.mvc.element.jquery.composite {
             } else {
                 result = this.$reference(selector);
             }
+            if (result == null) {
+                throw "no container for selector " + selector;
+            }
             return result;
         }
 

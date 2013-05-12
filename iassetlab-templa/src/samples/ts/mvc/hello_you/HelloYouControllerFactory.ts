@@ -33,8 +33,8 @@ module templa.samples.mvc.hello_you {
             var idInput = "helloyou_input";
             var idOutput = "helloyou_output";
             var controllers = {};
-            controllers[idInput] = this.createInputController();
-            controllers[idOutput] = this.createLabelController();
+            controllers["."+idInput] = this.createInputController();
+            controllers["."+idOutput] = this.createLabelController();
             var model = new templa.mvc.composite.MappedKeyedControllerModel(
                 <{ string: templa.mvc.IController; }>controllers
             );

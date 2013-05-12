@@ -18,6 +18,7 @@
 ///<reference path="../../../../iassetlab-templa/src/main/ts/mvc/loading/SwitchOnLoadingCompositeControllerModel.ts"/>
 ///<reference path="../../../../iassetlab-templa/src/main/ts/mvc/element/ModeElementViewFactoryProxy.ts"/>
 ///<reference path="../../../../iassetlab-templa/src/main/ts/mvc/element/TemplateElementViewFactory.ts"/>
+///<reference path="../../../../iassetlab-templa/src/main/ts/mvc/element/jquery/DimensionSettingElementViewProxyFactory.ts"/>
 ///<reference path="../../../../iassetlab-templa/src/main/ts/mvc/element/jquery/composite/AbstractCompositeJQueryController.ts"/>
 ///<reference path="../../../../iassetlab-templa/src/main/ts/mvc/element/jquery/composite/StackJQueryController.ts"/>
 ///<reference path="../../../../iassetlab-templa/src/main/ts/mvc/element/jquery/composite/KeyedJQueryController.ts"/>
@@ -60,13 +61,15 @@ module iassetlab.client.core {
         private _toolbarDecoratorClass = "toolbar_decorator";
         private _toolbarDecoratorContentClass = "toolbar_decorator_content";
 
-        private _decoratorViewFactory: templa.mvc.element.IElementViewFactory;
+        private _visibleDecoratorViewFactory: templa.mvc.element.IElementViewFactory;
+        private _invisibleDecoratorViewFactory: templa.mvc.element.IElementViewFactory;
 
+        private _contextClass = "context";
         private _contextSummaryClass = "context_summary";
         private _contextMainClass = "context_main";
         private _contextViewFactory: templa.mvc.element.IElementViewFactory;
 
-        private _relativeAnimationBundleWide3: templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle;
+        private _relativeAnimationBundlesWide3: templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle[];
         private _relativeAnimationBundleWide4: templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle;
         private _relativeAnimationBundleNarrow: templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle;
 
@@ -97,7 +100,7 @@ module iassetlab.client.core {
                 var mode = this._modeFunction();
                 var result = [];
                 if (mode == "wide_3") {
-                    result.push(this._relativeAnimationBundleWide3);
+                    templa.util.Arrays.pushAll(result, this._relativeAnimationBundlesWide3);
                     templa.util.Arrays.pushAll(result, this._absoluteAnimationBundlesWide3);
                 } else if (mode == "wide_4") {
                     result.push(this._relativeAnimationBundleWide4);
@@ -111,23 +114,27 @@ module iassetlab.client.core {
 
             var slideTime = 1000;
 
-            var relativeWide3PushRemoveAnimationFactory: templa.animation.element.IElementAnimationFactory;
-            var relativeWide3PopAddAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeWide3PushAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeWide3PushAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-push-2", slideTime);
+            var relativeWide3PushAnimationFactory3 = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-push-3", slideTime);
+            var relativeWide3PopAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeWide3PopAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-pop-2", slideTime);
+            var relativeWide3PopAnimationFactory3 = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-pop-3", slideTime);
 
-            var relativeWide4PushRemoveAnimationFactory: templa.animation.element.IElementAnimationFactory;
-            var relativeWide4PopAddAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeWide4PushAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeWide4PopAnimationFactory: templa.animation.element.IElementAnimationFactory;
 
-            var relativeNarrowPushRemoveAnimationFactory: templa.animation.element.IElementAnimationFactory;
-            var relativeNarrowPopAddAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeNarrowPushAnimationFactory: templa.animation.element.IElementAnimationFactory;
+            var relativeNarrowPopAnimationFactory: templa.animation.element.IElementAnimationFactory;
 
-            relativeWide3PushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-push", slideTime);
-            relativeWide3PopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-pop", slideTime);
+            relativeWide3PushAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-push", slideTime);
+            relativeWide3PopAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-pop", slideTime);
 
-            relativeWide4PushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-4-push", slideTime);
-            relativeWide4PopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-4-pop", slideTime);
+            relativeWide4PushAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-4-push", slideTime);
+            relativeWide4PopAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-4-pop", slideTime);
 
-            relativeNarrowPushRemoveAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-narrow-push", slideTime);
-            relativeNarrowPopAddAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-narrow-pop", slideTime);
+            relativeNarrowPushAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-narrow-push", slideTime);
+            relativeNarrowPopAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-narrow-pop", slideTime);
 
             var absoluteNarrowPushAnimationFactory1 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-narrow-push-1", slideTime);
             var absoluteNarrowPushAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-narrow-push-2", slideTime);
@@ -143,19 +150,27 @@ module iassetlab.client.core {
             var absoluteWide3PopAnimationFactory3 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-pop-3", slideTime);
             var absoluteWide3PopAnimationFactory4 = new templa.animation.element.CSSElementClassAnimationFactory("animation-absolute-wide-3-pop-4", slideTime);
 
-            this._relativeAnimationBundleWide3 = {
-                popAnimationFactory: relativeWide3PopAddAnimationFactory,
-                pushAnimationFactory: relativeWide3PushRemoveAnimationFactory,
+            this._relativeAnimationBundlesWide3 = [{
+                popAnimationFactory: relativeWide3PopAnimationFactory,
+                pushAnimationFactory: relativeWide3PushAnimationFactory,
                 selector: ".toolbar_decorator_content_container:nth-of-type(2)"
-            };
+            }, {
+                pushAnimationFactory: relativeWide3PushAnimationFactory2,
+                popAnimationFactory: relativeWide3PopAnimationFactory2,
+                selector: ".toolbar_decorator_content_container:nth-of-type(4)"
+            }, {
+                pushAnimationFactory: relativeWide3PushAnimationFactory3,
+                popAnimationFactory: relativeWide3PopAnimationFactory3,
+                selector: ".toolbar_decorator_content_container:nth-of-type(6)"
+            }];
             this._relativeAnimationBundleWide4 = {
-                popAnimationFactory: relativeWide4PopAddAnimationFactory,
-                pushAnimationFactory: relativeWide4PushRemoveAnimationFactory,
+                popAnimationFactory: relativeWide4PopAnimationFactory,
+                pushAnimationFactory: relativeWide4PushAnimationFactory,
                 selector: ".toolbar_decorator_content_container:nth-of-type(2)"
             };
             this._relativeAnimationBundleNarrow = {
-                popAnimationFactory: relativeNarrowPopAddAnimationFactory,
-                pushAnimationFactory: relativeNarrowPushRemoveAnimationFactory,
+                popAnimationFactory: relativeNarrowPopAnimationFactory,
+                pushAnimationFactory: relativeNarrowPushAnimationFactory,
                 selector: ".toolbar_decorator_content_container:nth-of-type(2)"
             };
             this._absoluteAnimationBundlesNarrow = [{
@@ -285,17 +300,34 @@ module iassetlab.client.core {
                 loadables,
                 toolbarDecoratorParameters
             );
-            this._decoratorViewFactory = new templa.mvc.element.ModeElementViewFactoryProxy(
-                this._modeFunction,
-                <any>{
-                    wide_4: decoratorViewFactoryWide4,
-                    wide_3: decoratorViewFactoryWide3,
-                    narrow: decoratorViewFactoryNarrow
-                }
+            this._visibleDecoratorViewFactory = new templa.mvc.element.jquery.DimensionSettingElementViewProxyFactory(
+                new templa.mvc.element.ModeElementViewFactoryProxy(
+                    this._modeFunction,
+                    <any>{
+                        wide_4: decoratorViewFactoryWide4,
+                        wide_3: decoratorViewFactoryWide3,
+                        narrow: decoratorViewFactoryNarrow
+                    }
+                ),
+                "." + this._toolbarDecoratorContentClass,
+                null,
+                // TODO toolbar in the cases where it is visible
+                ["."+this._statusbarDecoratorStatusbarClass, "#content_padding_measure"],
+                null,
+                "min-height",
+                ["." + this._contextClass, ".content_home"]
+            );
+
+            var invisibleDecoratorParameters = { toolbar_decorator_class: this._toolbarDecoratorClass, toolbar_decorator_content_class: this._toolbarDecoratorContentClass, toolbar_decorator_content_container_extra: "toolbar_decorator_content_container_invisible" };
+            this._invisibleDecoratorViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/main/handlebars/toolbar/toolbar_decorator_wide_3.html",
+                loadables,
+                invisibleDecoratorParameters
             );
 
 
             var contextProperties = {
+                context_container_class: this._contextClass,
                 context_summary_container_class: this._contextSummaryClass,
                 context_main_container_class: this._contextMainClass
             };
@@ -333,6 +365,8 @@ module iassetlab.client.core {
 
         public create(): templa.mvc.IController {
 
+            var e: HTMLElement;
+            
 
             var getControllersToDisplay = () => {
                 var result: number = 1;
@@ -366,13 +400,13 @@ module iassetlab.client.core {
                     var emptyController = new templa.mvc.element.AbstractElementController(this._emptyStarterViewFactory);
                     var emptyModel = new templa.mvc.AbstractModel();
                     emptyController.setModel(emptyModel);
-                    return decoratorFactory([emptyController]);
+                    return decoratorFactory([emptyController], true);
                 },
                 () => {
                     var emptyController = new templa.mvc.element.AbstractElementController(this._emptyEnderViewFactory);
                     var emptyModel = new templa.mvc.AbstractModel();
                     emptyController.setModel(emptyModel);
-                    return decoratorFactory([emptyController]);
+                    return decoratorFactory([emptyController], true);
                 },
                 getPadding()
             );
@@ -510,7 +544,7 @@ module iassetlab.client.core {
         public createToolbarDecoratorFactory(sourceController:templa.mvc.IController) {
             // decorator
 
-            return (controllers: templa.mvc.IController[]) => {
+            return (controllers: templa.mvc.IController[], invisible?:bool) => {
                 var toolbarController = new templa.mvc.element.jquery.command.ToolbarCommandJQueryController(
                     this._toolbarViewFactory,
                     this._toolbarCommandElementViewFactory,
@@ -519,8 +553,15 @@ module iassetlab.client.core {
                 );
                 toolbarController.setModel(new templa.mvc.command.CommandControllerModelAdapter(sourceController));
 
+                var viewFactory;
+                if (invisible == true) {
+                    viewFactory = this._invisibleDecoratorViewFactory;
+                } else {
+                    viewFactory = this._visibleDecoratorViewFactory;
+                }
+
                 var decoratorController = new templa.mvc.element.jquery.composite.KeyedJQueryController(
-                    this._decoratorViewFactory
+                    viewFactory
                 );
                 decoratorController.setModel(
                     new iassetlab.client.core.mvc.AssetLabDecoratorModel(

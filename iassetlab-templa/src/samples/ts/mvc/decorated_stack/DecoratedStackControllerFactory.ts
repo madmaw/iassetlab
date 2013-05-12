@@ -28,17 +28,17 @@ module templa.samples.mvc.decorated_stack.DecoratedStackControllerFactory {
         var stackController = new templa.mvc.element.jquery.composite.StackJQueryController(
             stackViewFactory,
             [{
-               popAddAnimationFactory: relativePopAddAnimationFactory,
-               popRemoveAnimationFactory: relativePopRemoveAnimationFactory,
-               pushAddAnimationFactory: relativePushAddAnimationFactory,
-               pushRemoveAnimationFactory: relativePushRemoveAnimationFactory,
-               selector: ".content_pane"
+               popAnimationFactory: relativePopAddAnimationFactory,
+               pushAnimationFactory: relativePushRemoveAnimationFactory,
+               selector: ".content_pane:nth-of-type(2)"
            }, {
-               popAddAnimationFactory: absolutePopAddAnimationFactory,
-               popRemoveAnimationFactory: absolutePopRemoveAnimationFactory,
-               pushAddAnimationFactory: absolutePushAddAnimationFactory,
-               pushRemoveAnimationFactory: absolutePushRemoveAnimationFactory,
-               selector: ".decorated_toolbar_container "
+               popAnimationFactory: absolutePopAddAnimationFactory,
+               pushAnimationFactory: absolutePushRemoveAnimationFactory,
+               selector: ".decorated_toolbar_container:nth-of-type(1)"
+           }, {
+               popAnimationFactory: absolutePopRemoveAnimationFactory,
+               pushAnimationFactory: absolutePushAddAnimationFactory,
+               selector: ".decorated_toolbar_container:nth-of-type(3)"
            }]
         );
 

@@ -43,6 +43,9 @@ module templa.mvc {
         }
 
         public init(container: IElementReference, prepend?: bool): bool {
+            if (container == null) {
+                throw "no container!";
+            }
             var result: bool;
             this._viewContainer = container;
             this._viewPrepend = prepend;

@@ -25,6 +25,7 @@ module templa.mvc.element.jquery.composite {
             if (selector == null && key != null) {
                 selector = key;
             }
+
             return selector;
         }
 

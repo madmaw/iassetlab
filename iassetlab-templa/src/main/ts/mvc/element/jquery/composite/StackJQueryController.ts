@@ -121,13 +121,19 @@ module templa.mvc.element.jquery.composite {
                 }
                 var animated;
                 if (addedController != null || hiddenController != null) {
-                    animated = this._animate(
-                        animationFactoryName,
-                        (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => {
+                    var animationListener;
+                    if (hiddenView != null) {
+                        animationListener = (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => {
                             if (event.animationState == templa.animation.animationStateFinished) {
                                 hiddenView.detach();
                             }
                         }
+                    } else {
+                        animationListener = null;
+                    }
+                    animated = this._animate(
+                        animationFactoryName,
+                        animationListener
                     );
                 } else {
                     animated = false;
@@ -187,7 +193,7 @@ module templa.mvc.element.jquery.composite {
                         var animation = animationFactory.create(containerElement, <any>toAnimate);
                         count++;
                         result = true;
-                        if (animationCompletionListener) {
+                        if (animationCompletionListener != null) {
                             // aggregate all the animation completions into one callback
                             animation.addAnimationListener(
                                 function (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) {

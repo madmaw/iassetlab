@@ -67,13 +67,18 @@ module templa.mvc.element.jquery.command {
             for (var i in commands) {
                 var command: Command = commands[i];
                 var container: IElementReference;
+                var selector: string;
                 var views;
                 if (command.commandType == CommandTypeBack) {
-                    container = this.$reference(this._backContainerSelector);
+                    selector = this._backContainerSelector;
                     views = this._backViews;
                 } else {
-                    container = this.$reference(this._generalContainerSelector);
+                    selector = this._generalContainerSelector;
                     views = this._generalViews;
+                }
+                container = this.$reference(selector);
+                if (container == null) {
+                    throw "no container for selector " + selector;
                 }
                 var actionElementView: CommandJQueryViewDescription = this._commandViewDescriptionFactory.create(container, command);
                 var actionElementSelector = actionElementView.actionElementSelector;

@@ -96,6 +96,9 @@ module templa.mvc.element.composite {
             this._controllers.push(controller);
 
             var container: IElementReference = this.getControllerContainer(controller);
+            if (container == null) {
+                throw "no container!";
+            }
             var state: number = this.getState();
             if (state >= ControllerStateInitialized) {
                 controller.init(container, prepend);
