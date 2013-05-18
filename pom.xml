@@ -9,7 +9,6 @@
     <modules>
         <module>iassetlab-core</module>
         <module>iassetlab-cli</module>
-        <module>iassetlab-client-core</module>
         <module>iassetlab-templa</module>
     </modules>
 
