@@ -1,6 +1,8 @@
 ///<reference path="mvc/AssetLabHomeControllerModel.ts"/>
+///<reference path="mvc/AssetLabSearchControllerModel.ts"/>
 ///<reference path="mvc/AssetLabDecoratorModel.ts"/>
 ///<reference path="mvc/home/HomeController.ts"/>
+///<reference path="mvc/search/SearchController.ts"/>
 ///<reference path="mvc/about/AboutController.ts"/>
 ///<reference path="mvc/about/IAboutControllerModel.ts"/>
 ///<reference path="mvc/statusbar/StatusbarController.ts"/>
@@ -34,6 +36,8 @@ module iassetlab.client.core {
     // Class
     export class AssetLabControllerFactory {
 
+        public static controllerNameHome = "home";
+
         private _modeFunction: () => string;
         private _animationBundleFactory: () => templa.mvc.element.jquery.composite.IStackAnimationFactoryBundle[];
         private _decoratorFactory: (controllers:templa.mvc.IController[]) => templa.mvc.IController;
@@ -45,6 +49,7 @@ module iassetlab.client.core {
         private _aboutViewFactory: templa.mvc.element.IElementViewFactory;
         private _searchViewFactory: templa.mvc.element.IElementViewFactory;
         private _homeViewFactory: templa.mvc.element.IElementViewFactory;
+        private _searchResultsViewFactory: templa.mvc.element.IElementViewFactory;
 
         private _statusbarViewFactory: templa.mvc.element.IElementViewFactory;
 
@@ -115,8 +120,30 @@ module iassetlab.client.core {
             var slideTime = 1000;
 
             var relativeWide3PushAnimationFactory: templa.animation.element.IElementAnimationFactory;
-            var relativeWide3PushAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-push-2", slideTime);
-            var relativeWide3PushAnimationFactory3 = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-push-3", slideTime);
+            var relativeWide3PushAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory(
+                "animation-relative-wide-3-push-2",
+                slideTime,
+                function (phase: string, view: Element) {
+                    if (phase == templa.animation.animationStateStarted) {
+                        // stop the flicker as the animation ends and the view flicks back 
+                        $(view).css("opacity", "0.3");
+                    } else if (phase == templa.animation.animationStateFinished) {
+                        $(view).css("opacity", "");
+                    }
+                }
+            );
+            var relativeWide3PushAnimationFactory3 = new templa.animation.element.CSSElementClassAnimationFactory(
+                "animation-relative-wide-3-push-3",
+                slideTime,
+                function (phase: string, view: Element) {
+                    if (phase == templa.animation.animationStateStarted) {
+                        // stop the flicker as the animation ends and the view flicks back 
+                        $(view).css("opacity", "1");
+                    } else if (phase == templa.animation.animationStateFinished) {
+                        $(view).css("opacity", "");
+                    }
+                }
+            );
             var relativeWide3PopAnimationFactory: templa.animation.element.IElementAnimationFactory;
             var relativeWide3PopAnimationFactory2 = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-pop-2", slideTime);
             var relativeWide3PopAnimationFactory3 = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-pop-3", slideTime);
@@ -127,7 +154,16 @@ module iassetlab.client.core {
             var relativeNarrowPushAnimationFactory: templa.animation.element.IElementAnimationFactory;
             var relativeNarrowPopAnimationFactory: templa.animation.element.IElementAnimationFactory;
 
-            relativeWide3PushAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-push", slideTime);
+            relativeWide3PushAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory(
+                "animation-relative-wide-3-push",
+                slideTime,
+                function (phase: string, view: Element) {
+                    if (phase == templa.animation.animationStateStarted) {
+                        // stop the flicker as the animation ends and the view flicks back 
+                        $(view).css("margin-left", "-33%");
+                    }
+                }
+            );
             relativeWide3PopAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-3-pop", slideTime);
 
             relativeWide4PushAnimationFactory = new templa.animation.element.CSSElementClassAnimationFactory("animation-relative-wide-4-push", slideTime);
@@ -238,6 +274,10 @@ module iassetlab.client.core {
             );
             this._searchViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
                 "src/main/handlebars/search/search_main.html",
+                loadables
+            );
+            this._searchResultsViewFactory = templa.mvc.element.TemplateElementViewFactory.createFromURL(
+                "src/main/handlebars/search/search_results_main.html",
                 loadables
             );
 
@@ -411,7 +451,6 @@ module iassetlab.client.core {
                 getPadding()
             );
 
-
             var homeOptionIdsToControllers: { string: templa.mvc.IController; } = <any>{};
             var homeController = this.createHomeController(this._homeViewFactory, null);
             var decoratedHomeController = decoratorFactory([homeController]);
@@ -423,7 +462,7 @@ module iassetlab.client.core {
             homeController.setModel(homeModel);
 
 
-            stackModel._push(decoratedHomeController);
+            stackModel._push(decoratedHomeController, AssetLabControllerFactory.controllerNameHome);
             stackController.setModel(stackModel);
 
 
@@ -436,14 +475,26 @@ module iassetlab.client.core {
             );
             homeOptionIdsToControllers[iassetlab.client.core.mvc.home.HomeController._selectorAbout] = decoratedAboutController;
 
-            var searchModel = new templa.mvc.AbstractModel();
-            var searchController = new templa.mvc.element.AbstractElementController(this._searchViewFactory);
-            searchController.setModel(searchModel);
+            var searchResultsModel = new templa.mvc.AbstractModel();
+            var searchResultsController = this.createSearchResultsController(this._searchResultsViewFactory, searchResultsModel);
+            var decoratedSearchResultsController = this.createContextController(
+                searchResultsController,
+                this.createSearchResultsController(this._searchResultsViewFactory, searchResultsModel),
+                decoratorFactory
+            );
+
+            var searchController = new iassetlab.client.core.mvc.search.SearchController(this._searchViewFactory);
             var decoratedSearchController = this.createContextController(
                 searchController,
                 this.createHomeController(this._homeViewFactory, homeModel),
                 decoratorFactory
             );
+            var searchModel = new iassetlab.client.core.mvc.AssetLabSearchControllerModel(
+                stackModel,
+                decoratedSearchController,
+                decoratedSearchResultsController
+            );
+            searchController.setModel(searchModel);
             homeOptionIdsToControllers[iassetlab.client.core.mvc.home.HomeController._selectorSearch] = decoratedSearchController;
 
 
@@ -463,6 +514,14 @@ module iassetlab.client.core {
             };
 
             return decoratedStackController;
+        }
+
+        public createSearchResultsController(searchResultsViewFactory: templa.mvc.element.IElementViewFactory, searchResultsModel: templa.mvc.IModel) {
+            var searchResultsController = new templa.mvc.element.AbstractElementController(searchResultsViewFactory);
+            if (searchResultsModel != null) {
+                searchResultsController.setModel(searchResultsModel);
+            }
+            return searchResultsController;
         }
 
         public createHomeController(homeViewFactory: templa.mvc.element.IElementViewFactory, homeModel:iassetlab.client.core.mvc.home.IHomeControllerModel) {

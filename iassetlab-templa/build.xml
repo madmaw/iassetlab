@@ -18,9 +18,6 @@
 
         <fileset dir="." id="tsFiles">
             <include name="src/main/ts/**/*.ts"/>
-            <!--
-            <include name="src/samples/ts/**/*.ts"/>
-            -->
         </fileset>
       
         <pathconvert property="tsFilesArg" refid="tsFiles" pathsep="' '"/>

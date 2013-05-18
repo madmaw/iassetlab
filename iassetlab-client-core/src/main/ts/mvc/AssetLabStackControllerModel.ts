@@ -1,6 +1,6 @@
 ///<reference path="stack/IBackForwardStackControllerModel.ts"/>
 
-///<reference path="../../../../../iassetlab-templa/src/main/ts/mvc/composite/AbstractStackControllerModel.ts"/>
+///<reference path="../../../../../iassetlab-templa/src/main/ts/mvc/composite/AbstractDescriptiveStackControllerModel.ts"/>
 
 
 
@@ -35,13 +35,18 @@ module iassetlab.client.core.mvc {
                 var postfixedControllerEntry = this._postfixedControllerEntries[0];
                 result = (postfixedControllerEntry["padding"] != true);
             } else {
-                result = false;
+                if (this._poppedControllerEntries.length > 0) {
+                    var poppedControllerEntry = this._poppedControllerEntries[0];
+                    result = (poppedControllerEntry["padding"] != true);
+                } else {
+                    result = false;
+                }
             }
             return result;
         }
 
         public requestPush(): void {
-            this._pushEntry(this._postfixedControllerEntries[0]);
+            this._pushEntry(this._poppedControllerEntries[0]);
         }
 
         public get padControllers(): bool {
@@ -94,14 +99,14 @@ module iassetlab.client.core.mvc {
             }
         }
 
-        public _pushPair(previous: templa.mvc.IController, controller: templa.mvc.IController): bool {
+        public _pushPair(previous: templa.mvc.IController, controller: templa.mvc.IController, controllerData?: any, suppressModelChangeEvent?: bool): templa.mvc.IModelStateChange {
             // is the controller already ontop
-            var result;
+            var result: templa.mvc.IModelStateChange;
             // check that the controller isn't already in the stack
             if (!this._contains(controller)) {
                 var fullReload = false;
                 if (!this._contains(previous)) {
-                    this._push(previous);
+                    this._push(previous, true, true);
                     fullReload = true;
                 } else {
                     // pop back to the previous controller
@@ -111,14 +116,25 @@ module iassetlab.client.core.mvc {
                         fullReload = true;
                     }
                 }
-                this._push(controller, null, fullReload, fullReload);
+                var change = this._pushEntryGetChange({ controller:controller, data:controllerData }, fullReload || suppressModelChangeEvent == true);
                 if (fullReload) {
-                    this._fireModelChangeEvent();
-                    this._fireStateDescriptionChangeEvent(this);
+                    if (suppressModelChangeEvent != true) {
+                        this._fireModelChangeEvent(null, true);
+                    }
+                    result = null;
+                } else {
+                    result = {
+                        undo: () => {
+                            change.undo();
+                        },
+                        redo: () => {
+                            this._pushPair(previous, controller, controllerData, false);
+                        }
+                    };
+                    //result = change;
                 }
-                result = true;
             } else {
-                result = false;
+                result = null;
             }
             return result;
         }
@@ -154,7 +170,7 @@ module iassetlab.client.core.mvc {
         }
 
         public _pop(suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): templa.mvc.composite.IAbstractStackControllerModelEntry {
-            var popped = super._pop(this._padControllers || suppressFireModelChangeEvent == true, suppressFireDescriptionChangeEvent);
+            var popped = super._pop(this._padControllers || suppressFireModelChangeEvent == true, this._padControllers || suppressFireDescriptionChangeEvent == true);
             if (popped != null) {
                 this._poppedControllerEntries.splice(0, 0, popped);
             }
@@ -183,14 +199,22 @@ module iassetlab.client.core.mvc {
                         var changeDescription = new templa.mvc.composite.StackControllerModelChangeDescription(templa.mvc.composite.stackControllerModelEventPopped, removed, added);
                         this._fireModelChangeEvent(changeDescription, true);
                     }
+                    if (suppressFireDescriptionChangeEvent != true) {
+                        // notify of pop
+                        var modelStateChange = new templa.mvc.composite.AbstractStackControllerModelPopChange(
+                            this,
+                            popped
+                        );
+                        this._fireStateDescriptionChangeEvent(this, modelStateChange);
+                    }
                 }
             }
             return popped;
         }
 
-        public _pushEntry(entry: templa.mvc.composite.IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool) {
+        public _pushEntryGetChange(entry: templa.mvc.composite.IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool) : templa.mvc.IModelStateChange {
             var originalStackLength = this._stack.length;
-            super._pushEntry(entry, this._padControllers || suppressFireModelChangeEvent, suppressFireDescriptionChangeEvent);
+            var result = super._pushEntryGetChange(entry, true);
             // override so it fires the correct events
             if (this._padControllers) {
                 var added;
@@ -207,7 +231,7 @@ module iassetlab.client.core.mvc {
                     }
                     this._prefixedControllerEntries = [this._createPrefixControllerEntry(this._controllersToDisplay)];
 
-                    if (entry.controller != this._postfixedControllerEntries[0].controller) {
+                    if (entry.controller != removed) {
                         silentAdded.push(entry.controller);
                         while (this._postfixedControllerEntries.length + this._prefixedControllerEntries.length + Math.min(this._stack.length, this._controllersToDisplay) >= this._controllersToDisplay + 2) {
                             silentRemoved.push(this._postfixedControllerEntries[0].controller);
@@ -248,10 +272,49 @@ module iassetlab.client.core.mvc {
                 if (suppressFireModelChangeEvent != true) {
                     var changeDescription = new templa.mvc.composite.StackControllerModelChangeDescription(templa.mvc.composite.stackControllerModelEventPushed, removed, added, silentRemoved, silentAdded);
                     this._fireModelChangeEvent(changeDescription, true);
+                }
+                /*
+                if (suppressFireDescriptionChangeEvent != true) {
+                    // notify of push
+                    var modelStateChange = new templa.mvc.composite.AbstractStackControllerModelPushChange(
+                        this,
+                        entry
+                    );
+                    this._fireStateDescriptionChangeEvent(this, modelStateChange);
 
                 }
+                */
+            } else {
+                // checked the popped controllers
+                if (this._poppedControllerEntries.length > 0) {
+                    if (this._poppedControllerEntries[0].controller == entry.controller) {
+                        this._poppedControllerEntries.splice(0, 1);
+                    } else {
+                        this._poppedControllerEntries = [];
+                    }
+                }
+                if (suppressFireModelChangeEvent != true) {
+                    var removed;
+                    if (this._stack.length > this._controllersToDisplay) {
+                        removed = this._stack[this._stack.length - this._controllersToDisplay - 1].controller;
+                    } else {
+                        removed = null;
+                    }
+                    var changeDescription = new templa.mvc.composite.StackControllerModelChangeDescription(templa.mvc.composite.stackControllerModelEventPushed, removed, entry.controller);
+                    this._fireModelChangeEvent(changeDescription, true);
+                }
             }
+            return result;
         }
 
+
+        public createStateDescription(models?: templa.mvc.IModel[]): any {
+            // just pass it through to the root controller and let it deal
+            return this._stack[0].controller.getModel().createStateDescription(models);
+        }
+
+        public loadStateDescription(description: any) {
+            this._stack[0].controller.getModel().loadStateDescription(description);
+        }
     }
 }

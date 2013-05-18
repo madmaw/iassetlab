@@ -7,12 +7,12 @@ module templa.animation.element {
     // Class
     export class CSSElementClassAnimationFactory implements IElementAnimationFactory {
         // Constructor
-        constructor(private _class: string, private _maxTimeMillis?: number) {
+        constructor(private _class: string, private _maxTimeMillis?: number, private _lifecycleFunction?:(phase:string, view:Element) => void) {
 
         }
 
         public create(container: Element, view: Element): IAnimation {
-            return new CSSElementClassAnimation(view, this._class, this._maxTimeMillis);
+            return new CSSElementClassAnimation(view, this._class, this._maxTimeMillis, this._lifecycleFunction);
         }
     }
 

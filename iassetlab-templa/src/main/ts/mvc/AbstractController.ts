@@ -137,13 +137,7 @@ module templa.mvc {
             // destroy any animations
             var result: bool;
             if (this._state == templa.mvc.ControllerStateInitialized) {
-                if (this._animations != null) {
-                    for (var i in this._animations) {
-                        var animation: templa.animation.IAnimation = this._animations[i];
-                        animation.destroy();
-                    }
-                    this._animations = null;
-                }
+                this._clearAnimations();
                 result = this._doDestroy(detachView);
                 if (result) {
                     // unfortunately the animations are going to cop it if we fail
@@ -226,6 +220,19 @@ module templa.mvc {
             }
         }
 
+        public _isAnimating(): bool {
+            return this._animations != null && this._animations.length > 0;
+        }
+
+        public _clearAnimations() {
+            if (this._animations != null) {
+                for (var i in this._animations) {
+                    var animation: templa.animation.IAnimation = this._animations[i];
+                    animation.destroy();
+                }
+                this._animations = null;
+            }
+        }
 
         public _addAnimation(animation: templa.animation.IAnimation, doNotStart?: bool) {
             if (this._animations == null) {

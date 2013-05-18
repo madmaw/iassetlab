@@ -25,25 +25,7 @@ module templa.mvc.history {
             this._model = this._controller.getModel();
 
             this._stateDescriptionChangeListener = (model: IModel, modelStateChange: IModelStateChange) => {
-                var stateDescription = this._model.createStateDescription();
-                var s = rison.encode(stateDescription);
-                var before = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                if (s != this._lastKnownData) {
-                    if (this._modelStateChangeIndex == null) {
-                        this._modelStateChangeIndex = 0;
-                    } else {
-                        this._modelStateChangeIndex++;
-                    }
-                    var url = before + "#" + this._modelStateChangeIndex + "!" + s;
-                    window.history.pushState(stateDescription, this._controller.getTitle(), url);
-                    // TODO maintain state changes alongside the shit (you know what I mean)
-                    if (this._modelStateChanges.length < this._modelStateChangeIndex) {
-                        this._modelStateChanges.push(modelStateChange);
-                    } else {
-                        this._modelStateChanges[this._modelStateChangeIndex] = modelStateChange;
-                    }
-                    this._lastKnownData = s;
-                }
+                this.push(modelStateChange);
             };
 
             this._historyChangeListener = (event: PopStateEvent) => {
@@ -105,7 +87,38 @@ module templa.mvc.history {
 
         }
 
+        public push(modelStateChange: IModelStateChange, replace?:bool) {
+            var stateDescription = this._model.createStateDescription();
+            var s = rison.encode(stateDescription);
+            var before = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            if (s != this._lastKnownData) {
+                if (this._modelStateChangeIndex == null) {
+                    this._modelStateChangeIndex = 0;
+                } else {
+                    this._modelStateChangeIndex++;
+                }
+                var url = before + "#" + this._modelStateChangeIndex + "!" + s;
+                if (replace) {
+                    window.history.replaceState(stateDescription, this._controller.getTitle(), url);
+                } else {
+                    window.history.pushState(stateDescription, this._controller.getTitle(), url);
+                }
+                // TODO maintain state changes alongside the shit (you know what I mean)
+                if (this._modelStateChanges.length < this._modelStateChangeIndex) {
+                    this._modelStateChanges.push(modelStateChange);
+                } else {
+                    this._modelStateChanges[this._modelStateChangeIndex] = modelStateChange;
+                }
+                this._lastKnownData = s;
+            }
+        }
+
         public start(): void {
+            // force a hash on the URL
+            var hash = window.location.hash;
+            if (hash == null || hash.length == 0) {
+                this.push(null, true);
+            }
             this._model.addStateDescriptionChangeListener(this._stateDescriptionChangeListener);
             window.addEventListener('popstate', this._historyChangeListener);
         }

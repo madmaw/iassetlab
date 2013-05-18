@@ -16,11 +16,15 @@ module templa.mvc.composite {
         }
 
         public undo() {
-            this._model._deStack(this._entry.controller, false, true);
+            if (this._model.canPop()) {
+                this._model._deStack(this._entry.controller, false, true);
+            }
         }
 
         public redo() {
-            this._model._pushEntry(this._entry, false, true);
+            if (!this._model._contains(this._entry.controller)) {
+                this._model._pushEntry(this._entry, false, true);
+            }
         }
     }
 
@@ -29,11 +33,15 @@ module templa.mvc.composite {
         }
 
         public undo() {
-            this._model._pushEntry(this._entry, false, true);
+            if (!this._model._contains(this._entry.controller)) {
+                this._model._pushEntry(this._entry, false, true);
+            }
         }
 
         public redo() {
-            this._model._deStack(this._entry.controller, false, true);
+            if (this._model.canPop()) {
+                this._model._deStack(this._entry.controller, false, true);
+            }
         }
     }
 
@@ -89,14 +97,14 @@ module templa.mvc.composite {
             }
         }
 
-        public _ensureVisible(controller: IController): bool {
+        public _ensureVisible(controller: IController, suppressFireDescriptionChangeEvent?:bool): bool {
             // pop back to this controller
             var result;
             var index = this._indexOf(controller);
             if (index != null) {
                 result = true;
                 while (index < this._stack.length - this._controllersToDisplay) {
-                    this._pop();
+                    this._pop(false, suppressFireDescriptionChangeEvent);
                 }
             } else {
                 result = false;
@@ -130,9 +138,9 @@ module templa.mvc.composite {
                     var changeDescription = new StackControllerModelChangeDescription(stackControllerModelEventPopped, previousEntry.controller, this.peek);
                     // TODO need a popchange (reverse of push change)
                     this._fireModelChangeEvent(changeDescription, true);
-                    if (suppressFireDescriptionChangeEvent != true) {
-                        this._fireStateDescriptionChangeEvent(this, new AbstractStackControllerModelPopChange(this, entries[0]));
-                    }
+                }
+                if (suppressFireDescriptionChangeEvent != true) {
+                    this._fireStateDescriptionChangeEvent(this, new AbstractStackControllerModelPopChange(this, entries[0]));
                 }
                 result = previousEntry;
             } else {
@@ -167,15 +175,20 @@ module templa.mvc.composite {
             return result;
         }
 
-        public _pushEntry(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool) {
+        public _pushEntryGetChange(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool): templa.mvc.IModelStateChange {
             var previousController = this.peek;
             this._stack.push(entry);
             if (suppressFireModelChangeEvent != true) {
                 var description = new StackControllerModelChangeDescription(stackControllerModelEventPushed, previousController, entry.controller);
                 this._fireModelChangeEvent(description, true);
-                if (suppressFireDescriptionChangeEvent != true) {
-                    this._fireStateDescriptionChangeEvent(this, new AbstractStackControllerModelPushChange(this, entry));
-                }
+            }
+            return new AbstractStackControllerModelPushChange(this, entry);
+        }
+
+        public _pushEntry(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool) {
+            var change = this._pushEntryGetChange(entry, suppressFireModelChangeEvent);
+            if (suppressFireDescriptionChangeEvent != true) {
+                this._fireStateDescriptionChangeEvent(this, change);
             }
         }
 

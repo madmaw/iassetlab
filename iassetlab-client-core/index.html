@@ -3,26 +3,27 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <meta name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+    <meta name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width"/>
 
     <title>iAssetLab</title>
 
-    <link rel="stylesheet" href="src/main/css/iassetlab.css">
+    <link rel="stylesheet" href="src/main/css/iassetlab.css"/>
 
-    <link rel="stylesheet" href="src/main/css/absolute_animations_narrow.css">
-    <link rel="stylesheet" href="src/main/css/absolute_animations_wide_3.css">
+    <link rel="stylesheet" href="src/main/css/absolute_animations_narrow.css"/>
+    <link rel="stylesheet" href="src/main/css/absolute_animations_wide_3.css"/>
 
-    <link rel="stylesheet" href="src/main/css/relative_animations_narrow.css">
-    <link rel="stylesheet" href="src/main/css/relative_animations_wide_3.css">
-    <link rel="stylesheet" href="src/main/css/relative_animations_wide_4.css">
+    <link rel="stylesheet" href="src/main/css/relative_animations_narrow.css"/>
+    <link rel="stylesheet" href="src/main/css/relative_animations_wide_3.css"/>
+    <link rel="stylesheet" href="src/main/css/relative_animations_wide_4.css"/>
 
-    <link rel="stylesheet" href="src/main/css/jquery-ui-1.10.2/jquery-ui.css">
-    <link rel="stylesheet" href="src/main/css/jquery-ui-1.10.2/jquery.ui.progressbar.css">
+    <link rel="stylesheet" href="src/main/css/jquery-ui-1.10.2/jquery-ui.css"/>
+    <link rel="stylesheet" href="src/main/css/jquery-ui-1.10.2/jquery.ui.progressbar.css"/>
     <!-- sizes chosen so portrait/landscape will use the same set of assets on most iphones/ipads -->
     <link rel='stylesheet' media='screen and (max-width: 480px)' href='src/main/res/ios/320w.css' />
     <link rel='stylesheet' media='screen and (min-width: 481px) and (max-width: 1136px)' href='src/main/res/ios/640w.css' />
     <link rel='stylesheet' media='screen and (min-width: 1137px)' href='src/main/res/ios/1536w.css' />
 
+    <script src="lib/hammer-1.0.5.js"></script>
     <script src="target/lib/handlebars-1.0.10.js"></script>
     <script src="target/lib/jquery-1.9.1.js"></script>
     <script src="target/lib/jquery-ui-1.10.2.js"></script>
@@ -55,8 +56,12 @@
                 }
             });
 
+            var historyManager = new templa.mvc.history.WebHistoryManager(assetLabController);
+            historyManager.start();
+
             loader.init(new templa.mvc.element.DirectElementReference(contentElement));
             loader.start();
+
         };
     </script>
 </head>
