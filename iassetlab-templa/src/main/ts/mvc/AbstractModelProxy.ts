@@ -1,6 +1,8 @@
 ///<reference path="IModel.ts"/>
 ///<reference path="AbstractModel.ts"/>
 
+///<reference path="../util/Arrays.ts"/>
+
 // Module
 module templa.mvc {
 
@@ -39,6 +41,14 @@ module templa.mvc {
             this._model.removeStateDescriptionChangeListener(this._onStateChangeListener);
         }
 
+        public createStateDescription(models?: IModel[]): any {
+            this._checkModels(models);
+            return this._model.createStateDescription(models);
+        }
+
+        public loadStateDescription(description: any) {
+            this._model.loadStateDescription(description);
+        }
 
     }
 

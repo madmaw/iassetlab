@@ -39,6 +39,15 @@ module templa.mvc.loading {
             return [this._contentController];
         }
 
+        public createStateDescription(models?: IModel[]): any {
+            return this._contentController.getModel().createStateDescription();
+        }
+
+        public loadStateDescription(description: any) {
+            return this._contentController.getModel().loadStateDescription(description);
+        }
+
+
         public _checkCurrentController() {
             var currentController;
             if (this._loadingModel.isComplete()) {
@@ -59,7 +68,7 @@ module templa.mvc.loading {
                 }
             }
             if (changed) {
-                this._fireModelChangeEvent(templa.mvc.composite.compositeControllerModelEventControllersChanged);
+                this._fireModelChangeEvent(templa.mvc.composite.compositeControllerModelEventControllersChanged, true);
             }
         }
 

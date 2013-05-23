@@ -49,6 +49,7 @@ module templa.mvc.composite {
     export class AbstractStackControllerModel extends AbstractCompositeControllerModel implements IStackControllerModel {
 
         public _stack: IAbstractStackControllerModelEntry[];
+        
 
         // Constructor
         constructor(private _allowEmptyStack?:bool, public _controllersToDisplay?:number) {
@@ -112,6 +113,18 @@ module templa.mvc.composite {
             return result;
         }
 
+        public _popTo(controller: IController, suppressFireDescriptionChangeEvent?: bool): void {
+
+            while (true) {
+                var peeked = this.peek;
+                if (peeked == null || peeked == controller) {
+                    break;
+                } else {
+                    this._pop(false, suppressFireDescriptionChangeEvent);
+                }
+            }
+        }
+
         public _deStack(controller: IController, suppressFireModelChangeEvent?:bool, suppressFireDescriptionChangeEvent?:bool): void {
             // pop or just silently remove as required
             if (this.peek == controller) {
@@ -122,6 +135,7 @@ module templa.mvc.composite {
                     var entry = this._stack[i];
                     if (entry.controller == controller) {
                         this._stack.splice(<any>i, 1);
+                        this._updateListeningForStateDescriptionChanges();
                         // TODO check that it isn't visible?!
                         break;
                     }
@@ -143,6 +157,7 @@ module templa.mvc.composite {
                     this._fireStateDescriptionChangeEvent(this, new AbstractStackControllerModelPopChange(this, entries[0]));
                 }
                 result = previousEntry;
+                this._updateListeningForStateDescriptionChanges();
             } else {
                 result = null;
             }
@@ -182,6 +197,7 @@ module templa.mvc.composite {
                 var description = new StackControllerModelChangeDescription(stackControllerModelEventPushed, previousController, entry.controller);
                 this._fireModelChangeEvent(description, true);
             }
+            this._updateListeningForStateDescriptionChanges();
             return new AbstractStackControllerModelPushChange(this, entry);
         }
 

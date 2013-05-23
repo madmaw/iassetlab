@@ -23,6 +23,8 @@ module templa.util.Arrays {
         }
     }
 
-
+    export function copy(array: any[]) {
+        return [].concat(array);
+    }
 }
 

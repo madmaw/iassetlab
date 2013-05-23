@@ -1,12 +1,16 @@
 ///<reference path="../AbstractModel.ts"/>
 
+///<reference path="../../util/Arrays.ts"/>
+
 // Module
 module templa.mvc.composite {
 
     // Class
     export class AbstractCompositeControllerModel extends AbstractModel implements ICompositeControllerModel {
 
-        public _stateDescriptionChangeListener: (source: IModel, change:IModelStateChange) => void;
+        public _stateDescriptionChangeListener: (source: IModel, change: IModelStateChange) => void;
+        private _controllerChangeListener: (source: templa.mvc.IController, change: templa.mvc.ControllerChangeEvent) => void;
+        private _previouslyDescribedControllers: templa.mvc.IController[];
 
         constructor() {
             super();
@@ -16,6 +20,19 @@ module templa.mvc.composite {
                     this._fireStateDescriptionChangeEvent(source, change);
                 }
             };
+            this._controllerChangeListener = (source: templa.mvc.IController, change: templa.mvc.ControllerChangeEvent) => {
+                if (change.modelChanged) {
+                    var previousModel: templa.mvc.IModel = change.previousModel;
+                    if (previousModel != null) {
+                        previousModel.removeStateDescriptionChangeListener(this._stateDescriptionChangeListener);
+                    }
+                    // listen on the new modle
+                    var currentModel = source.getModel();
+                    if (currentModel != null) {
+                        currentModel.addStateDescriptionChangeListener(this._stateDescriptionChangeListener);
+                    }
+                }
+            }
         }
 
         public _getDescribedControllers(): IController[] {
@@ -37,11 +54,18 @@ module templa.mvc.composite {
 
         public _startedListeningForStateDescriptionChanges() {
             super._startedListeningForStateDescriptionChanges();
+            this._startListeningForStateDescriptionChanges();
+        }
+
+        private _startListeningForStateDescriptionChanges() {
             var controllers = this._getDescribedControllers();
+            this._previouslyDescribedControllers = [];
             if (controllers != null) {
                 // listen on the models for all the controllers
                 for (var i in controllers) {
-                    var controller = controllers[i];
+                    var controller: templa.mvc.IController = controllers[i];
+                    controller.addOnChangeListener(this._controllerChangeListener);
+                    this._previouslyDescribedControllers.push(controller);
                     var model: IModel = controller.getModel();
                     if (model != null) {
                         model.addStateDescriptionChangeListener(this._stateDescriptionChangeListener);
@@ -51,11 +75,17 @@ module templa.mvc.composite {
         }
 
         public _stoppedListeningForStateDescriptionChanges() {
-            super._startedListeningForStateDescriptionChanges();
-            var controllers = this._getDescribedControllers();
+            super._stoppedListeningForStateDescriptionChanges();
+            this._stopListeningForStateDescriptionChanges();
+            this._previouslyDescribedControllers = null;
+        }
+
+        private _stopListeningForStateDescriptionChanges() {
+            var controllers = this._previouslyDescribedControllers;
             if (controllers != null) {
                 for (var i in controllers) {
-                    var controller = controllers[i];
+                    var controller: templa.mvc.IController = controllers[i];
+                    controller.removeOnChangeListener(this._controllerChangeListener);
                     var model: IModel = controller.getModel();
                     if (model != null) {
                         model.removeStateDescriptionChangeListener(this._stateDescriptionChangeListener);
@@ -63,6 +93,13 @@ module templa.mvc.composite {
                 }
             }
         }
+
+        public _updateListeningForStateDescriptionChanges() {
+            this._stopListeningForStateDescriptionChanges();
+            this._startListeningForStateDescriptionChanges();
+        }
+
+
 
         public createStateDescription(models?: IModel[]): any {
             models = this._checkModels(models);

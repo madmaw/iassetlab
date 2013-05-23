@@ -34,12 +34,14 @@ module templa.mvc {
             if (this._state >= ControllerStateStarted && this._model != null) {
                 this._model.removeOnChangeListener(this._modelOnChangeListener);
             }
+            var previousModel = this._model;
             this._model = model;
             if (this._state >= ControllerStateStarted && this._model != null) {
                 this._doLoad(model);
                 this._model.addOnChangeListener(this._modelOnChangeListener);
             }
-
+            // assume that everything has changed!
+            this._fireControllerChangeEvent(new ControllerChangeEvent(true, true, true, previousModel));
         }
 
         public init(container: IElementReference, prepend?: bool): bool {
