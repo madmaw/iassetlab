@@ -1,5 +1,5 @@
 // Module
-module rison {
+declare module rison {
     export function quote(x: string): string;
 
     export function decode(x: string): any;

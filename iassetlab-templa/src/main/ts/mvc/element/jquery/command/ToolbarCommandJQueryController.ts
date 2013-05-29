@@ -85,7 +85,7 @@ module templa.mvc.element.jquery.command {
                 var view = actionElementView.view;
                 view.attach();
                 var actionElements: JQuery = this.$(actionElementSelector, view.getRoots());
-                actionElements.click(function {
+                actionElements.click(() => {
                     // hope this works
                     command.action();
                 });

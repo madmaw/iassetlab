@@ -4,7 +4,7 @@
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
 
-module Handlebars {
+declare module Handlebars {
     export function registerHelper(name: string, fn: Function, inverse?: bool): void;
     export function registerPartial(name: string, str): void;
     export function K();
