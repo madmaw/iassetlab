@@ -152,12 +152,16 @@ module templa.mvc.element.jquery.list {
         }
 
         public _doDestroy(): bool {
+            // just clear it
+            /*
             for (var position in this._positionsToListItems) {
                 var listItem: AbstractListJQueryListItem = this._positionsToListItems[position];
                 var controller = listItem.controller;
                 this._destroy(controller);
                 listItem.containerView.detach();
             }
+            */
+            this._clear();
             return super._doDestroy();
 
         }

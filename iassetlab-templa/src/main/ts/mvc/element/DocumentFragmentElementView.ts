@@ -38,6 +38,9 @@ module templa.mvc.element {
 
         public attach() {
             var containerElement = this._container.resolve();
+            if (containerElement == null) {
+                throw this._container;
+            }
             if (this._prepend) {
                 containerElement.insertBefore(this._fragment, containerElement.firstChild);
             } else {
