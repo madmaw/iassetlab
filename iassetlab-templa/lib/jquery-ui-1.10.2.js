@@ -8164,7 +8164,7 @@ $.extend(Datepicker.prototype, {
 							$.datepicker._gotoToday(event.target);
 						}
 						handled = event.ctrlKey || event.metaKey;
-						break; // current on ctrl or command +home
+						break; // current on ctrl or command +menu
 				case 37: if (event.ctrlKey || event.metaKey) {
 							$.datepicker._adjustDate(event.target, (isRTL ? +1 : -1), "D");
 						}
@@ -8201,7 +8201,7 @@ $.extend(Datepicker.prototype, {
 						break; // +1 week on ctrl or command +down
 				default: handled = false;
 			}
-		} else if (event.keyCode === 36 && event.ctrlKey) { // display the date picker on ctrl+home
+		} else if (event.keyCode === 36 && event.ctrlKey) { // display the date picker on ctrl+menu
 			$.datepicker._showDatepicker(this);
 		} else {
 			handled = false;
