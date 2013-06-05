@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{13E7DB09-00DE-4BEE-94AC-FBDDBD25A296}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>iassetlab_templa</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49563/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>false</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+    <TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="lib\handlebars-1.0.10.js" />
+    <Content Include="lib\jquery-1.9.1.js" />
+    <Content Include="lib\jquery-1.9.1.min.js" />
+    <Content Include="lib\jquery-ui-1.10.2.js" />
+    <Content Include="lib\rison-0.9.2.js" />
+    <Content Include="src\main\d.ts\handlebars.d.ts" />
+    <Content Include="src\main\d.ts\jqueryui.d.ts" />
+    <TypeScriptCompile Include="src\main\d.ts\rison.d.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\loading\ProgressBarLoadingJQueryUIController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\loading\SwitchOnLoadingCompositeControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\loading\LoadableProxyingLoadingControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\DimensionSettingElementViewProxy.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\DimensionSettingElementViewProxyFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\composite\AbstractCompositeControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\IModelStateChange.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\history\WebHistoryManager.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\command\IdDelegatingCommandJQueryViewDescriptionFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\ModeElementViewProxy.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\ModeElementViewFactoryProxy.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\BorrowedElementViewFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\BorrowedElementView.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\AbstractModelProxy.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\composite\AbstractDescriptiveStackControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\list\IListControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\list\AbstractListJQueryController.ts" />
+    <Content Include="src\samples\css\absolute_animations.css" />
+    <Content Include="src\samples\css\relative_animations.css" />
+    <TypeScriptCompile Include="src\main\d.ts\jquery.d.ts" />
+    <TypeScriptCompile Include="src\main\ts\animation\AbstractAnimation.ts" />
+    <TypeScriptCompile Include="src\main\ts\animation\AnimationStateChangeEvent.ts" />
+    <TypeScriptCompile Include="src\main\ts\animation\element\CSSElementClassAnimation.ts" />
+    <TypeScriptCompile Include="src\main\ts\animation\element\CSSElementClassAnimationFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\animation\element\CSSTranslateElementTransitionAnimation.ts" />
+    <TypeScriptCompile Include="src\main\ts\animation\element\CSSTranslateElementTransitionAnimationFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\animation\element\IElementAnimationFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\animation\IAnimation.ts" />
+    <TypeScriptCompile Include="src\main\ts\loading\AbstractLoadable.ts" />
+    <TypeScriptCompile Include="src\main\ts\loading\CompositeLoadable.ts" />
+    <TypeScriptCompile Include="src\main\ts\loading\ILoadable.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\AbstractController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\AbstractModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\Command.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\command\CommandControllerModelAdapter.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\command\ICommandControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\composite\AbstractStackControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\composite\ICompositeControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\composite\IKeyedControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\composite\IStackControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\composite\MappedKeyedControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\composite\MappedTabControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\composite\StackControllerModelChangeDescription.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\ControllerChangeEvent.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\AbstractElementController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\AttributeElementReference.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\composite\AbstractCompositeElementController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\DirectElementReference.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\DocumentFragmentElementView.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\DocumentFragmentElementViewFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\IElementView.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\IElementViewFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\AbstractJQueryController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\command\CommandJQueryViewDescription.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\command\TemplateCommandJQueryViewDescriptionFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\command\ICommandJQueryViewDescriptionFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\command\ToolbarCommandJQueryController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\composite\AbstractCompositeJQueryController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\composite\KeyedJQueryController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\composite\StackJQueryController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\IJQuerySelectorHandler.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\JQueryElementReference.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\tab\ITabBarTabJQueryViewDescriptionFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\tab\MappedTabBarTabJQueryViewDescriptionFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\tab\TabBarJQueryController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\tab\TabBarTabJQueryViewDescription.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\TemplateElementViewFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\element\ViewRootElementReference.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\IController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\IElementReference.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\IModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\IView.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\loading\ILoadingControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\ModelChangeDescription.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\ModelChangeEvent.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\tab\ITabBarModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\template\ExternalHandlebarsTemplateSource.ts" />
+    <TypeScriptCompile Include="src\main\ts\template\ITemplateSource.ts" />
+    <TypeScriptCompile Include="src\main\ts\template\StringHandlebarsTemplateSource.ts" />
+    <TypeScriptCompile Include="src\main\ts\util\Arrays.ts" />
+    <TypeScriptCompile Include="src\main\ts\util\Elements.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\hello_world\HelloWorldModel.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\basic_stack\BasicStackControllerFactory.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\controller\label\ImmutableLabelModel.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\controller\ToolbarDecoratorModel.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\decorated_stack\DecoratedStackControllerFactory.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\hello_you\HelloYouControllerFactory.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\tab_index\TabIndexControllerFactory.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\hello_you\HelloYouModel.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\hello_world\HelloWorldControllerFactory.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\decorated_stack\DecoratedStackModel.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\controller\text_input\TextInputController.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\controller\label\ILabelModel.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\basic_stack\BasicStackModel.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\controller\text_input\ITextInputModel.ts" />
+    <TypeScriptCompile Include="src\samples\ts\mvc\controller\label\LabelController.ts" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\animated-overlay.gif" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-icons_222222_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-icons_454545_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-icons_888888_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery-ui.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.accordion.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.all.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.autocomplete.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.base.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.button.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.core.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.datepicker.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.dialog.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.menu.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.progressbar.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.resizable.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.selectable.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.slider.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.spinner.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.tabs.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.theme.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\jquery.ui.tooltip.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\animated-overlay.gif" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery-ui.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.accordion.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.button.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.core.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.dialog.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.menu.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.resizable.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.selectable.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.slider.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.spinner.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.tabs.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.theme.min.css" />
+    <Content Include="src\samples\css\jquery-ui-1.10.2\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="src\samples\css\samples.css" />
+    <Content Include="src\samples\handlebars\tab_index\tab_container_vertical.html" />
+    <Content Include="src\samples\handlebars\tab_index\loading_container.html" />
+    <Content Include="src\samples\handlebars\toolbar\button_normal.html" />
+    <Content Include="src\samples\handlebars\decorated_stack\decorator.html" />
+    <Content Include="src\samples\handlebars\decorated_stack\input.html" />
+    <Content Include="src\samples\handlebars\decorated_stack\label.html" />
+    <Content Include="src\samples\handlebars\toolbar\button_back.html" />
+    <Content Include="src\samples\handlebars\toolbar\toolbar.html" />
+    <Content Include="src\samples\handlebars\tab_index\tab_button.html" />
+    <Content Include="src\samples\handlebars\tab_index\tab_container_horizontal.html" />
+    <Content Include="src\samples\res\ios\1536w.css" />
+    <Content Include="src\samples\res\ios\1536w\tabbar_background.png" />
+    <Content Include="src\samples\res\ios\1536w\tabbar_horizontal_background.png" />
+    <Content Include="src\samples\res\ios\1536w\tabbar_vertical_background.png" />
+    <Content Include="src\samples\res\ios\1536w\toolbar_background.png" />
+    <Content Include="src\samples\res\ios\1536w\toolbar_button_back.png" />
+    <Content Include="src\samples\res\ios\1536w\toolbar_button_normal.png" />
+    <Content Include="src\samples\res\ios\320w.css" />
+    <Content Include="src\samples\res\ios\320w\tabbar_background.png" />
+    <Content Include="src\samples\res\ios\320w\tabbar_horizontal_background.png" />
+    <Content Include="src\samples\res\ios\320w\tabbar_vertical_background.png" />
+    <Content Include="src\samples\res\ios\320w\toolbar_background.png" />
+    <Content Include="src\samples\res\ios\320w\toolbar_button_back.png" />
+    <Content Include="src\samples\res\ios\320w\toolbar_button_normal.png" />
+    <Content Include="src\samples\res\ios\640w.css" />
+    <Content Include="src\samples\res\ios\640w\tabbar_background.png" />
+    <Content Include="src\samples\res\ios\640w\tabbar_horizontal_background.png" />
+    <Content Include="src\samples\res\ios\640w\tabbar_vertical_background.png" />
+    <Content Include="src\samples\res\ios\640w\toolbar_background.png" />
+    <Content Include="src\samples\res\ios\640w\toolbar_button_back.png" />
+    <Content Include="src\samples\res\ios\640w\toolbar_button_normal.png" />
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="build.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="index.html" />
+    <Content Include="pom.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".bowerrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="component.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
+  <Target Name="CompileTypeScript">
+    <Message Text="Compiling TypeScript files" />
+    <Exec Command="ant samples" />
+  </Target>
+</Project>
