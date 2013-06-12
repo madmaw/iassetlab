@@ -1,4 +1,4 @@
-///<reference path="../AbstractJQueryController.ts"/>
+///<reference path="AbstractLoadingJQueryController.ts"/>
 ///<reference path="../../../loading/ILoadingControllerModel.ts"/>
 ///<reference path="../../../../../d.ts/jqueryui.d.ts"/>
 
@@ -6,31 +6,10 @@
 module templa.mvc.element.jquery.loading {
 
     // Class
-    export class ProgressBarLoadingJQueryUIController extends AbstractJQueryController {
+    export class ProgressBarLoadingJQueryUIController extends AbstractLoadingJQueryController {
         // Constructor
-        constructor(_viewFactory:IElementViewFactory, private _progressBarSelector?:string) {
-            super(_viewFactory);
-        }
-
-        public _doStart(): bool {
-            var loadingModel: templa.mvc.loading.ILoadingControllerModel = <any>this._model;
-            var updateRequired: bool = loadingModel.requestStartLoading();
-            if (updateRequired) {
-                // increment load
-                this._increment();
-            }
-            return super._doStart();
-        }
-
-        public _increment() {
-            // TODO safe setTimeout 
-            this._safeTimeout(() => {
-                var loadingModel: templa.mvc.loading.ILoadingControllerModel = <any>this._model;
-                var updateRequired = loadingModel.update();
-                if (updateRequired) {
-                    this._increment();
-                }
-            }, 0);
+        constructor(viewFactory:IElementViewFactory, private _progressBarSelector?:string) {
+            super(viewFactory);
         }
 
         public _doLoad(model: templa.mvc.IModel) {

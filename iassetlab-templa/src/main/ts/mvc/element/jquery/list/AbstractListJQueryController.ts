@@ -166,6 +166,12 @@ module templa.mvc.element.jquery.list {
 
         }
 
+        public layout(): void {
+            // TODO layout subordinate controllers;
+            super.layout();
+        }
+
+
         public _clear() {
             for (var position in this._positionsToListItems) {
                 var listItem: AbstractListJQueryListItem = this._positionsToListItems[position];

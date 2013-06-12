@@ -31,11 +31,17 @@ module templa.mvc.element {
             super(null);
         }
 
-        public create(container:IElementReference, prepend?:bool): templa.mvc.element.IElementView {
+        public create(container:IElementReference, prepend?:bool, extraOptions?:any): templa.mvc.element.IElementView {
             var options = {};
             if (this._options != null) {
                 for (var key in this._options) {
                     var value = this._options[key];
+                    options[key] = value;
+                }
+            }
+            if (extraOptions != null) {
+                for (var key in extraOptions) {
+                    var value = extraOptions[key];
                     options[key] = value;
                 }
             }

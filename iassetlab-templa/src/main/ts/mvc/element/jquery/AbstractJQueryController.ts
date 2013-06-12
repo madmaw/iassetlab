@@ -14,7 +14,7 @@ module templa.mvc.element.jquery {
             super(_viewFactory);
         }
 
-        public $(selector:string, roots?:Node[]): JQuery {
+        public $(selector?:string, roots?:Node[]): JQuery {
             // do a careful jquery (only owned elements)
             if (roots == null) {
                 roots = this._view.getRoots();

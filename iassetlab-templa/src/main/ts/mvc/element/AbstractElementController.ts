@@ -28,6 +28,12 @@ module templa.mvc.element {
             return true;
         }
 
+        public load() {
+            super.load();
+            this.layout();
+        }
+
+
         public _doDestroy(detachView?: bool): bool {
             if (detachView != false) {
                 this._view.detach();

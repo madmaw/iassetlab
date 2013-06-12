@@ -26,5 +26,13 @@ module templa.util.Arrays {
     export function copy(array: any[]) {
         return [].concat(array);
     }
+
+    export function create2DArray(width: number, height: number):any[][] {
+        var array = new Array(width);
+        for (var i = 0; i < width; i++) {
+            array[i] = new Array(height);
+        }
+        return array;
+    }
 }
 

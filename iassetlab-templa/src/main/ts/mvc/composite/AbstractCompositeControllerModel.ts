@@ -1,4 +1,6 @@
 ///<reference path="../AbstractModel.ts"/>
+///<reference path="../IController.ts"/>
+///<reference path="ICompositeControllerModel.ts"/>
 
 ///<reference path="../../util/Arrays.ts"/>
 

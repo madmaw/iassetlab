@@ -80,6 +80,16 @@
     <TypeScriptCompile Include="src\main\ts\mvc\composite\AbstractDescriptiveStackControllerModel.ts" />
     <TypeScriptCompile Include="src\main\ts\mvc\list\IListControllerModel.ts" />
     <TypeScriptCompile Include="src\main\ts\mvc\element\jquery\list\AbstractListJQueryController.ts" />
+    <Content Include="src\main\ts\mvc\element\jquery\ElementViewJQuerySelectorHandler.ts" />
+    <Content Include="src\main\ts\mvc\element\jquery\loading\AbstractLoadingJQueryController.ts" />
+    <Content Include="src\main\ts\mvc\element\jquery\RotatedElementViewProxy.ts" />
+    <Content Include="src\main\ts\mvc\element\jquery\RotatedElementViewProxyFactory.ts" />
+    <Content Include="src\main\ts\mvc\element\jquery\table\AbstractTableJQueryController.ts" />
+    <Content Include="src\main\ts\mvc\table\AbstractTableControllerModel.ts" />
+    <Content Include="src\main\ts\mvc\table\ITableControllerModel.ts" />
+    <Content Include="src\main\ts\mvc\table\TableHeader.ts" />
+    <Content Include="src\main\ts\mvc\table\TableHeaderTree.ts" />
+    <Content Include="src\main\ts\util\Strings.ts" />
     <Content Include="src\samples\css\absolute_animations.css" />
     <Content Include="src\samples\css\relative_animations.css" />
     <TypeScriptCompile Include="src\main\d.ts\jquery.d.ts" />
@@ -253,7 +263,6 @@
     <Content Include="src\samples\res\ios\640w\toolbar_background.png" />
     <Content Include="src\samples\res\ios\640w\toolbar_button_back.png" />
     <Content Include="src\samples\res\ios\640w\toolbar_button_normal.png" />
-    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="build.xml">
@@ -269,6 +278,9 @@
     <Content Include="component.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -276,7 +288,6 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
   <Target Name="CompileTypeScript">
     <Message Text="Compiling TypeScript files" />
