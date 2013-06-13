@@ -12,8 +12,6 @@ module templa.mvc {
         public _model: templa.mvc.IModel;
         private _commands: templa.mvc.Command[];
         private _state: number;
-        public _viewContainer: IElementReference;
-        private _viewPrepend: bool;
 
         private _animations: templa.animation.IAnimation[];
         private _animationListener: (source: templa.animation.IAnimation, changeEvent: templa.animation.AnimationStateChangeEvent) => void;
@@ -44,15 +42,10 @@ module templa.mvc {
             this._fireControllerChangeEvent(new ControllerChangeEvent(true, true, true, previousModel));
         }
 
-        public init(container: IElementReference, prepend?: bool): bool {
-            if (container == null) {
-                throw "no container!";
-            }
+        public _init(): bool {
             var result: bool;
-            this._viewContainer = container;
-            this._viewPrepend = prepend;
             if (this._state == templa.mvc.ControllerStateUninitialized) {
-                result = this._doInit(container, prepend);
+                result = this._doInit();
                 if (result) {
                     this._state = templa.mvc.ControllerStateInitialized;
                     // kick off any pending animations
@@ -70,7 +63,7 @@ module templa.mvc {
             return result;
         }
 
-        public _doInit(container: IElementReference, prepend: bool): bool {
+        public _doInit(): bool {
             return true;
         }
 
@@ -213,13 +206,17 @@ module templa.mvc {
                     }
                     if (state >= ControllerStateInitialized) {
                         this.destroy();
-                        this.init(this._viewContainer, this._viewPrepend);
+                        this._reinitialize();
                     }
                     if (state >= ControllerStateStarted) {
                         this.start();
                     }
                 }
             }
+        }
+
+        public _reinitialize() {
+            this._init();
         }
 
         public _isAnimating(): bool {

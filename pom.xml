@@ -10,6 +10,7 @@
         <module>iassetlab-core</module>
         <module>iassetlab-cli</module>
         <module>iassetlab-templa</module>
+        <module>iassetlab-templa-dom</module>
     </modules>
 
     <properties>

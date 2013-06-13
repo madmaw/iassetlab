@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+<project name="iassetlab-templa-dom"  basedir="." default="build">
+
+  <property name="target" value="build"/>
+
+  <target name="clean">
+        <delete dir="${target}"/>
+    </target>
+
+  <target name="init">
+    <ant dir="../iassetlab-templa"/>
+    <copy todir="${target}/defs" file="../iassetlab-templa/build/dist/iassetlab-templa.d.ts"/>
+    <copy todir="${target}/defs">
+      <fileset dir="../iassetlab-templa/src/main/d.ts">
+        <include name="*.d.ts"/>
+      </fileset>
+    </copy>
+    <copy todir="${target}/lib">
+      <fileset dir="../iassetlab-templa/lib">
+        <include name="*.js"/>
+      </fileset>
+    </copy>
+    <copy todir="${target}/lib" file="../iassetlab-templa/build/dist/iassetlab-templa.js"/>
+  </target>
+
+  <target name="build" depends="init">
+
+
+        <!--
+        <copy todir="target/build">
+            <fileset dir="." includes="ts/**/*.ts"/>
+            <fileset dir="." includes="components/DefinitelyTyped/angularjs/*.d.ts"/>
+            <fileset dir="." includes="components/DefinitelyTyped/jquery/*.d.ts"/>
+        </copy>
+        -->
+
+
+        <fileset dir="." id="tsFiles">
+            <include name="src/main/ts/**/*.ts"/>
+        </fileset>
+      
+        <pathconvert property="tsFilesArg" refid="tsFiles" pathsep="' '"/>
+        <echo message="'${tsFilesArg}'"/>
+        <!-- Compile all .ts files -->
+        <exec executable="tsc" failonerror="true">
+
+            <arg value="-out"/>
+            <arg path="${target}/dist/iassetlab-templa-dom.js"/>
+            <arg value="--target"/>
+            <arg value="ES3"/>
+            <arg value="--declaration"/>
+            <arg value="--module"/>
+            <arg value="commonjs"/>
+            <arg line="'${tsFilesArg}'"/>
+
+        </exec>
+
+      <!--
+        <copy todir="target/dist">
+            <fileset dir="src/main/web" includes="**/*"/>
+        </copy>
+-->
+        <!-- Lint all required CSS, JS files -->
+        <!-- Concatenate all required CSS, JS files -->
+        <!-- Compress built CSS, JS files -->
+
+        <!-- fix up the d.ts file -->
+        
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" loading.ILoadable" replace=" templa.loading.ILoadable"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" list.IListControllerModel" replace=" templa.mvc.list.IListControllerModel"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.IController" replace=" templa.mvc.IController"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.Command" replace=" templa.mvc.Command"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.IModel" replace=" templa.mvc.IModel"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.AbstractController" replace=" templa.mvc.AbstractController"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.ModelChangeEvent" replace=" templa.mvc.ModelChangeEvent"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" list.IListControllerModel" replace=" templa.mvc.list.IListControllerModel"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" composite.AbstractCompositeElementController" replace=" templa.dom.mvc.composite.AbstractCompositeElementController"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.list.IListControllerModel" replace=" templa.mvc.list.IListControllerModel"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.IView" replace=" templa.mvc.IView"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" animation.AbstractAnimation" replace=" templa.animation.AbstractAnimation"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" animation.IAnimation" replace=" templa.animation.IAnimation"/>
+
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match="module " replace="declare module "/>
+    
+
+  </target>
+
+
+    <target name="samples" depends="build">
+
+
+        <fileset dir="." id="tsSampleFiles">
+            <include name="src/samples/ts/**/*.ts"/>
+        </fileset>
+
+        <pathconvert property="tsSampleFilesArg" refid="tsSampleFiles" pathsep="' '"/>
+        <echo message="'${tsSampleFilesArg}'"/>
+        <!-- Compile all .ts files -->
+        <exec executable="tsc" failonerror="true">
+
+            <arg value="-out"/>
+            <arg path="${target}/dist/iassetlab-templa-dom-samples.js"/>
+            <arg value="--target"/>
+            <arg value="ES5"/>
+            <arg value="--declaration"/>
+            <arg value="--module"/>
+            <arg value="commonjs"/>
+            <arg line="'${tsSampleFilesArg}'"/>
+
+        </exec>
+
+    </target>
+
+</project>

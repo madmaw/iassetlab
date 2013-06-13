@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <!DOCTYPE project>
-<project name="tsc"  basedir="." default="build">
+<project name="iassetlab-templa"  basedir="." default="build">
+
+    <property name="target" value="build"/>
 
     <target name="clean">
         <delete dir="target"/>
@@ -28,7 +30,7 @@
         <exec executable="tsc" failonerror="true">
 
             <arg value="-out"/>
-            <arg path="target/dist/iassetlab-templa.js"/>
+            <arg path="${target}/dist/iassetlab-templa.js"/>
             <arg value="--target"/>
             <arg value="ES5"/>
             <arg value="--declaration"/>
@@ -48,36 +50,9 @@
         <!-- Compress built CSS, JS files -->
 
         <!-- fix up the d.ts file -->
-        <replaceregexp byline="true" file="target/dist/iassetlab-templa.d.ts" match=" loading.ILoadable" replace=" templa.loading.ILoadable"/>
-        <replaceregexp byline="true" file="target/dist/iassetlab-templa.d.ts" match=" composite.AbstractCompositeElementController" replace=" templa.mvc.element.composite.AbstractCompositeElementController"/>
-        <replaceregexp byline="true" file="target/dist/iassetlab-templa.d.ts" match=" list.IListControllerModel" replace=" templa.mvc.list.IListControllerModel"/>
-        <replaceregexp byline="true" file="target/dist/iassetlab-templa.d.ts" match="module " replace="declare module "/>
-
-    </target>
-
-
-    <target name="samples" depends="build">
-
-
-        <fileset dir="." id="tsSampleFiles">
-            <include name="src/samples/ts/**/*.ts"/>
-        </fileset>
-
-        <pathconvert property="tsSampleFilesArg" refid="tsSampleFiles" pathsep="' '"/>
-        <echo message="'${tsSampleFilesArg}'"/>
-        <!-- Compile all .ts files -->
-        <exec executable="tsc" failonerror="true">
-
-            <arg value="-out"/>
-            <arg path="target/dist/iassetlab-templa-samples.js"/>
-            <arg value="--target"/>
-            <arg value="ES5"/>
-            <arg value="--declaration"/>
-            <arg value="--module"/>
-            <arg value="commonjs"/>
-            <arg line="'${tsSampleFilesArg}'"/>
-
-        </exec>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match=" loading.ILoadable" replace=" templa.loading.ILoadable"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match=" list.IListControllerModel" replace=" templa.mvc.list.IListControllerModel"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match="module " replace="declare module "/>
 
     </target>
 
