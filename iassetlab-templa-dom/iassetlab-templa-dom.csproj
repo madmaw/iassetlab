@@ -81,6 +81,7 @@
     <Content Include="src\main\ts\animation\CSSTranslateElementTransitionAnimation.ts" />
     <Content Include="src\main\ts\animation\CSSTranslateElementTransitionAnimationFactory.ts" />
     <Content Include="src\main\ts\animation\IElementAnimationFactory.ts" />
+    <Content Include="src\main\ts\loading\jquery\JQueryDeferredLoadable.ts" />
     <Content Include="src\main\ts\mvc\AbstractElementController.ts" />
     <Content Include="src\main\ts\mvc\AttributeElementReference.ts" />
     <Content Include="src\main\ts\mvc\composite\AbstractCompositeElementController.ts" />
@@ -247,6 +248,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
   <Target Name="CompileTypeScript">
     <Message Text="Compiling TypeScript files" />

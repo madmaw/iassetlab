@@ -68,6 +68,7 @@
         <!-- fix up the d.ts file -->
         
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" loading.ILoadable" replace=" templa.loading.ILoadable"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" loading.AbstractLoadable" replace=" templa.loading.AbstractLoadable"/>
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" list.IListControllerModel" replace=" templa.mvc.list.IListControllerModel"/>
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.IController" replace=" templa.mvc.IController"/>
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.Command" replace=" templa.mvc.Command"/>
