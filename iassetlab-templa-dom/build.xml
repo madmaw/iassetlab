@@ -66,7 +66,7 @@
         <!-- Compress built CSS, JS files -->
 
         <!-- fix up the d.ts file -->
-        
+        <!--
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" loading.ILoadable" replace=" templa.loading.ILoadable"/>
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" loading.AbstractLoadable" replace=" templa.loading.AbstractLoadable"/>
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" list.IListControllerModel" replace=" templa.mvc.list.IListControllerModel"/>
@@ -81,11 +81,9 @@
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" mvc.IView" replace=" templa.mvc.IView"/>
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" animation.AbstractAnimation" replace=" templa.animation.AbstractAnimation"/>
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match=" animation.IAnimation" replace=" templa.animation.IAnimation"/>
-
-        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match="module " replace="declare module "/>
-    
-
-  </target>
+        -->
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa-dom.d.ts" match="&lt;mvc.IModel&gt;" replace="&lt;templa.mvc.IModel&gt;"/>
+    </target>
 
 
     <target name="samples" depends="build">

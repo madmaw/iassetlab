@@ -50,10 +50,13 @@
         <!-- Compress built CSS, JS files -->
 
         <!-- fix up the d.ts file -->
+      <!--
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match=" loading.ILoadable" replace=" templa.loading.ILoadable"/>
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match=" list.IListControllerModel" replace=" templa.mvc.list.IListControllerModel"/>
-        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match="module " replace="declare module "/>
-
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match=" mvc.IModel" replace=" templa.mvc.IModel"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match="&lt;mvc.IModel&gt;" replace="&lt;templa.mvc.IModel&gt;"/>
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match=" mvc.IController" replace=" templa.mvc.IController"/>
+-->
     </target>
 
 </project>
