@@ -11,11 +11,11 @@ module templa.mvc {
     export var ControllerStateStarted       = 2;
 
 
-    export interface IController {
+    export interface IController<ModelType extends IModel> {
 
         getModel(): IModel;
 
-        setModel(model:IModel);
+        setModel(model: ModelType);
 
         load();
 
@@ -33,9 +33,9 @@ module templa.mvc {
 
         getView(): IView;
 
-        addOnChangeListener(listener: (source: IController, changeEvent: ControllerChangeEvent) => void );
+        addOnChangeListener(listener: (source: IController<IModel>, changeEvent: ControllerChangeEvent) => void );
 
-        removeOnChangeListener(listener: (source: IController, changeEvent: ControllerChangeEvent) => void );
+        removeOnChangeListener(listener: (source: IController<IModel>, changeEvent: ControllerChangeEvent) => void );
 
         addAnimation(animation: templa.animation.IAnimation);
 

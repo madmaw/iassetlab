@@ -89,6 +89,7 @@ interface JQueryPromise {
     state(): string;
     pipe(doneFilter?: (x: any) => any, failFilter?: (x: any) => any, progressFilter?: (x: any) => any): JQueryPromise;
     then(doneCallbacks: any, failCallbacks?: any, progressCallbacks?: any): JQueryPromise;
+    promise(target?): JQueryPromise;
 }
 
 /*
@@ -97,8 +98,6 @@ interface JQueryPromise {
 interface JQueryDeferred extends JQueryPromise {
     notify(...args: any[]): JQueryDeferred;
     notifyWith(context: any, ...args: any[]): JQueryDeferred;
-
-    promise(target? ): JQueryPromise;
     reject(...args: any[]): JQueryDeferred;
     rejectWith(context:any, ...args: any[]): JQueryDeferred;
     resolve(...args: any[]): JQueryDeferred;
@@ -114,7 +113,7 @@ interface BaseJQueryEventObject extends Event {
     delegateTarget: Element;
     isDefaultPrevented(): bool;
     isImmediatePropogationStopped(): bool;
-    isPropogationStopped(): bool;
+    isPropagationStopped(): bool;
     namespace: string;
     preventDefault(): any;
     relatedTarget: Element;
@@ -283,7 +282,10 @@ interface JQueryStatic {
         (fn?: (d: JQueryDeferred) => any): JQueryDeferred;
         new(fn?: (d: JQueryDeferred) => any): JQueryDeferred;
     };
-    Event(name:string, eventProperties?:any): JQueryEventObject;
+    Event: {
+        (name:string, eventProperties?:any): JQueryEventObject;
+        new(name:string, eventProperties?:any): JQueryEventObject;
+    };
 
     /*********
      INTERNALS
@@ -341,7 +343,7 @@ interface JQueryStatic {
 
     now(): number;
 
-    parseJSON(json: string): Object;
+    parseJSON(json: string): any;
 
     //FIXME: This should return an XMLDocument
     parseXML(data: string): any;
@@ -353,6 +355,15 @@ interface JQueryStatic {
     type(obj: any): string;
 
     unique(arr: any[]): any[];
+	
+	/** 
+	* Parses a string into an array of DOM nodes.
+	*
+	* @param data HTML string to be parsed
+	* @param context DOM element to serve as the context in which the HTML fragment will be created
+	* @param keepScripts A Boolean indicating whether to include scripts passed in the HTML string
+	*/
+	parseHTML(data: string, context?: HTMLElement, keepScripts?: bool): any[];
 }
 
 /*
@@ -394,6 +405,7 @@ interface JQuery {
     html(): string;
     html(htmlString: string): JQuery;
     html(htmlContent: (index: number, oldhtml: string) => string): JQuery;
+    html(JQuery): JQuery;
 
     prop(propertyName: string): any;
     prop(propertyName: string, value: any): JQuery;
@@ -714,7 +726,7 @@ interface JQuery {
     ***********/
     length: number;
     selector: string;
-    [x: string]: HTMLElement;
+    [x: string]: any;
     [x: number]: HTMLElement;
 
     /**********

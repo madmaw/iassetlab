@@ -6,6 +6,6 @@ module templa.mvc.composite {
     export var compositeControllerModelEventControllersChanged = "controllersChanged";
 
     export interface ICompositeControllerModel extends templa.mvc.IModel {
-        getControllers(): templa.mvc.IController[];
+        getControllers(): templa.mvc.IController<templa.mvc.IModel>[];
     }
 }

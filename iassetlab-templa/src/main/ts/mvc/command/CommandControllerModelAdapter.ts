@@ -8,12 +8,12 @@ module templa.mvc.command {
     // Class
     export class CommandControllerModelAdapter extends AbstractModel implements ICommandControllerModel {
 
-        private _listener: (source: IController, changeEvent: ControllerChangeEvent) => void;
+        private _listener: (source: IController<IModel>, changeEvent: ControllerChangeEvent) => void;
 
-        constructor(private _controller:IController) {
+        constructor(private _controller:IController<IModel>) {
             super();
-            this._listener = (source: IController, changeEvent: ControllerChangeEvent) => {
-                if (changeEvent.commandsChanged) {
+            this._listener = (source: IController<IModel>, changeEvent: ControllerChangeEvent) => {
+                if (changeEvent.getCommandsChanged()) {
                     this._fireModelChangeEvent(new ModelChangeEvent("commands"));
                 }
             };

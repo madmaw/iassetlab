@@ -37,7 +37,7 @@ module templa.mvc.table {
             return tableHeaders;
         }
 
-        constructor(private _controller: templa.mvc.IController, private _children?: TableHeaderTree[]) {
+        constructor(private _controller: templa.mvc.IController<templa.mvc.IModel>, private _children?: TableHeaderTree[]) {
         }
 
         public getDepth(): number {

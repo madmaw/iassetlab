@@ -12,7 +12,7 @@ module templa.dom.mvc.jquery.tab {
 
 
         // Constructor
-        constructor(private _tabBarIdsToViewFactories: { string: IElementViewFactory; }, private _clickableElementSelector:string, private _styleableElementSelector:string) {
+        constructor(private _tabBarIdsToViewFactories: { [_:string]: IElementViewFactory; }, private _clickableElementSelector:string, private _styleableElementSelector:string) {
 
         }
 

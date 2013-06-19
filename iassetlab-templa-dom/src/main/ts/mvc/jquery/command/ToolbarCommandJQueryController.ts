@@ -8,7 +8,7 @@
 module templa.dom.mvc.jquery.command {
 
     // Class
-    export class ToolbarCommandJQueryController extends AbstractJQueryController {
+    export class ToolbarCommandJQueryController<ModelType extends templa.mvc.command.ICommandControllerModel> extends AbstractJQueryController<ModelType> {
 
         private _backViews: IElementView[];
         private _generalViews: IElementView[];
@@ -60,8 +60,8 @@ module templa.dom.mvc.jquery.command {
             this._generalViews = [];
         }
 
-        public _doLoad(model: templa.mvc.IModel) {
-            var commandControllerModel = <templa.mvc.command.ICommandControllerModel>model;
+        public _doLoad(model: templa.mvc.command.ICommandControllerModel) {
+            var commandControllerModel = model;
             var commands = commandControllerModel.getCommands();
 
             this._clear();
@@ -72,7 +72,7 @@ module templa.dom.mvc.jquery.command {
                 var container: IElementReference;
                 var selector: string;
                 var views;
-                if (command.commandType == templa.mvc.CommandTypeBack) {
+                if (command.getCommandType() == templa.mvc.CommandTypeBack) {
                     selector = this._backContainerSelector;
                     views = this._backViews;
                 } else {
@@ -90,7 +90,7 @@ module templa.dom.mvc.jquery.command {
                 var actionElements: JQuery = this.$(actionElementSelector, view.getRoots());
                 actionElements.click(() => {
                     // hope this works
-                    command.action();
+                    (command.getAction())();
                 });
                 views.push(view);
             }

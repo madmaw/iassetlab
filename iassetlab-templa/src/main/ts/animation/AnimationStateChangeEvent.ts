@@ -7,7 +7,7 @@ module templa.animation {
         constructor(private _animationState:string) {
         }
 
-        public get animationState(): string {
+        public getAnimationState(): string {
             return this._animationState;
         }
     }

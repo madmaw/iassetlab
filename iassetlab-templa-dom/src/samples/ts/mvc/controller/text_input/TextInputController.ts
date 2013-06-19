@@ -5,7 +5,7 @@
 module templa.dom.samples.mvc.controller.text_input {
 
     // Class
-    export class TextInputController extends templa.dom.mvc.jquery.AbstractJQueryController {
+    export class TextInputController extends templa.dom.mvc.jquery.AbstractJQueryController<ITextInputModel> {
         // Constructor
         constructor(
             _viewFactory: templa.dom.mvc.IElementViewFactory,
@@ -31,7 +31,7 @@ module templa.dom.samples.mvc.controller.text_input {
 
         private _requestSubmit() {
             var value: string = this.getValue();
-            var textInputModel: ITextInputModel = <ITextInputModel>this._model;
+            var textInputModel = this._model;
             textInputModel.requestSubmit(value);
         }
 
@@ -39,8 +39,8 @@ module templa.dom.samples.mvc.controller.text_input {
             return this.$(this._inputElementSelector).val();
         }
 
-        public _doLoad(model: templa.mvc.IModel) {
-            var inputModel: ITextInputModel = <ITextInputModel>model;
+        public _doLoad(model: ITextInputModel) {
+            var inputModel = model;
             var value = inputModel.getValue();
             this.$(this._inputElementSelector).val(value);
         }

@@ -27,7 +27,7 @@ module templa.mvc {
             var result = null;
             for (var i in this._descriptions) {
                 var description = this._descriptions[i];
-                if (description.changeType == changeType) {
+                if (description.getChangeType() == changeType) {
                     result = description;
                     break;
                 }

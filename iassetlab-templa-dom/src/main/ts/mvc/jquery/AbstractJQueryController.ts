@@ -10,7 +10,7 @@
 module templa.dom.mvc.jquery {
 
     // Class
-    export class AbstractJQueryController extends AbstractElementController implements IJQuerySelectorHandler {
+    export class AbstractJQueryController<ModelType extends templa.mvc.IModel> extends AbstractElementController<ModelType> implements IJQuerySelectorHandler {
         // Constructor
         constructor(_viewFactory: IElementViewFactory) {
             super(_viewFactory);

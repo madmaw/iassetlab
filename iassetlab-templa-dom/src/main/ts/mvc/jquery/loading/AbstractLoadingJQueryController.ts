@@ -6,13 +6,13 @@
 module templa.dom.mvc.jquery.loading {
 
     // Class
-    export class AbstractLoadingJQueryController extends AbstractJQueryController {
+    export class AbstractLoadingJQueryController<ModelType extends templa.mvc.loading.ILoadingControllerModel> extends AbstractJQueryController<ModelType> {
         constructor(viewFactory: templa.dom.mvc.IElementViewFactory) {
             super(viewFactory);
         }
 
         public _doStart(): bool {
-            var loadingModel: templa.mvc.loading.ILoadingControllerModel = <any>this._model;
+            var loadingModel = this._model;
             var updateRequired: bool = loadingModel.requestStartLoading();
             if (updateRequired) {
                 // increment load
@@ -24,7 +24,7 @@ module templa.dom.mvc.jquery.loading {
         public _increment() {
             // TODO safe setTimeout 
             this._safeTimeout(() => {
-                var loadingModel: templa.mvc.loading.ILoadingControllerModel = <any>this._model;
+                var loadingModel = this._model;
                 var updateRequired = loadingModel.update();
                 if (updateRequired) {
                     this._increment();

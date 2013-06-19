@@ -10,15 +10,16 @@ module templa.mvc.composite {
      */
     export class MappedKeyedControllerModel extends AbstractCompositeControllerModel implements IKeyedControllerModel {
 
-        constructor(public _controllerMap?: { string: IController; }) {
+        // TODO remove this alternate constructor once compiler gets fixed
+        constructor(public _controllerMap?: { [_:string]: IController<IModel>; }) {
             super();
             this._listeningForTokenChanges = false;
             if (this._controllerMap == null) {
-                this._controllerMap = <{ string: IController; } >{};
+                this._controllerMap = <{ string: IController<IModel>; } >{};
             }
         }
 
-        public getControllerKey(controller: IController): string {
+        public getControllerKey(controller: IController<IModel>): string {
             var result = null;
             for (var key in this._controllerMap) {
                 var found = this._controllerMap[key];
@@ -30,7 +31,7 @@ module templa.mvc.composite {
             return result;
         }
 
-        public getControllers(): IController[]{
+        public getControllers(): IController<IModel>[]{
             var result = [];
             for (var key in this._controllerMap) {
                 var controller = this._controllerMap[key];
@@ -39,9 +40,9 @@ module templa.mvc.composite {
             return result;
         }
 
-        public setController(key: string, controller: IController, doNotFireEvent?: bool) {
+        public setController(key: string, controller: IController<IModel>, doNotFireEvent?: bool) {
             if (this._listeningForTokenChanges) {
-                var oldController: IController = this._controllerMap[key];
+                var oldController: IController<IModel> = this._controllerMap[key];
                 if (oldController != null) {
                     var oldModel = oldController.getModel();
                     if (oldModel != null) {
@@ -61,11 +62,11 @@ module templa.mvc.composite {
             }
         }
 
-        public _getDescribedControllerKey(controller:IController): string {
+        public _getDescribedControllerKey(controller: IController<templa.mvc.IModel>): string {
             return this.getControllerKey(controller);
         }
 
-        public _getDescribedController(key: string): IController {
+        public _getDescribedController(key: string): IController<templa.mvc.IModel> {
             return this._controllerMap[key];
         }
 
@@ -76,7 +77,7 @@ module templa.mvc.composite {
             var result = {};
             var controllers = this._getDescribedControllers();
             for (var i in controllers) {
-                var controller: IController = controllers[i];
+                var controller: IController<IModel> = controllers[i];
                 var model = controller.getModel();
 
                 if (model != null && models.indexOf(model) < 0) {
@@ -93,7 +94,7 @@ module templa.mvc.composite {
         public loadStateDescription(description: any) {
             var result = {};
             for (var key in description) {
-                var controller: IController = this._getDescribedController(key);
+                var controller: IController<IModel> = this._getDescribedController(key);
                 if (controller != null) {
                     var model = controller.getModel();
                     if (model != null) {

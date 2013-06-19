@@ -6,7 +6,7 @@ module templa.mvc {
         // Constructor
         constructor (private _changeType:string) { }
 
-        public get changeType(): string {
+        public getChangeType(): string {
             return this._changeType;
         }
     }

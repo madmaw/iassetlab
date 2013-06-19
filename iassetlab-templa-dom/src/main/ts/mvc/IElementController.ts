@@ -4,7 +4,7 @@
 
 module templa.dom.mvc {
 
-    export interface IElementController extends templa.mvc.IController {
+    export interface IElementController<ModelType extends templa.mvc.IModel> extends templa.mvc.IController<ModelType> {
         init(container: IElementReference, prepend?: bool): bool;
     }
 

@@ -17,7 +17,7 @@ module templa.mvc.history {
         private _lastKnownData: string;
 
         // Constructor
-        constructor(private _controller:IController) {
+        constructor(private _controller: IController<templa.mvc.IModel>) {
             this._modelStateChanges = [];
             this._modelStateChangeIndex = null;
             this._lastKnownData = null;

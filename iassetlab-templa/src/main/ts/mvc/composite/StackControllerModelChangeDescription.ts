@@ -8,23 +8,23 @@ module templa.mvc.composite {
     export class StackControllerModelChangeDescription extends ModelChangeDescription {
 
         // Constructor
-        constructor(changeType:string, private _removedController: templa.mvc.IController, private _addedController: templa.mvc.IController, private _silentRemovedControllers?:templa.mvc.IController[], private _silentAddedControllers?:templa.mvc.IController[]) {
+        constructor(changeType: string, private _removedController: templa.mvc.IController<templa.mvc.IModel>, private _addedController: templa.mvc.IController<templa.mvc.IModel>, private _silentRemovedControllers?: templa.mvc.IController<templa.mvc.IModel>[], private _silentAddedControllers?: templa.mvc.IController<templa.mvc.IModel>[]) {
             super(changeType);
         }
 
-        public get removedController(): templa.mvc.IController {
+        public getRemovedController(): templa.mvc.IController<templa.mvc.IModel> {
             return this._removedController;
         }
 
-        public get addedController(): templa.mvc.IController {
+        public getAddedController(): templa.mvc.IController<templa.mvc.IModel> {
             return this._addedController;
         }
 
-        public get silentRemovedControllers(): templa.mvc.IController[]{
+        public getSilentRemovedControllers(): templa.mvc.IController<templa.mvc.IModel>[]{
             return this._silentRemovedControllers;
         }
 
-        public get silentAddedControllers(): templa.mvc.IController[]{
+        public getSilentAddedControllers(): templa.mvc.IController<templa.mvc.IModel>[]{
             return this._silentAddedControllers;
         }
     }

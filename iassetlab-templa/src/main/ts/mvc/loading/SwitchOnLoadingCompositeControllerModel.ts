@@ -8,13 +8,13 @@ module templa.mvc.loading {
     // Class
     export class SwitchOnLoadingCompositeControllerModel extends templa.mvc.composite.AbstractCompositeControllerModel implements templa.mvc.composite.ICompositeControllerModel {
 
-        private _currentControllers: IController[];
+        private _currentControllers: IController<templa.mvc.IModel>[];
         private _onChangeListener: (source: IModel, event: ModelChangeEvent) => void;
 
         
 
         // Constructor
-        constructor(private _loadingController: IController, private _contentController: IController, private _loadingModel:ILoadingControllerModel) {
+        constructor(private _loadingController: IController<templa.mvc.IModel>, private _contentController: IController<templa.mvc.IModel>, private _loadingModel:ILoadingControllerModel) {
             super();
             this._currentControllers = [];
             this._onChangeListener = (source: IModel, event: ModelChangeEvent) => {
@@ -31,11 +31,11 @@ module templa.mvc.loading {
             this._loadingModel.removeOnChangeListener(this._onChangeListener);
         }
 
-        public getControllers(): IController[]{
+        public getControllers(): IController<templa.mvc.IModel>[]{
             return this._currentControllers;
         }
 
-        public _getDescribedControllers(): IController[]{
+        public _getDescribedControllers(): IController<templa.mvc.IModel>[]{
             return [this._contentController];
         }
 

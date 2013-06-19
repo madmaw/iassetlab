@@ -7,7 +7,7 @@
 module templa.dom.samples.mvc.decorated_stack.DecoratedStackControllerFactory { 
 
     // Class
-    export function create(loadables: templa.loading.ILoadable[], toolbarDecoratorFactory: (controllers: templa.mvc.IController[]) => templa.mvc.IController): templa.mvc.IController {
+    export function create(loadables: templa.loading.ILoadable[], toolbarDecoratorFactory: (controllers: templa.mvc.IController<templa.mvc.IModel>[]) => templa.mvc.IController<templa.mvc.IModel>): templa.mvc.IController<templa.mvc.IModel> {
         // TODO should probably replace this with a JQuery animation thing, that way it will be (more) cross-platform (but not hardware accelerated)
         // create the stack controller
         var stackViewFactory = new templa.dom.mvc.DocumentFragmentElementViewFactory("<div class='content_slider'></div>");
@@ -21,7 +21,7 @@ module templa.dom.samples.mvc.decorated_stack.DecoratedStackControllerFactory {
         var absolutePopAddAnimationFactory = new templa.dom.animation.CSSElementClassAnimationFactory("animation-absolute-pop-add", 1000);
         var absolutePopRemoveAnimationFactory = new templa.dom.animation.CSSElementClassAnimationFactory("animation-absolute-pop-remove", 1000);
 
-        var stackController = new templa.dom.mvc.jquery.composite.StackJQueryController(
+        var stackController = new templa.dom.mvc.jquery.composite.StackJQueryController<templa.mvc.composite.IStackControllerModel>(
             stackViewFactory,
             [{
                popAnimationFactory: relativePopAddAnimationFactory,

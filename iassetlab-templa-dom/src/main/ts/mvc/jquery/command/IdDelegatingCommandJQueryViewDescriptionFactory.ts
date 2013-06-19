@@ -19,7 +19,7 @@ module templa.dom.mvc.jquery.command {
         }
 
         public create(container: templa.dom.mvc.IElementReference, command: templa.mvc.Command): CommandJQueryViewDescription {
-            var factory = this._idsToDescriptionFactories[command.id];
+            var factory = this._idsToDescriptionFactories[command.getId()];
             if (factory == null) {
                 factory = this._defaultDescriptionFactory;
             }

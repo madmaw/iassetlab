@@ -10,19 +10,19 @@ module templa.mvc {
             }
         }
 
-        public get commandsChanged(): bool {
+        public getCommandsChanged(): bool {
             return this._commandsChanged;
         }
         
-        public get titleChanged(): bool {
+        public getTitleChanged(): bool {
             return this._titleChanged;
         }
 
-        public get modelChanged(): bool {
+        public getModelChanged(): bool {
             return this._modelChanged;
         }
 
-        public get previousModel() {
+        public getPreviousModel() {
             return this._previousModel;
         }
     }

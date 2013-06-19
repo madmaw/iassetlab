@@ -9,7 +9,7 @@
 module templa.dom.mvc.jquery.tab {
 
     // Class 
-    export class TabBarJQueryController extends AbstractJQueryController {
+    export class TabBarJQueryController<ModelType extends templa.mvc.tab.ITabBarModel> extends AbstractJQueryController<ModelType> {
 
         private _tabIdsToDescriptions: { string: TabBarTabJQueryViewDescription; };
 
@@ -19,12 +19,12 @@ module templa.dom.mvc.jquery.tab {
             this._tabIdsToDescriptions = <{ string: TabBarTabJQueryViewDescription; }>{};
         }
 
-        public _doLoad(model: templa.mvc.IModel) {
+        public _doLoad(model: templa.mvc.tab.ITabBarModel) {
 
             // unload existing views
             this._removeAllTabs();
 
-            var tabBarModel: templa.mvc.tab.ITabBarModel = <templa.mvc.tab.ITabBarModel>model;
+            var tabBarModel = model;
 
             var tabIds = tabBarModel.getAvailableTabIds();
             var selectedTabId = tabBarModel.getSelectedTabId();
@@ -83,7 +83,7 @@ module templa.dom.mvc.jquery.tab {
         public _handleModelChangeEvent(event: templa.mvc.ModelChangeEvent) {
             if (event.lookup(templa.mvc.tab.tabBarModelEventSelectedTabChange)) {
                 // special case for the selected tab changing (avoids reloading everything)
-                var tabBarModel: templa.mvc.tab.ITabBarModel = <templa.mvc.tab.ITabBarModel>this._model;
+                var tabBarModel = this._model;
                 this._selectTab(tabBarModel.getSelectedTabId());
             } else {
                 super._handleModelChangeEvent(event);

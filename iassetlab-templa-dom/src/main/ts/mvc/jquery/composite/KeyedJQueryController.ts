@@ -7,7 +7,7 @@
 module templa.dom.mvc.jquery.composite {
 
     // Class
-    export class KeyedJQueryController extends AbstractCompositeJQueryController {
+    export class KeyedJQueryController<ModelType extends templa.mvc.composite.IKeyedControllerModel> extends AbstractCompositeJQueryController<ModelType> {
 
         constructor(_viewFactory: IElementViewFactory, private _keysToSelectors?:{ string: string; }) {
             super(_viewFactory);
@@ -20,7 +20,7 @@ module templa.dom.mvc.jquery.composite {
             this._keysToSelectors[key] = selector;
         }
 
-        public getControllerContainerSelector(controller: templa.mvc.IController): string {
+        public getControllerContainerSelector(controller: templa.mvc.IController<templa.mvc.IModel>): string {
             var model: templa.mvc.composite.IKeyedControllerModel = <templa.mvc.composite.IKeyedControllerModel>this._model;
             var key: string = model.getControllerKey(controller);
             var selector: string = this._keysToSelectors[key];

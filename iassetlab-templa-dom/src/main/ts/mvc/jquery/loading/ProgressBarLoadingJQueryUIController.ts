@@ -7,7 +7,7 @@
 module templa.dom.mvc.jquery.loading {
 
     // Class
-    export class ProgressBarLoadingJQueryUIController extends AbstractLoadingJQueryController {
+    export class ProgressBarLoadingJQueryUIController<ModelType extends templa.mvc.loading.ILoadingControllerModel> extends AbstractLoadingJQueryController<ModelType> {
         // Constructor
         constructor(viewFactory:IElementViewFactory, private _progressBarSelector?:string) { 
             super(viewFactory);

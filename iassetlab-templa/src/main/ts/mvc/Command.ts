@@ -14,27 +14,27 @@ module templa.mvc {
             this._enabled = true;
         }
 
-        public get priority(): number {
+        public getPriority(): number {
             return this._priority;
         }
 
-        public get commandType(): number {
+        public getCommandType(): number {
             return this._commandType;
         }
 
-        public set enabled(_enabled: bool) {
+        public setEnabled(_enabled: bool) {
             this._enabled = _enabled;
         }
 
-        public get enabled(): bool {
+        public getEnabled(): bool {
             return this._enabled;
         }
 
-        public get id(): string {
+        public getId(): string {
             return this._id;
         }
 
-        public get action(): () => void {
+        public getAction(): () => void {
             return this._action;
         }
     }

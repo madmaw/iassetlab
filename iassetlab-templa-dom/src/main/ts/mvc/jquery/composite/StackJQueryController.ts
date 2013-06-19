@@ -13,11 +13,11 @@ module templa.dom.mvc.jquery.composite {
         selector?: string;
     }
 
-    export class StackJQueryController extends AbstractCompositeJQueryController {
+    export class StackJQueryController<ModelType extends templa.mvc.composite.IStackControllerModel> extends AbstractCompositeJQueryController<ModelType> {
 
         private _backCommand: templa.mvc.Command;
 
-        private removedAnimatedChildren: templa.mvc.IController[];
+        private removedAnimatedChildren: templa.mvc.IController<templa.mvc.IModel>[];
 
         constructor(
             viewFactory: templa.dom.mvc.IElementViewFactory,
@@ -52,7 +52,7 @@ module templa.dom.mvc.jquery.composite {
                 var stackDescription: templa.mvc.composite.StackControllerModelChangeDescription = stackChangeDescription;
 
                 // remove all the silent ones (if any)
-                var silentRemovedControllers = stackDescription.silentRemovedControllers;
+                var silentRemovedControllers = stackDescription.getSilentRemovedControllers();
                 if (silentRemovedControllers != null) {
                     for (var i in silentRemovedControllers) {
                         var silentRemovedController = silentRemovedControllers[i];
@@ -60,7 +60,7 @@ module templa.dom.mvc.jquery.composite {
                     }
                 }
                 // add all the silent ones (if any)
-                var silentAddedControllers = stackDescription.silentAddedControllers;
+                var silentAddedControllers = stackDescription.getSilentAddedControllers();
                 if (silentAddedControllers != null) {
                     for (var i in silentAddedControllers) {
                         var silentAddedController = silentAddedControllers[i];
@@ -76,7 +76,7 @@ module templa.dom.mvc.jquery.composite {
                     animationFactoryName = "popAnimationFactory";
                 }
 
-                var hiddenController = stackDescription.removedController;
+                var hiddenController = stackDescription.getRemovedController();
                 var hiddenView: IElementView;
                 if (hiddenController != null) {
                     var maxState: number;
@@ -103,7 +103,7 @@ module templa.dom.mvc.jquery.composite {
                     this._remove(hiddenController, hiddenView == null);
                 }
 
-                var addedController = <templa.dom.mvc.IElementController>stackDescription.addedController;
+                var addedController = <templa.dom.mvc.IElementController>stackDescription.getAddedController();
                 if (addedController != null) {
 
                     this._add(addedController, true, true, !pushed);
@@ -123,7 +123,7 @@ module templa.dom.mvc.jquery.composite {
                     var animationListener;
                     if (hiddenView != null) {
                         animationListener = (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => {
-                            if (event.animationState == templa.animation.animationStateFinished) {
+                            if (event.getAnimationState() == templa.animation.animationStateFinished) {
                                 hiddenView.detach();
                             }
                         }
@@ -196,7 +196,7 @@ module templa.dom.mvc.jquery.composite {
                             // aggregate all the animation completions into one callback
                             animation.addAnimationListener(
                                 function (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) {
-                                    if (event.animationState == templa.animation.animationStateFinished) {
+                                    if (event.getAnimationState() == templa.animation.animationStateFinished) {
                                         completionCount++;
                                         if (completionCount == count) {
                                             animationCompletionListener(source, event);

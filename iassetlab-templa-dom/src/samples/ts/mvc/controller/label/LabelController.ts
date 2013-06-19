@@ -7,20 +7,20 @@
 module templa.dom.samples.mvc.controller.label {
 
     // Class
-    export class LabelController extends templa.dom.mvc.jquery.AbstractJQueryController {
+    export class LabelController extends templa.dom.mvc.jquery.AbstractJQueryController<ILabelModel> {
         
         constructor(_viewFactory: templa.dom.mvc.IElementViewFactory, private _labelElementSelector:string) {
             super(_viewFactory);
         }
 
-        public _doLoad(model: templa.mvc.IModel) {
-            var labelModel: ILabelModel = <ILabelModel>model;
+        public _doLoad(model: ILabelModel) {
+            var labelModel = model;
             var label = labelModel.getLabel(); 
             this.$(this._labelElementSelector).text(label);
         }
 
         public getTitle(): string {
-            var labelModel: ILabelModel = <ILabelModel>this.getModel();
+            var labelModel = this.getModel();
             return labelModel.getLabel();
         }
 

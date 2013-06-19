@@ -8,8 +8,8 @@
 // Module
 module templa.dom.mvc {
 
-
-    export class AbstractElementController extends templa.mvc.AbstractController implements IElementController {
+    
+    export class AbstractElementController<ModelType extends templa.mvc.IModel> extends templa.mvc.AbstractController<ModelType> implements IElementController<ModelType> {
 
         public _view: IElementView;
         public _viewContainer: IElementReference;

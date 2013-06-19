@@ -9,7 +9,7 @@
 
 // Module
 module templa.dom.mvc.jquery.composite {
-    export class AbstractCompositeJQueryController extends templa.dom.mvc.composite.AbstractCompositeElementController implements templa.dom.mvc.jquery.IJQuerySelectorHandler {
+    export class AbstractCompositeJQueryController<ModelType extends templa.mvc.composite.ICompositeControllerModel> extends templa.dom.mvc.composite.AbstractCompositeElementController<ModelType> implements templa.dom.mvc.jquery.IJQuerySelectorHandler {
 
         constructor(viewFactory: templa.dom.mvc.IElementViewFactory) {
             super(viewFactory);
@@ -21,7 +21,7 @@ module templa.dom.mvc.jquery.composite {
             var roots:Node[] = this._view.getRoots();
             var allChildRoots: Node[] = [];
             for (var i in this._controllers) {
-                var controller: templa.mvc.IController = this._controllers[i];
+                var controller: templa.mvc.IController<templa.mvc.IModel> = this._controllers[i];
                 var view: IElementView = <IElementView>controller.getView();
                 if (view != null) {
                     // we can get odd situations where the owner controller is initialized, but the children are not
@@ -67,7 +67,7 @@ module templa.dom.mvc.jquery.composite {
             return result;
         }
 
-        public getControllerContainer(controller: templa.mvc.IController): IElementReference {
+        public getControllerContainer(controller: templa.mvc.IController<templa.mvc.IModel>): IElementReference {
             var selector = this.getControllerContainerSelector(controller);
             var result: IElementReference;
             if (selector == null) {
@@ -81,7 +81,7 @@ module templa.dom.mvc.jquery.composite {
             return result;
         }
 
-        public getControllerContainerSelector(controller: templa.mvc.IController): string {
+        public getControllerContainerSelector(controller: templa.mvc.IController<templa.mvc.IModel>): string {
             return null;
         }
 

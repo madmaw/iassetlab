@@ -18,7 +18,7 @@ module templa.mvc.composite {
         private _selectedTabId: string;
 
         // Constructor
-        constructor(selectedTabId: string, private _tabIdsToControllers: { string: templa.mvc.IController; }, private _tabControllerKey:string, _controllerMap?: { string: IController; }) {
+        constructor(selectedTabId: string, private _tabIdsToControllers: { [_:string]: templa.mvc.IController<templa.mvc.IModel>; }, private _tabControllerKey: string, _controllerMap?: { [_:string]: IController<templa.mvc.IModel>; }) {
             super(_controllerMap);
             this._setSelectedTabId(selectedTabId);
         }
@@ -71,7 +71,7 @@ module templa.mvc.composite {
             this._setSelectedTabId(description["_selectedTabId"], true);
         }
 
-        public _getDescribedControllers(): IController[] {
+        public _getDescribedControllers(): IController<templa.mvc.IModel>[] {
             var result = super._getDescribedControllers();
             for (var tabId in this._tabIdsToControllers) {
                 var controller = this._tabIdsToControllers[tabId];
@@ -82,7 +82,7 @@ module templa.mvc.composite {
             return result;
         }
 
-        public _getDescribedControllerKey(controller: IController): string {
+        public _getDescribedControllerKey(controller: IController<templa.mvc.IModel>): string {
             var result = super._getDescribedControllerKey(controller);
             if (result == this._tabControllerKey || result == null) {
                 // need to differentiate
@@ -97,7 +97,7 @@ module templa.mvc.composite {
             return result;
         }
 
-        public _getDescribedController(key: string): IController {
+        public _getDescribedController(key: string): IController<templa.mvc.IModel> {
             var result = super._getDescribedController(key);
             if (result == null) {
                 result = this._tabIdsToControllers[key];

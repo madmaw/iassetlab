@@ -5,23 +5,23 @@
 
 // Module
 module templa.dom.mvc.composite {
-    export class AbstractCompositeElementController extends templa.dom.mvc.AbstractElementController {
+    export class AbstractCompositeElementController<ModelType extends templa.mvc.composite.ICompositeControllerModel> extends templa.dom.mvc.AbstractElementController<ModelType> {
 
-        public _controllers: templa.mvc.IController[];
-        private _controllerOnChangeListener: (controller:templa.mvc.IController, event:templa.mvc.ControllerChangeEvent) => void;
+        public _controllers: templa.mvc.IController<templa.mvc.IModel>[];
+        private _controllerOnChangeListener: (controller: templa.mvc.IController<templa.mvc.IModel>, event:templa.mvc.ControllerChangeEvent) => void;
 
         constructor(viewFactory: templa.dom.mvc.IElementViewFactory) {
             super(viewFactory);
             this._controllers = [];
-            this._controllerOnChangeListener = (controller: templa.mvc.IController, event: templa.mvc.ControllerChangeEvent) => {
+            this._controllerOnChangeListener = (controller: templa.mvc.IController<templa.mvc.IModel>, event: templa.mvc.ControllerChangeEvent) => {
                 this._fireControllerChangeEvent(event);
             };
         }
 
-        public _doLoad(model: templa.mvc.IModel) {
+        public _doLoad(model: templa.mvc.composite.ICompositeControllerModel) {
             // load up the controllers
             this.clear(false);
-            var compositeControllerModel: templa.mvc.composite.ICompositeControllerModel = <templa.mvc.composite.ICompositeControllerModel>model;
+            var compositeControllerModel = model;
             var controllers = compositeControllerModel.getControllers();
             for (var i in controllers) {
                 var controller = controllers[i];
@@ -94,10 +94,10 @@ module templa.dom.mvc.composite {
             return result;
         }
 
-        public _add(controller: templa.dom.mvc.IElementController, fireEvent?: bool, layout?:bool, prepend?:bool) {
+        public _add(controller: templa.dom.mvc.IElementController<templa.mvc.IModel>, fireEvent?: bool, layout?:bool, prepend?:bool) {
             this._controllers.push(controller);
 
-            var container: IElementReference = this.getControllerContainer(controller);
+            var container: IElementReference = this.getControllerContainer(controller); 
             if (container == null) {
                 throw "no container!";
             }
@@ -117,7 +117,7 @@ module templa.dom.mvc.composite {
             }
         }
 
-        public _remove(controller: templa.mvc.IController, detachView?: bool, layout?:bool) {
+        public _remove(controller: templa.mvc.IController<templa.mvc.IModel>, detachView?: bool, layout?:bool) {
             var removed: bool = templa.util.Arrays.removeElement(this._controllers, controller);
             if (removed) {
                 var state: number = this.getState();
@@ -140,14 +140,14 @@ module templa.dom.mvc.composite {
             this._fireControllerChangeEvent(new templa.mvc.ControllerChangeEvent(true, true));
         }
 
-        public getControllerContainer(controller: templa.mvc.IController): IElementReference {
+        public getControllerContainer(controller: templa.mvc.IController<templa.mvc.IModel>): IElementReference {
             return new templa.dom.mvc.ViewRootElementReference(this._view);;
         }
 
         public getCommands(): templa.mvc.Command[] {
             var commands: templa.mvc.Command[] = [];
             for (var i in this._controllers) {
-                var controller: templa.mvc.IController = this._controllers[i];
+                var controller: templa.mvc.IController<templa.mvc.IModel> = this._controllers[i];
                 var controllerCommands: templa.mvc.Command[] = controller.getCommands();
                 if (controllerCommands != null) {
                     templa.util.Arrays.pushAll(commands, controllerCommands);
@@ -159,7 +159,7 @@ module templa.dom.mvc.composite {
         public getTitle(): string {
             var title: string = null;
             for (var i in this._controllers) {
-                var controller: templa.mvc.IController = this._controllers[i];
+                var controller: templa.mvc.IController<templa.mvc.IModel> = this._controllers[i];
                 title = controller.getTitle();
                 if (title != null) {
                     break;
@@ -172,7 +172,7 @@ module templa.dom.mvc.composite {
             super.layout();
             // layout the children
             for (var i in this._controllers) {
-                var controller: templa.mvc.IController = this._controllers[i];
+                var controller: templa.mvc.IController<templa.mvc.IModel> = this._controllers[i];
                 controller.layout();
             }
         }

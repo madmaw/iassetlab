@@ -74,7 +74,7 @@ module templa.dom.samples.mvc.tab_index {
                 <any>{ back: toolbarBackCommandElementViewFactory }
             );
              
-            var decoratorFactory = function(controllers: templa.mvc.IController[]):templa.mvc.IController {
+            var decoratorFactory = function(controllers: templa.mvc.IController<templa.mvc.IModel>[]):templa.mvc.IController<templa.mvc.IModel> {
                 var toolbarController = new templa.dom.mvc.jquery.command.ToolbarCommandJQueryController(
                     toolbarViewFactory,
                     toolbarCommandElementViewFactory,
@@ -102,23 +102,23 @@ module templa.dom.samples.mvc.tab_index {
 
 
             var helloWorldControllerId = "hello_world";
-            var helloWorldController: templa.mvc.IController = templa.dom.samples.mvc.hello_world.HelloWorldControllerFactory.create();
+            var helloWorldController: templa.mvc.IController<templa.mvc.IModel> = templa.dom.samples.mvc.hello_world.HelloWorldControllerFactory.create();
             helloWorldController = decoratorFactory([helloWorldController]);
 
             var helloYouControllerId = "hello_you";
             var helloYouControllerFactory = new templa.dom.samples.mvc.hello_you.HelloYouControllerFactory();
-            var helloYouController: templa.mvc.IController = helloYouControllerFactory.create();
+            var helloYouController: templa.mvc.IController<templa.mvc.IModel> = helloYouControllerFactory.create();
             helloYouController = decoratorFactory([helloYouController]);
 
             var basicStackControllerId = "basic_stack";
             var basicStackControllerFactory = new templa.dom.samples.mvc.basic_stack.BasicStackControllerFactory();
-            var basicStackController:templa.mvc.IController = basicStackControllerFactory.create();
+            var basicStackController: templa.mvc.IController<templa.mvc.IModel> = basicStackControllerFactory.create();
             basicStackController = decoratorFactory([basicStackController]);
 
             var decoratedStackControllerId = "decorated_stack";
             var decoratedStackController = templa.dom.samples.mvc.decorated_stack.DecoratedStackControllerFactory.create(loadables, decoratorFactory);
 
-            var tabbedControllers = {};
+            var tabbedControllers = <{ string: templa.mvc.IController<templa.mvc.IModel>; }>{};
             tabbedControllers[helloWorldControllerId] = helloWorldController;
             tabbedControllers[helloYouControllerId] = helloYouController;
             tabbedControllers[basicStackControllerId] = basicStackController;
@@ -138,16 +138,16 @@ module templa.dom.samples.mvc.tab_index {
             tabBarIdsToViewFactories[basicStackControllerId] = templa.dom.mvc.TemplateElementViewFactory.createFromURL(
                 "src/samples/handlebars/tab_index/tab_button.html",
                 loadables,
-                { title: "Basic Stack" }
+                { title: "Basic Stack" } 
             );
             tabBarIdsToViewFactories[decoratedStackControllerId] = templa.dom.mvc.TemplateElementViewFactory.createFromURL(
                 "src/samples/handlebars/tab_index/tab_button.html",
-                loadables,
+                loadables, 
                 { title: "Decorated Stack" }
             );
 
             var tabBarViewDescriptionFactory = new templa.dom.mvc.jquery.tab.MappedTabBarTabJQueryViewDescriptionFactory(
-                <any>tabBarIdsToViewFactories,
+                tabBarIdsToViewFactories,
                 ".tab_bar_button",
                 ".tab_bar_button_root"
             );
@@ -160,14 +160,14 @@ module templa.dom.samples.mvc.tab_index {
             );
 
             var tabPaneKey = ".tab_pane";
-            var tabControllers = {};
+            var tabControllers = <{ string: templa.mvc.IController<templa.mvc.IModel>; }>{};
             tabControllers[tabBarKey] = tabBarController;
 
-            var tabModel = new templa.mvc.composite.MappedTabControllerModel(
+            var tabModel = new templa.mvc.composite.MappedTabControllerModel( 
                 helloWorldControllerId,
-                <any>tabbedControllers,
+                tabbedControllers,
                 tabPaneKey,
-                <any>tabControllers
+                tabControllers
             );
 
 

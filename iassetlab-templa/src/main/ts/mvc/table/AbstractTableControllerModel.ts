@@ -7,7 +7,7 @@
 module templa.mvc.table {
     export class AbstractTableControllerModel extends templa.mvc.AbstractModel implements ITableControllerModel {
 
-        private _cells: templa.mvc.IController[][];
+        private _cells: templa.mvc.IController<templa.mvc.IModel>[][];
         private _rowHeaders: TableHeader[][];
         private _columnHeaders: TableHeader[][];
 
@@ -68,11 +68,11 @@ module templa.mvc.table {
             this._fireModelChangeEvent();
         }
 
-        public getCell(row: number, column: number): templa.mvc.IController {
+        public getCell(row: number, column: number): templa.mvc.IController<templa.mvc.IModel> {
             return this._cells[row][column];
         }
 
-        public setCell(row: number, column: number, cell: templa.mvc.IController) {
+        public setCell(row: number, column: number, cell: templa.mvc.IController<templa.mvc.IModel>) {
             this._cells[row][column] = cell;
             // TODO should probably be more specific about what has changed
             this._fireModelChangeEvent();

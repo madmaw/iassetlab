@@ -13,10 +13,10 @@ module templa.dom.mvc.jquery.table {
 
     export interface IAbstractTableJQueryControllerCell {
         container: templa.dom.mvc.IElementReference;
-        controller: templa.mvc.IController;
+        controller: templa.mvc.IController<templa.mvc.IModel>;
     }
 
-    export class AbstractTableJQueryController extends templa.dom.mvc.AbstractElementController implements templa.dom.mvc.jquery.IJQuerySelectorHandler {
+    export class AbstractTableJQueryController<ModelType extends templa.mvc.table.ITableControllerModel> extends templa.dom.mvc.AbstractElementController<ModelType> implements templa.dom.mvc.jquery.IJQuerySelectorHandler {
 
         private _rowHeaders: IAbstractTableJQueryControllerCell[];
         private _leafRowHeaders: IAbstractTableJQueryControllerCell[];
@@ -187,7 +187,7 @@ module templa.dom.mvc.jquery.table {
         public _removeAllFromArray(controllers:IAbstractTableJQueryControllerCell[]) {
             if (controllers != null) {
                 for (var i in controllers) {
-                    var controller: templa.mvc.IController = controllers[i].controller;
+                    var controller: templa.mvc.IController<templa.mvc.IModel> = controllers[i].controller;
                     if (this.getState() >= templa.mvc.ControllerStateInitialized) {
                         if (this.getState() == templa.mvc.ControllerStateStarted) {
                             controller.stop();
@@ -316,7 +316,7 @@ module templa.dom.mvc.jquery.table {
 
         private _appendRoots(into: Node[], cells: IAbstractTableJQueryControllerCell[]) {
             for (var index in cells) {
-                var cell: templa.mvc.IController = cells[index].controller;
+                var cell: templa.mvc.IController<templa.mvc.IModel> = cells[index].controller;
                 var view = <templa.dom.mvc.IElementView>cell.getView();
                 if (view != null) {
                     // we can get odd situations where the owner controller is initialized, but the children are not

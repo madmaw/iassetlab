@@ -36,11 +36,11 @@ module templa.dom.samples.mvc.basic_stack {
         public create(): templa.mvc.IController {
             var idInput = "basic_input";
             var idStack = "basic_stack";
-            var controllers = {};
+            var controllers = <{ string: templa.mvc.IController<templa.mvc.IModel>; }>{};
             controllers["."+idInput] = this.createInputController();
             controllers["."+idStack] = this.createStackController();
             var model = new templa.mvc.composite.MappedKeyedControllerModel(
-                <{ string: templa.mvc.IController; }>controllers
+                controllers
             );
             
             var viewFactory = new templa.dom.mvc.DocumentFragmentElementViewFactory(

@@ -6,7 +6,7 @@ module templa.mvc.composite {
 
     // Class
     export interface IKeyedControllerModel extends templa.mvc.composite.ICompositeControllerModel {
-        getControllerKey(controller: IController): string;
+        getControllerKey(controller: IController<IModel>): string;
     }
 
 }

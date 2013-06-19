@@ -15,14 +15,14 @@ module templa.dom.samples.mvc.decorated_stack {
         
         // Constructor
         constructor(
-            private _topLevelController: templa.mvc.IController           
+            private _topLevelController: templa.mvc.IController<templa.mvc.IModel>           
 ,
             private _labelViewFactory: templa.dom.mvc.IElementViewFactory,
             private _labelViewSelector: string,
             private _inputViewFactory: templa.dom.mvc.IElementViewFactory,
             private _inputValueSelector: string,
             private _inputButtonSelector: string,
-            private _toolbarDecoratorFactory:(controllers:templa.mvc.IController[]) => templa.mvc.IController
+            private _toolbarDecoratorFactory: (controllers: templa.mvc.IController<templa.mvc.IModel>[]) => templa.mvc.IController
         ) {
             super(false);
         }
@@ -49,7 +49,8 @@ module templa.dom.samples.mvc.decorated_stack {
             var inputController = new templa.dom.samples.mvc.controller.text_input.TextInputController(this._inputViewFactory, this._inputValueSelector, this._inputButtonSelector);
             inputController.setModel(this);
 
-            return this._toolbarDecoratorFactory([labelController, inputController]);
+            var controllers: templa.mvc.IController<templa.mvc.IModel>[] = [labelController, inputController];
+            return this._toolbarDecoratorFactory(controllers);
         }
 
         public _entryToDescription(entry: templa.mvc.composite.IAbstractStackControllerModelEntry): any {
@@ -64,5 +65,4 @@ module templa.dom.samples.mvc.decorated_stack {
             };
         }
     }
-
 }

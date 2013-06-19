@@ -17,7 +17,7 @@ module templa.mvc.table {
 
         getColumnHeader(column: number, depth:number): TableHeader;
 
-        getCell(row: number, column: number): templa.mvc.IController;
+        getCell(row: number, column: number): templa.mvc.IController<templa.mvc.IModel>;
     }
 
 }
