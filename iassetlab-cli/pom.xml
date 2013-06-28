@@ -70,6 +70,28 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<finalName>${artifactId}-${version}-deps</finalName>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <manifestEntries>
+                                <Main-Class>com.iassetlab.cli.Main</Main-Class>
+                            </manifestEntries>
+                        </transformer>
+                    </transformers>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 

@@ -19,4 +19,6 @@ public interface FrameConsumer {
     void close() throws IOException, FrameConsumptionException;
 
     Comparator<AssetContext> getComparator();
+
+    boolean isFirst(AssetContext context) throws FrameConsumptionException;
 }

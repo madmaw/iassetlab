@@ -64,7 +64,14 @@ public class AssetGenerator {
 
         for( ChildAssetContextWithDataPath context : contexts ) {
 
+            boolean isFirst = frameConsumer.isFirst(context);
+            // one more thing....
+            context.set(
+                    IAssetLabConstants.KEY_ASSET_FIRST_TO_FILE,
+                    new SimpleAssetValue(null, IAssetLabConstants.KEY_ASSET_FIRST_TO_FILE, Boolean.toString(isFirst), Boolean.toString(isFirst))
+            );
             FrameGenerator frameGenerator = frameGeneratorFactory.create(context);
+
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             FrameMetadata metadata = frameGenerator.generate(context.getDataPath(), context, bos);

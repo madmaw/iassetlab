@@ -2,6 +2,7 @@ package com.iassetlab.core.frame.consumer;
 
 import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.frame.FrameConsumer;
+import com.iassetlab.core.frame.FrameConsumptionException;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -41,5 +42,10 @@ public class InMemoryFrameConsumer extends AbstractFrameConsumer {
 
     public List<byte[]> getFrames() {
         return this.frames;
+    }
+
+    @Override
+    public boolean isFirst(AssetContext context) throws FrameConsumptionException {
+        return frames.size() == 0;
     }
 }

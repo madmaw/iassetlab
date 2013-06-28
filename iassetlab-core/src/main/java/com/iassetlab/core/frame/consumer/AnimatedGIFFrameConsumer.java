@@ -157,4 +157,10 @@ public class AnimatedGIFFrameConsumer implements FrameConsumer {
             }
         };
     }
+
+
+    @Override
+    public boolean isFirst(AssetContext context) throws FrameConsumptionException {
+        return !this.started;
+    }
 }

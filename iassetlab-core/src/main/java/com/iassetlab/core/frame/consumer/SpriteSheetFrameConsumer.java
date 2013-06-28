@@ -106,4 +106,9 @@ public class SpriteSheetFrameConsumer extends AbstractFrameConsumer {
             }
         };
     }
+
+    @Override
+    public boolean isFirst(AssetContext context) throws FrameConsumptionException {
+        return frames.size() == 0;
+    }
 }

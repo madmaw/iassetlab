@@ -4,7 +4,6 @@ import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.BasicAssetContext;
 import com.iassetlab.core.ConfigurationTree;
 import com.iassetlab.core.data.ResourceDataPath;
-import com.sun.xml.internal.ws.policy.AssertionValidationProcessor;
 import org.junit.Assert;
 import org.junit.Test;
 

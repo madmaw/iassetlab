@@ -72,4 +72,9 @@ public class DelegatingFrameConsumer implements FrameConsumer {
             }
         };
     }
+
+    @Override
+    public boolean isFirst(AssetContext context) throws FrameConsumptionException {
+        return getFrameConsumer(context).isFirst(context);
+    }
 }

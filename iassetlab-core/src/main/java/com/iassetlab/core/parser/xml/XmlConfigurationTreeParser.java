@@ -41,6 +41,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
     private static final String PROPERTY_KEY_ATTRIBUTE              = "key";
     private static final String PROPERTY_NAME_ATTRIBUTE             = "name";
     private static final String PROPERTY_IS_RELATIVE_PATH           = "is_relative_path";
+    private static final String PROPERTY_TYPE                       = "type";
 
     private static final String REFERENCE_ELEMENT_NAME              = "reference";
     private static final String REFERENCE_KEY_ATTRIBUTE             = "key";
@@ -130,9 +131,11 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         String key = propertyElement.getAttribute(PROPERTY_KEY_ATTRIBUTE);
         String name = propertyElement.getAttribute(PROPERTY_NAME_ATTRIBUTE);
         String isRelativePath = propertyElement.getAttribute(PROPERTY_IS_RELATIVE_PATH);
+        String type = propertyElement.getAttribute(PROPERTY_TYPE);
         String value = propertyElement.getTextContent();
         try {
-            AssetValue assetValue = assetValueFactory.create(dataPath, name, value);
+            // probably should just have things like "type" as name-value pairs
+            AssetValue assetValue = assetValueFactory.create(dataPath, name, value, type);
             if( "true".equalsIgnoreCase(isRelativePath) ) {
                 // hack to allow well-behaved paths to be specified in XML
                 assetValue = new AbsolutePathAssetValueProxy(assetValue);

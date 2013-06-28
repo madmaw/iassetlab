@@ -39,7 +39,7 @@ public class VelocityAssetValueFactory implements AssetValueFactory {
     }
 
     @Override
-    public AssetValue create(DataPath sourceDataPath, String nameTemplate, String valueTemplate) throws InvalidAssetValueTemplateException {
-        return new VelocityAssetValue(this.velocityEngine, this.globalContext, sourceDataPath, nameTemplate, valueTemplate);
+    public AssetValue create(DataPath sourceDataPath, String nameTemplate, String valueTemplate, String type) throws InvalidAssetValueTemplateException {
+        return new VelocityAssetValue(this.velocityEngine, this.globalContext, sourceDataPath, nameTemplate, valueTemplate, type);
     }
 }

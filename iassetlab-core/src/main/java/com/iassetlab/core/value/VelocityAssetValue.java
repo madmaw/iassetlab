@@ -22,6 +22,7 @@ public class VelocityAssetValue implements AssetValue {
     private DataPath sourceDataPath;
     private String valueTemplate;
     private String nameTemplate;
+    private String type;
     private Context globalContext;
 
     public VelocityAssetValue(
@@ -29,12 +30,14 @@ public class VelocityAssetValue implements AssetValue {
             Context globalContext,
             DataPath sourceDataPath,
             String nameTemplate,
-            String valueTemplate
+            String valueTemplate,
+            String type
     ) {
         this.velocityEngine = velocityEngine;
         this.sourceDataPath = sourceDataPath;
         this.valueTemplate = valueTemplate;
         this.nameTemplate = nameTemplate;
+        this.type = type;
         this.globalContext = globalContext;
     }
 
@@ -48,12 +51,25 @@ public class VelocityAssetValue implements AssetValue {
         // evaluate
         StringWriter sw = new StringWriter();
         VelocityAssetContext velocityContext = new VelocityAssetContext(context, this.globalContext);
+        //VelocityContext c = new VelocityContext(velocityContext);
+        velocityContext.put("v", "sadf");
         try {
             this.velocityEngine.evaluate(velocityContext, sw, VelocityAssetValue.class.getSimpleName(), this.valueTemplate);
         } catch( RuntimeException ex ) {
             throw new RuntimeException("unable to execute template "+this.valueTemplate, ex);
         }
-        return sw.toString();
+        String result = sw.toString();
+
+        if( "int".equals(type) ) {
+            try {
+                double i = Double.parseDouble(result);
+                result = Long.toString(Math.round(i));
+            } catch( Exception ex ) {
+                throw new RuntimeException("unable to parse value "+result+" to "+type+" of from template "+this.valueTemplate);
+            }
+        }
+
+        return result;
     }
 
     @Override

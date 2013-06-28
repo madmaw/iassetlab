@@ -4,11 +4,14 @@ import com.iassetlab.core.AssetContext;
 import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.IAssetLabConstants;
 import com.iassetlab.core.frame.FrameConsumer;
+import com.iassetlab.core.frame.FrameConsumptionException;
 import com.iassetlab.core.util.FileFeatureUtil;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,16 +24,15 @@ public class FileFrameConsumer extends AbstractFrameConsumer {
 
     private File directory;
     private boolean append;
-    private boolean first;
+    private HashSet<File> writtenTo;
 
     public FileFrameConsumer(File directory, boolean append) {
         this.directory = directory;
         this.append = append;
-        this.first = true;
+        this.writtenTo = new HashSet<>();
     }
 
-    @Override
-    public void consume(AssetContext context, InputStream frameData, String mimeType) throws IOException {
+    public File getFile(AssetContext context) {
         // get the file name
         String filename = FileFeatureUtil.getOutputFileName(context);
         int lastSlashIndex = filename.lastIndexOf('/');
@@ -48,11 +50,19 @@ public class FileFrameConsumer extends AbstractFrameConsumer {
             fileDirectory = directory;
             fileFilename = filename;
         }
-        fileDirectory.mkdirs();
         File file = new File(fileDirectory, fileFilename);
+        return file;
+    }
 
-        OutputStream outs = new FileOutputStream(file, this.append && !this.first);
-        this.first = false;
+    @Override
+    public void consume(AssetContext context, InputStream frameData, String mimeType) throws IOException {
+        File file = getFile(context);
+        File fileDirectory = file.getParentFile();
+        fileDirectory.mkdirs();
+
+        boolean first = !this.writtenTo.contains(file);
+        OutputStream outs = new FileOutputStream(file, this.append && !first);
+        this.writtenTo.add(file);
         try {
             IOUtils.copy(frameData, outs);
         } finally {
@@ -65,4 +75,9 @@ public class FileFrameConsumer extends AbstractFrameConsumer {
 
     }
 
+    @Override
+    public boolean isFirst(AssetContext context) throws FrameConsumptionException {
+        File file = getFile(context);
+        return !this.writtenTo.contains(file);
+    }
 }

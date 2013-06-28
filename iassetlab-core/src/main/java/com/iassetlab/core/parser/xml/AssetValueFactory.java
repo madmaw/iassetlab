@@ -11,5 +11,5 @@ import com.iassetlab.core.DataPath;
  * To change this template use File | Settings | File Templates.
  */
 public interface AssetValueFactory {
-    AssetValue create(DataPath sourceDataPath, String nameTemplate, String valueTemplate) throws InvalidAssetValueTemplateException;
+    AssetValue create(DataPath sourceDataPath, String nameTemplate, String valueTemplate, String type) throws InvalidAssetValueTemplateException;
 }
