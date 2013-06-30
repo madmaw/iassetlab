@@ -1,5 +1,7 @@
 package com.iassetlab.core;
 
+import com.iassetlab.core.value.SimpleAssetValue;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,8 +98,11 @@ public class ConfigurationTree implements AssetConfigurationSource {
         List<Map<String, AssetValue>> result = new ArrayList<>(numAssetConfigurations);
         for( int i=0; i<numAssetConfigurations; i++ ) {
             Map<String, AssetValue> row = new HashMap<>(local);
+
             int index = i;
-            for( int j=0; j<assetConfigurations.size(); j++ ) {
+            // reverse the loop so we reduce the back-most configuration first
+            for( int j=assetConfigurations.size(); j>0; ) {
+                j--;
                 List<Map<String, AssetValue>> assetConfiguration = assetConfigurations.get(j);
                 Map<String, AssetValue> assetValues = assetConfiguration.get(index % assetConfiguration.size());
                 row.putAll(assetValues);

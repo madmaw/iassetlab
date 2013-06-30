@@ -54,7 +54,9 @@ public class AssetGenerator {
                 ChildAssetContextWithDataPath context = new ChildAssetContextWithDataPath(defaultAssetContext, build, dataPath);
                 sequenceNumber++;
                 String sequenceNumberString = Integer.toString(sequenceNumber);
-                context.set(IAssetLabConstants.KEY_ASSET_ID, new SimpleAssetValue(dataPath, IAssetLabConstants.KEY_ASSET_ID, sequenceNumberString, sequenceNumberString));
+                context.set(IAssetLabConstants.KEY_SEQUENCE_NUMBER, new SimpleAssetValue(dataPath, IAssetLabConstants.KEY_SEQUENCE_NUMBER, sequenceNumberString, sequenceNumberString));
+                String maxSequenceNumberString = Integer.toString(configurations.size() - 1);
+                context.set(IAssetLabConstants.KEY_MAX_SEQUENCE_NUMBER, new SimpleAssetValue(dataPath, IAssetLabConstants.KEY_MAX_SEQUENCE_NUMBER, maxSequenceNumberString, maxSequenceNumberString));
                 contexts.add(context);
             }
         }

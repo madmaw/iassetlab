@@ -9,10 +9,13 @@ package com.iassetlab.core;
  */
 public class IAssetLabConstants {
 
-    public static final String KEY_ASSET_ID             = "lab_asset_id";
+    public static final String KEY_SEQUENCE_NUMBER = "lab_sequence_number";
+    public static final String KEY_MAX_SEQUENCE_NUMBER = "lab_max_sequence_number";
     public static final String KEY_ASSET_FIRST_TO_FILE  = "lab_asset_first_to_file";
     public static final String KEY_OUTPUT_NAME          = "lab_output_name";
     public static final String KEY_TEMPLATE_XSL_PATH    = "lab_template_xsl";
+    public static final String KEY_SEQUENCE_NUMBER_PREFIX = "lab_sequence_number_";
+    public static final String KEY_MAX_SEQUENCE_NUMBER_PREFIX = "lab_max_sequence_number_";
     public static final String KEY_TEMPLATE_XSL_OUTPUT_MIME_TYPE = "lab_template_xsl_output_mime_type";
     public static final String KEY_XML_PATH             = "lab_xml";
     public static final String KEY_OUTPUT_TYPE_MIME     = "lab_output_type_mime";
