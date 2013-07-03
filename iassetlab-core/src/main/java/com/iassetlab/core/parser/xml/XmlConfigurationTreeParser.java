@@ -1,13 +1,10 @@
 package com.iassetlab.core.parser.xml;
 
-import com.iassetlab.core.AssetValue;
-import com.iassetlab.core.ConfigurationTree;
-import com.iassetlab.core.Diversifier;
-import com.iassetlab.core.Reference;
+import com.iassetlab.core.*;
 import com.iassetlab.core.parser.ConfigurationParseException;
 import com.iassetlab.core.parser.ConfigurationTreeParser;
-import com.iassetlab.core.DataPath;
 import com.iassetlab.core.value.AbsolutePathAssetValueProxy;
+import com.iassetlab.core.value.ImageDimensionValue;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.w3c.dom.Document;
@@ -97,14 +94,39 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         return parseConfigurationTree(path, document.getDocumentElement());
     }
 
-    public ConfigurationTree parseConfigurationTree(DataPath path, Element configurationTreeElement) throws ConfigurationParseException, IOException {
+    public ConfigurationTree parseConfigurationTree(final DataPath path, Element configurationTreeElement) throws ConfigurationParseException, IOException {
         String name = configurationTreeElement.getAttribute(CONFIGURATION_TREE_NAME_ATTRIBUTE);
 
         List<Element> propertyNodes = getElementsByTagName(configurationTreeElement, PROPERTY_ELEMENT_NAME);
         ArrayList<ConfigurationTree.Property> properties = new ArrayList<>(propertyNodes.size());
         for( int i=0; i<propertyNodes.size(); i++ ) {
             Element propertyElement = propertyNodes.get(i);
-            ConfigurationTree.Property property = parseProperty(path, propertyElement);
+            final ConfigurationTree.Property property = parseProperty(path, propertyElement);
+            if( "image-path".equals(property.getType()) ) {
+                // add in additional properties for image width and height
+                String imageWidthName = property.getKey() + "-width";
+                String imageHeightName = property.getKey() + "-height";
+                final String imageURIName = property.getKey() + "-uri";
+                properties.add(new ConfigurationTree.Property(imageWidthName, null, new ImageDimensionValue(path, property.getAssetValue(), imageWidthName, ImageDimensionValue.DIMENSION_WIDTH)));
+                properties.add(new ConfigurationTree.Property(imageHeightName, null, new ImageDimensionValue(path, property.getAssetValue(), imageHeightName, ImageDimensionValue.DIMENSION_HEIGHT)));
+                properties.add(new ConfigurationTree.Property(imageURIName, null, new AssetValue() {
+                    @Override
+                    public DataPath getSourceDataPath() {
+                        return path;
+                    }
+
+                    @Override
+                    public String getValue(AssetContext context) {
+                        String originalPath = property.getAssetValue().getValue(context);
+                        return path.getRelativePath(originalPath).toAbsolutePath();
+                    }
+
+                    @Override
+                    public String getName(AssetContext context) {
+                        return imageURIName;
+                    }
+                }));
+            }
             properties.add(property);
         }
 
@@ -132,6 +154,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         String name = propertyElement.getAttribute(PROPERTY_NAME_ATTRIBUTE);
         String isRelativePath = propertyElement.getAttribute(PROPERTY_IS_RELATIVE_PATH);
         String type = propertyElement.getAttribute(PROPERTY_TYPE);
+        // image is a special type
         String value = propertyElement.getTextContent();
         try {
             // probably should just have things like "type" as name-value pairs
@@ -140,7 +163,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
                 // hack to allow well-behaved paths to be specified in XML
                 assetValue = new AbsolutePathAssetValueProxy(assetValue);
             }
-            return new ConfigurationTree.Property(key, assetValue);
+            return new ConfigurationTree.Property(key, type, assetValue);
         } catch( InvalidAssetValueTemplateException ex ) {
             throw new ConfigurationParseException(ex);
         }

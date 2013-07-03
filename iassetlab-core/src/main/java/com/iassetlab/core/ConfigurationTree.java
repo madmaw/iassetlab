@@ -18,15 +18,21 @@ public class ConfigurationTree implements AssetConfigurationSource {
 
     public static class Property {
         private String key;
+        private String type;
         private AssetValue assetValue;
 
-        public Property(String key, AssetValue assetValue) {
+        public Property(String key, String type, AssetValue assetValue) {
             this.key = key;
+            this.type = type;
             this.assetValue = assetValue;
         }
 
         public String getKey() {
             return key;
+        }
+
+        public String getType() {
+            return type;
         }
 
         public AssetValue getAssetValue() {

@@ -46,6 +46,6 @@ public class FileDataPath implements DataPath {
 
     @Override
     public String toAbsolutePath() {
-        return this.file.getAbsolutePath().toString();
+        return this.file.toURI().toString();
     }
 }

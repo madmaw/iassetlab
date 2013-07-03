@@ -52,7 +52,6 @@ public class VelocityAssetValue implements AssetValue {
         StringWriter sw = new StringWriter();
         VelocityAssetContext velocityContext = new VelocityAssetContext(context, this.globalContext);
         //VelocityContext c = new VelocityContext(velocityContext);
-        velocityContext.put("v", "sadf");
         try {
             this.velocityEngine.evaluate(velocityContext, sw, VelocityAssetValue.class.getSimpleName(), this.valueTemplate);
         } catch( RuntimeException ex ) {
