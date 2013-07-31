@@ -25,6 +25,8 @@ public class IAssetLabConstants {
     public static final String KEY_OUTPUT_IMAGE_SCALE   = "lab_output_image_scale";
     public static final String KEY_OUTPUT_IMAGE_SCALE_X = "lab_output_image_scale_x";
     public static final String KEY_OUTPUT_IMAGE_SCALE_Y = "lab_output_image_scale_y";
+    public static final String KEY_OUTPUT_IMAGE_SCALE_WIDTH = "lab_output_image_scale_width";
+    public static final String KEY_OUTPUT_IMAGE_SCALE_HEIGHT = "lab_output_image_scale_height";
     public static final String KEY_OUTPUT_SPRITE_SHEET_GROUP_NAME = "lab_output_sprite_sheet_group_name";
     public static final String KEY_OUTPUT_ANIMATED_GIF_FRAME_TIME = "lab_output_animated_gif_frame_time";
     public static final String KEY_OUTPUT_ANIMATED_GIF_FRAME_DURATION = "lab_output_animated_gif_frame_duration";

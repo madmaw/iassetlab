@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created with IntelliJ IDEA.
+ * Created with IntelliJ IDEA.                      `
  * User: chris
  * Date: 28/02/13
  * Time: 7:36 PM
@@ -46,9 +46,88 @@ public class BatikFrameTransformerFactory implements FrameTransformerFactory {
         } else {
             animationDuration = null;
         }
-        double defaultScale = getDouble(context, IAssetLabConstants.KEY_OUTPUT_IMAGE_SCALE, 1);
-        double scaleX = getDouble(context, IAssetLabConstants.KEY_OUTPUT_IMAGE_SCALE_X, defaultScale);
-        double scaleY = getDouble(context, IAssetLabConstants.KEY_OUTPUT_IMAGE_SCALE_Y, defaultScale);
+        double scale = getDouble(context, IAssetLabConstants.KEY_OUTPUT_IMAGE_SCALE, 1D);
+        Double scaleX = getDouble(context, IAssetLabConstants.KEY_OUTPUT_IMAGE_SCALE_X, null);
+        Double scaleY = getDouble(context, IAssetLabConstants.KEY_OUTPUT_IMAGE_SCALE_Y, null);
+        BatikFrameTransformer.Scaler scaler;
+        if( scaleX != null || scaleY != null ) {
+            final double scalerScaleX;
+            if( scaleX == null ) {
+                scalerScaleX = scale;
+            } else {
+                scalerScaleX = scaleX;
+            }
+            final double scalerScaleY;
+            if( scaleY == null ) {
+                scalerScaleY = scale;
+            } else {
+                scalerScaleY = scaleY;
+            }
+            scaler = new BatikFrameTransformer.Scaler() {
+                @Override
+                public double getXScale(int nativeWidth, int nativeHeight) {
+                    return scalerScaleX;
+                }
+
+                @Override
+                public double getYScale(int nativeWidth, int nativeHeight) {
+                    return scalerScaleY;
+                }
+            };
+        } else {
+            // check for target width/height
+            final Double scaleWidth = getDouble(context, IAssetLabConstants.KEY_OUTPUT_IMAGE_SCALE_WIDTH, null);
+            final Double scaleHeight = getDouble(context, IAssetLabConstants.KEY_OUTPUT_IMAGE_SCALE_HEIGHT, null);
+            if( scaleWidth != null && scaleHeight != null ) {
+                scaler = new BatikFrameTransformer.Scaler() {
+                    @Override
+                    public double getXScale(int nativeWidth, int nativeHeight) {
+                        return scaleWidth / ((double)nativeWidth);
+                    }
+
+                    @Override
+                    public double getYScale(int nativeWidth, int nativeHeight) {
+                        return scaleHeight / ((double)nativeHeight);
+                    }
+                };
+            } else if( scaleWidth != null ) {
+                scaler = new BatikFrameTransformer.Scaler() {
+                    @Override
+                    public double getXScale(int nativeWidth, int nativeHeight) {
+                        return scaleWidth / ((double)nativeWidth);
+                    }
+
+                    @Override
+                    public double getYScale(int nativeWidth, int nativeHeight) {
+                        return getXScale(nativeWidth, nativeHeight);
+                    }
+                };
+            } else if( scaleHeight != null ) {
+                scaler = new BatikFrameTransformer.Scaler() {
+                    @Override
+                    public double getXScale(int nativeWidth, int nativeHeight) {
+                        return getYScale(nativeWidth, nativeHeight);
+                    }
+
+                    @Override
+                    public double getYScale(int nativeWidth, int nativeHeight) {
+                        return scaleHeight / ((double)nativeHeight);
+                    }
+                };
+            } else {
+                scaler = new BatikFrameTransformer.Scaler() {
+                    @Override
+                    public double getXScale(int nativeWidth, int nativeHeight) {
+                        return 1D;
+                    }
+
+                    @Override
+                    public double getYScale(int nativeWidth, int nativeHeight) {
+                        return 1D;
+                    }
+                };
+            }
+        }
 
         HashMap<RenderingHints.Key, Object> hintMap = new HashMap<>();
         // TODO make this configurable
@@ -79,17 +158,16 @@ public class BatikFrameTransformerFactory implements FrameTransformerFactory {
 
         return new BatikFrameTransformer(
                 animationDuration,
-                scaleX,
-                scaleY,
+                scaler,
                 renderingHints,
                 outputMimeType,
                 outputInformalName
         );
     }
 
-    private static final double getDouble(AssetContext context, String key, double defaultValue) throws FrameTransformerConfigurationException {
+    private static final Double getDouble(AssetContext context, String key, Double defaultValue) throws FrameTransformerConfigurationException {
         AssetValue value = context.get(key);
-        double result;
+        Double result;
         if( value != null ) {
             String string = value.getValue(context);
             try {

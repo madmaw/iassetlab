@@ -26,19 +26,23 @@ import java.io.*;
  */
 public class BatikFrameTransformer implements FrameTransformer {
 
+    public static interface Scaler {
+        double getXScale(int nativeWidth, int nativeHeight);
+
+        double getYScale(int nativeWidth, int nativeHeight);
+    }
+
     private Float animationDuration;
-    private double scaleX;
-    private double scaleY;
+    private Scaler scaler;
     private RenderingHints renderingHints;
     private String outputMimeType;
     private String outputInformalName;
 
 
-    public BatikFrameTransformer(Float animationDuration, double scaleX, double scaleY, RenderingHints renderingHints, String outputMimeType, String outputInformalName) {
+    public BatikFrameTransformer(Float animationDuration, Scaler scaler, RenderingHints renderingHints, String outputMimeType, String outputInformalName) {
         this.animationDuration = animationDuration;
         this.renderingHints = renderingHints;
-        this.scaleX = scaleX;
-        this.scaleY = scaleY;
+        this.scaler = scaler;
         this.outputInformalName = outputInformalName;
         this.outputMimeType = outputMimeType;
 
@@ -96,6 +100,9 @@ public class BatikFrameTransformer implements FrameTransformer {
             g.addRenderingHints(renderingHints);
             rootGN.paint(g);
             g.dispose();
+
+            double scaleX = scaler.getXScale(width, height);
+            double scaleY = scaler.getYScale(width, height);
 
             int scaledWidth = (int)Math.round(scaleX*((double)width));
             int scaledHeight = (int)Math.round(scaleY*((double)height));
