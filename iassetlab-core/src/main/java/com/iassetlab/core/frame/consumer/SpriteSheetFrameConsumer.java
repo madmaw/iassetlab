@@ -1,6 +1,7 @@
 package com.iassetlab.core.frame.consumer;
 
 import com.iassetlab.core.AssetContext;
+import com.iassetlab.core.AssetValue;
 import com.iassetlab.core.CompositeAssetContext;
 import com.iassetlab.core.IAssetLabConstants;
 import com.iassetlab.core.frame.FrameConsumer;
@@ -11,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -46,6 +48,44 @@ public class SpriteSheetFrameConsumer extends AbstractFrameConsumer {
     @Override
     public void consume(AssetContext context, InputStream frameData, String mimeType) throws IOException, FrameConsumptionException {
         BufferedImage frame = ImageIO.read(frameData);
+
+        String debugString = getString(context, IAssetLabConstants.KEY_OUTPUT_IMAGE_DEBUG_STRING);
+
+        if( debugString != null ) {
+            int width = frame.getWidth();
+            int height = frame.getHeight();
+            if( width > 2 && height > 2 ) {
+                // write a string
+                Graphics g = frame.getGraphics();
+                g.setColor(Color.RED);
+                float fontHeight = (float)height;
+                Font f = g.getFont().deriveFont(fontHeight);
+                FontMetrics fm = g.getFontMetrics(f);
+                boolean done = false;
+                boolean failed = false;
+                while( !done ) {
+                    Rectangle2D bounds = fm.getStringBounds(debugString, g);
+                    if(bounds.getWidth() > width) {
+                        fontHeight -= 1;
+                        if( fontHeight > 0 ) {
+                            f = f.deriveFont(fontHeight);
+                            fm = g.getFontMetrics(f);
+                        } else {
+                            done = true;
+                            failed = true;
+                        }
+                    } else {
+                        done = true;
+                    }
+                }
+                if( !failed ) {
+                    g.setFont(f);
+                    g.setClip(1, 1, width - 2, height - 2);
+                    g.drawString(debugString, 1, (height + f.getSize())/2);
+                }
+            }
+        }
+
         frames.add(frame);
         this.width += frame.getWidth();
         this.height = Math.max(this.height, frame.getHeight());
@@ -110,5 +150,17 @@ public class SpriteSheetFrameConsumer extends AbstractFrameConsumer {
     @Override
     public boolean isFirst(AssetContext context) throws FrameConsumptionException {
         return frames.size() == 0;
+    }
+
+    private static final String getString(AssetContext context, String key) {
+        AssetValue value = context.get(key);
+        String result;
+        if( value != null ) {
+            result = value.getValue(context);
+        } else {
+            result = null;
+        }
+        return result;
+
     }
 }
