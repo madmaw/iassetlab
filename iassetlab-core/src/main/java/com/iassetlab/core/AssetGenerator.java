@@ -77,10 +77,12 @@ public class AssetGenerator {
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             FrameMetadata metadata = frameGenerator.generate(context.getDataPath(), context, bos);
-
-            ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-            String mimeType = metadata.getMimeType();
-            frameConsumer.consume(context, bis, mimeType);
+            // the frame was skipped
+            if( metadata != null ) {
+                ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+                String mimeType = metadata.getMimeType();
+                frameConsumer.consume(context, bis, mimeType);
+            }
         }
 
         frameConsumer.close();

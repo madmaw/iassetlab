@@ -7,6 +7,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.generic.MathTool;
+import org.apache.velocity.tools.generic.NumberTool;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +24,7 @@ public class VelocityAssetValueFactory implements AssetValueFactory {
         if( INSTANCE == null ) {
             VelocityContext context = new VelocityContext();
             context.put("math", new MathTool());
+            context.put("number", new NumberTool());
             VelocityEngine engine = new VelocityEngine();
             engine.init();
             INSTANCE = new VelocityAssetValueFactory(engine, context);

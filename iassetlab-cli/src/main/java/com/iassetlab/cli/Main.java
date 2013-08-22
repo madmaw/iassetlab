@@ -16,8 +16,6 @@ import com.iassetlab.core.frame.transformer.XSLSVGImagePipelineFrameGeneratorFac
 import com.iassetlab.core.parser.xml.VelocityAssetValueFactory;
 import com.iassetlab.core.parser.xml.XmlConfigurationTreeParser;
 import com.iassetlab.core.value.SimpleAssetValue;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.tools.generic.MathTool;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
