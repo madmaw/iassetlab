@@ -34,4 +34,5 @@ public class IAssetLabConstants {
     public static final String KEY_OUTPUT_ANIMATION_SUPPRESS = "lab_output_animation_suppress";
     public static final String KEY_OUTPUT_GIF_TRANSPARENCY_COLOR = "lab_output_gif_transparency_color";
     public static final String KEY_OUTPUT_IMAGE_DEBUG_STRING = "lab_output_image_debug_string";
+    public static final String KEY_OUTPUT_SUPPRESS = "lab_output_suppress";
 }

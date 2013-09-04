@@ -76,12 +76,16 @@ public class AssetGenerator {
 
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            FrameMetadata metadata = frameGenerator.generate(context.getDataPath(), context, bos);
-            // the frame was skipped
-            if( metadata != null ) {
-                ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-                String mimeType = metadata.getMimeType();
-                frameConsumer.consume(context, bis, mimeType);
+            AssetValue suppressValue = context.get(IAssetLabConstants.KEY_OUTPUT_SUPPRESS);
+
+            if( suppressValue == null || !"true".equals(suppressValue.getValue(context)) ) {
+                FrameMetadata metadata = frameGenerator.generate(context.getDataPath(), context, bos);
+                // the frame was skipped
+                if( metadata != null ) {
+                    ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+                    String mimeType = metadata.getMimeType();
+                    frameConsumer.consume(context, bis, mimeType);
+                }
             }
         }
 

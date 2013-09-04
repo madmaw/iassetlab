@@ -87,7 +87,7 @@ public class FileFeatureUtil {
         if( filename == null ) {
             filename = AssetContextHelper.getString(context, IAssetLabConstants.KEY_SEQUENCE_NUMBER);
         }
-        return filename;
+        return filename.trim();
     }
 
     public static final String getOutputFileName(AssetContext context) {
