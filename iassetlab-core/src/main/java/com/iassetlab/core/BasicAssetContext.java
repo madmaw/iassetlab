@@ -39,4 +39,15 @@ public class BasicAssetContext implements AssetContext {
     public Collection<String> getKeys() {
         return this.values.keySet();
     }
+
+    @Override
+    public String toString() {
+        StringBuffer result = new StringBuffer(getClass().getName());
+        result.append('{');
+        for( Map.Entry<String, AssetValue> value : this.values.entrySet() ) {
+            result.append(value.getKey()).append('=').append(value.getValue().toString()).append('\n');
+        }
+        result.append('}');
+        return result.toString();
+    }
 }

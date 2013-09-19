@@ -79,7 +79,12 @@ public class AssetGenerator {
             AssetValue suppressValue = context.get(IAssetLabConstants.KEY_OUTPUT_SUPPRESS);
 
             if( suppressValue == null || !"true".equals(suppressValue.getValue(context)) ) {
-                FrameMetadata metadata = frameGenerator.generate(context.getDataPath(), context, bos);
+                FrameMetadata metadata;
+                try {
+                    metadata = frameGenerator.generate(context.getDataPath(), context, bos);
+                } catch( Exception ex ) {
+                    throw new FrameGenerationException("error generating frame with context "+context.toString(), ex);
+                }
                 // the frame was skipped
                 if( metadata != null ) {
                     ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());

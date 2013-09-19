@@ -63,6 +63,7 @@ public class Reference implements AssetConfigurationSource {
                     // TODO extract the name (this may include directories, something to watch out for)
                     return null;
                 }
+
             };
 
             Map<String, AssetValue> properties = new HashMap<>(1);
