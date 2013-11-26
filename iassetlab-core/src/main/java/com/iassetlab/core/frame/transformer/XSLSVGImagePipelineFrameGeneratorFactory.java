@@ -51,7 +51,7 @@ public class XSLSVGImagePipelineFrameGeneratorFactory implements FrameGeneratorF
         transformerFactories.add(xslFrameTransformerFactory);
 
         String outputMimeType = FileFeatureUtil.getOutputMimeType(assetContext, this.imageMimeTypePrefix);
-        if( outputMimeType != null && outputMimeType.startsWith(this.imageMimeTypePrefix+"/") && !outputMimeType.endsWith("+xml") ) {
+        if( outputMimeType != null && outputMimeType.startsWith(this.imageMimeTypePrefix+"/") && !outputMimeType.endsWith("+xml") && FileFeatureUtil.isBinaryImageMimeType(outputMimeType) ) {
             // add in the batik transformer
             BatikFrameTransformerFactory batikFrameTransformerFactory = new BatikFrameTransformerFactory(this.imageMimeTypePrefix, defaultImageInformalSuffix);
             transformerFactories.add(batikFrameTransformerFactory);

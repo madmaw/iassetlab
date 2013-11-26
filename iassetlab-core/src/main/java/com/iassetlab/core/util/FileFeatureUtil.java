@@ -21,7 +21,7 @@ public class FileFeatureUtil {
     }
 
     public static final boolean isBinaryImageMimeType(String mimeType) {
-        return mimeType.startsWith(MIME_TYPE_CLASS_IMAGE+"/") && !mimeType.endsWith("+xml");
+        return mimeType != null && mimeType.startsWith(MIME_TYPE_CLASS_IMAGE+"/") && !mimeType.endsWith("+xml");
     }
 
     public static final String getOutputMimeType(AssetContext context, String expectedMimeClass) {
@@ -32,9 +32,13 @@ public class FileFeatureUtil {
                 informalFormatName = getOutputFileExtensionLiteral(context);
             }
             if( informalFormatName != null ) {
-                if( expectedMimeClass != null && expectedMimeClass.equals(MIME_TYPE_CLASS_IMAGE) && informalFormatName.equalsIgnoreCase("jpg") ) {
-                    // stupid special case (expect more)
-                    informalFormatName = "jpeg";
+                if( expectedMimeClass != null && expectedMimeClass.equals(MIME_TYPE_CLASS_IMAGE) ) {
+                    // stupid special cases (expect more)
+                    if( informalFormatName.equalsIgnoreCase("jpg")  ){
+                        informalFormatName = "jpeg";
+                    } else if( informalFormatName.equalsIgnoreCase("svg") ) {
+                        informalFormatName = "svg+xml";
+                    }
                 }
                 result = expectedMimeClass+"/"+informalFormatName;
             } else {
