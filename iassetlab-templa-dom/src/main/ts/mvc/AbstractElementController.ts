@@ -2,6 +2,7 @@
 ///<reference path="IElementViewFactory.ts"/>
 ///<reference path="IElementView.ts"/>
 ///<reference path="AttributeElementReference.ts"/>
+///<reference path="IElementReference.ts"/>
 
 ///<reference path="../../../../build/defs/iassetlab-templa.d.ts"/>
 
@@ -9,11 +10,11 @@
 module templa.dom.mvc {
 
     
-    export class AbstractElementController<ModelType extends templa.mvc.IModel> extends templa.mvc.AbstractController<ModelType> implements IElementController<ModelType> {
+    export class AbstractElementController<ModelType extends templa.mvc.IModel> extends templa.mvc.AbstractController<ModelType> implements IElementController {
 
         public _view: IElementView;
         public _viewContainer: IElementReference;
-        private _viewPrepend: bool;
+        private _viewPrepend: boolean;
 
 
         constructor(private _viewFactory: IElementViewFactory) {
@@ -24,7 +25,7 @@ module templa.dom.mvc {
             return this._view;
         }
 
-        public init(container: IElementReference, prepend?: bool): bool {
+        public init(container: IElementReference, prepend?: boolean): boolean {
             this._viewContainer = container;
             this._viewPrepend = prepend;
             this._view = this._viewFactory.create(container, prepend);
@@ -42,7 +43,7 @@ module templa.dom.mvc {
         }
 
 
-        public _doDestroy(detachView?: bool): bool {
+        public _doDestroy(detachView?: boolean): boolean {
             if (detachView != false) {
                 this._view.detach();
             }

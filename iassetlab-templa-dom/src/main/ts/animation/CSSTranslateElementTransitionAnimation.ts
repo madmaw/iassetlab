@@ -21,7 +21,7 @@ module templa.dom.animation {
             };
         }
 
-        public _doInit(): bool {
+        public _doInit(): boolean {
 
             var style = this._view.getAttribute("style");
             if (style == null) {
@@ -32,7 +32,7 @@ module templa.dom.animation {
             return true;
         }
 
-        public _doStart(): bool {
+        public _doStart(): boolean {
             for (var i in CSSElementTransitionEventNames) {
                 var eventName = CSSElementTransitionEventNames[i];
                 this._view.addEventListener(eventName, this._animationEventListener, false);
@@ -59,7 +59,7 @@ module templa.dom.animation {
             return true;
         }
 
-        public _doDestroy(): bool {
+        public _doDestroy(): boolean {
             for (var i in CSSElementTransitionEventNames) {
                 var eventName = CSSElementTransitionEventNames[i];
                 this._view.removeEventListener(eventName, this._animationEventListener);

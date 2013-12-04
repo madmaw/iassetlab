@@ -1,5 +1,6 @@
 ///<reference path="../IModel.ts"/>
 ///<reference path="../IController.ts"/>
+///<reference path="../IModelStateChange.ts"/>
 ///<reference path="../../../d.ts/rison.d.ts"/>
 
 // Module
@@ -17,7 +18,7 @@ module templa.mvc.history {
         private _lastKnownData: string;
 
         // Constructor
-        constructor(private _controller: IController<templa.mvc.IModel>) {
+        constructor(private _controller: IController) {
             this._modelStateChanges = [];
             this._modelStateChangeIndex = null;
             this._lastKnownData = null;
@@ -87,7 +88,7 @@ module templa.mvc.history {
 
         }
 
-        public push(modelStateChange: IModelStateChange, replace?:bool) {
+        public push(modelStateChange: IModelStateChange, replace?:boolean) {
             var stateDescription = this._model.createStateDescription();
             var s = rison.encode(stateDescription);
             var before = window.location.protocol + "//" + window.location.host + window.location.pathname;

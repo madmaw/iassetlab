@@ -11,9 +11,9 @@ module templa.dom.mvc.jquery.loading {
             super(viewFactory);
         }
 
-        public _doStart(): bool {
+        public _doStart(): boolean {
             var loadingModel = this._model;
-            var updateRequired: bool = loadingModel.requestStartLoading();
+            var updateRequired: boolean = loadingModel.requestStartLoading();
             if (updateRequired) {
                 // increment load
                 this._increment();

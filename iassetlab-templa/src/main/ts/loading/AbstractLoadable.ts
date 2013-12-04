@@ -9,7 +9,7 @@ module templa.loading {
         private _errors: string[];
         private _callback: (source: ILoadable, message: string) => void;
 
-        constructor(private _maximumProgress: number, private _synchronous:bool) {
+        constructor(private _maximumProgress: number, private _synchronous:boolean) {
             this._loadingProgress = 0;
             this._errors = [];
         }
@@ -26,15 +26,15 @@ module templa.loading {
             return this._errors;
         }
 
-        public isComplete(): bool {
+        public isComplete(): boolean {
             return this._loadingProgress == this._maximumProgress;
         }
 
-        public update(): bool {
+        public update(): boolean {
             return false;
         }
 
-        public requestStartLoading(callback?: (source: ILoadable, message: string) => void ): bool {
+        public requestStartLoading(callback?: (source: ILoadable, message: string) => void ): boolean {
             this._callback = callback;
             this._doStartLoading();
             return this._synchronous;

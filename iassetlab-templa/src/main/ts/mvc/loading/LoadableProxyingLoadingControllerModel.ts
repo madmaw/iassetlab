@@ -23,15 +23,15 @@ module templa.mvc.loading {
             return this._loadable.getErrors();
         }
 
-        isComplete(): bool {
+        isComplete(): boolean {
             return this._loadable.isComplete();
         }
 
-        update(): bool {
+        update(): boolean {
             return this._loadable.update();
         }
 
-        requestStartLoading(callback?: (loadable: templa.loading.ILoadable, message: string) => void): bool {
+        requestStartLoading(callback?: (loadable: templa.loading.ILoadable, message: string) => void): boolean {
             return this._loadable.requestStartLoading((loadable: templa.loading.ILoadable, message: string) => {
                 if (callback) {
                     return callback(this, message);

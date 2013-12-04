@@ -1,4 +1,5 @@
 ﻿///<reference path="../IElementView.ts"/>
+///<reference path="../IElementReference.ts"/>
 ///<reference path="../../../../../build/defs/jquery.d.ts"/>
 ///<reference path="../../../../../build/defs/iassetlab-templa.d.ts"/>
 
@@ -6,7 +7,7 @@
 module templa.dom.mvc.jquery {
 
     export class RotatedElementViewProxy implements templa.dom.mvc.IElementView {
-        constructor(private _container: templa.dom.mvc.IElementReference, private _useContainer: bool, private _prepend: bool, private _proxied: templa.dom.mvc.IElementView, private _root: Element) {
+        constructor(private _container: templa.dom.mvc.IElementReference, private _useContainer: boolean, private _prepend: boolean, private _proxied: templa.dom.mvc.IElementView, private _root: Element) {
 
         }
 
@@ -37,7 +38,7 @@ module templa.dom.mvc.jquery {
             }
         }
 
-        layout():bool {
+        layout():boolean {
             var result = this._proxied.layout();
             if (!result) {
                 // size off inner value

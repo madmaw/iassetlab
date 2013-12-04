@@ -1,4 +1,5 @@
 ///<reference path="AbstractStackControllerModel.ts"/>
+///<reference path="../IModel.ts"/>
 
 // Module
 module templa.mvc.composite {
@@ -9,7 +10,7 @@ module templa.mvc.composite {
         private _controllerFactories: { string: (data: any) => templa.mvc.IController; };
 
         // Constructor
-        constructor(allowEmptyStack?:bool, controllersToDisplay?:number) {
+        constructor(allowEmptyStack?:boolean, controllersToDisplay?:number) {
             super(allowEmptyStack, controllersToDisplay);
             this._controllerFactories = <any>{};
         }
@@ -18,7 +19,7 @@ module templa.mvc.composite {
             this._controllerFactories[key] = factory;
         }
 
-        public _entryToDescription(entry: templa.mvc.composite.IAbstractStackControllerModelEntry, models?: IModel[]): any {
+        public _entryToDescription(entry: templa.mvc.composite.IAbstractStackControllerModelEntry, models?: templa.mvc.IModel[]): any {
             var controllerFactoryKey = entry.data;
             var modelData = entry.controller.getModel().createStateDescription(models);
             return {

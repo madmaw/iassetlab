@@ -1,4 +1,6 @@
 ///<reference path="AbstractCompositeJQueryController.ts"/>
+///<reference path="../../IElementController.ts"/>
+///<reference path="../../IElementView.ts"/>
 ///<reference path="../../../animation/IElementAnimationFactory.ts"/>
 
 ///<reference path="../../../../../../build/defs/jquery.d.ts"/>
@@ -17,7 +19,7 @@ module templa.dom.mvc.jquery.composite {
 
         private _backCommand: templa.mvc.Command;
 
-        private removedAnimatedChildren: templa.mvc.IController<templa.mvc.IModel>[];
+        private removedAnimatedChildren: templa.mvc.IController[];
 
         constructor(
             viewFactory: templa.dom.mvc.IElementViewFactory,
@@ -40,7 +42,7 @@ module templa.dom.mvc.jquery.composite {
         }
 
         public _handleModelChangeEvent(event: templa.mvc.ModelChangeEvent) {
-            var pushed: bool;
+            var pushed: boolean;
             var stackChangeDescription = event.lookup(templa.mvc.composite.stackControllerModelEventPushed);
             if (stackChangeDescription == null) {
                 stackChangeDescription = event.lookup(templa.mvc.composite.stackControllerModelEventPopped);
@@ -64,7 +66,7 @@ module templa.dom.mvc.jquery.composite {
                 if (silentAddedControllers != null) {
                     for (var i in silentAddedControllers) {
                         var silentAddedController = silentAddedControllers[i];
-                        this._add(silentAddedController, false, false, false);
+                        this._add(<IElementController>silentAddedController, false, false, false);
                     }
                 }
 
@@ -168,8 +170,8 @@ module templa.dom.mvc.jquery.composite {
             return commands;
         }
 
-        private _animate(animationFactoryName: string, animationCompletionListener?: (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => void ): bool {
-            var result: bool = false;
+        private _animate(animationFactoryName: string, animationCompletionListener?: (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => void ): boolean {
+            var result: boolean = false;
 
             var count = 0;
             var completionCount = 0;

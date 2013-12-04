@@ -2,12 +2,14 @@
 ///<reference path="IStackControllerModel.ts"/>
 ///<reference path="StackControllerModelChangeDescription.ts"/>
 ///<reference path="../IController.ts"/>
+///<reference path="../IModel.ts"/>
+///<reference path="../IModelStateChange.ts"/>
 
 // Module
 module templa.mvc.composite {
 
     export interface IAbstractStackControllerModelEntry {
-        controller: IController<IModel>;
+        controller: IController;
         data?: any;
     }
 
@@ -52,7 +54,7 @@ module templa.mvc.composite {
         
 
         // Constructor
-        constructor(private _allowEmptyStack?:bool, public _controllersToDisplay?:number) {
+        constructor(private _allowEmptyStack?:boolean, public _controllersToDisplay?:number) {
             super();
             this._stack = [];
             if (this._controllersToDisplay == null) {
@@ -68,8 +70,8 @@ module templa.mvc.composite {
             }
         }
 
-        public getControllers(): IController<IModel>[]{
-            var result: templa.mvc.IController<IModel>[] = [];
+        public getControllers(): IController[]{
+            var result: templa.mvc.IController[] = [];
             var remainingControllers = this._controllersToDisplay;
             var index = Math.max(0, this._stack.length - this._controllersToDisplay);
             while (remainingControllers > 0 && index < this._stack.length) {
@@ -80,15 +82,15 @@ module templa.mvc.composite {
             return result;
         }
 
-        public _getDescribedControllers(): IController<IModel>[] {
+        public _getDescribedControllers(): IController[] {
             return this.getControllers();
         }
 
-        public isStackEmpty(): bool {
+        public isStackEmpty(): boolean {
             return this._stack.length == 0;
         }
 
-        public canPop(): bool {
+        public canPop(): boolean {
             return !this.isStackEmpty() && this._allowEmptyStack || this._stack.length > this._controllersToDisplay;
         }
 
@@ -98,7 +100,7 @@ module templa.mvc.composite {
             }
         }
 
-        public _ensureVisible(controller: IController<IModel>, suppressFireDescriptionChangeEvent?:bool): bool {
+        public _ensureVisible(controller: IController, suppressFireDescriptionChangeEvent?:boolean): boolean {
             // pop back to this controller
             var result;
             var index = this._indexOf(controller);
@@ -113,7 +115,7 @@ module templa.mvc.composite {
             return result;
         }
 
-        public _popTo(controller: IController<IModel>, suppressFireDescriptionChangeEvent?: bool): void {
+        public _popTo(controller: IController, suppressFireDescriptionChangeEvent?: boolean): void {
 
             while (true) {
                 var peeked = this.peek();
@@ -125,7 +127,7 @@ module templa.mvc.composite {
             }
         }
 
-        public _deStack(controller: IController<IModel>, suppressFireModelChangeEvent?:bool, suppressFireDescriptionChangeEvent?:bool): void {
+        public _deStack(controller: IController, suppressFireModelChangeEvent?:boolean, suppressFireDescriptionChangeEvent?:boolean): void {
             // pop or just silently remove as required
             if (this.peek() == controller) {
                 this._pop(suppressFireModelChangeEvent, suppressFireDescriptionChangeEvent);
@@ -143,7 +145,7 @@ module templa.mvc.composite {
             }
         }
 
-        public _pop(suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): IAbstractStackControllerModelEntry {
+        public _pop(suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean): IAbstractStackControllerModelEntry {
             var result;
             if (this._stack.length > 0) {
                 var previousEntry = this._stack[this._stack.length - 1];
@@ -164,7 +166,7 @@ module templa.mvc.composite {
             return result;
         }
 
-        public _push(controller: templa.mvc.IController<templa.mvc.IModel>, data?: any, suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool): void {
+        public _push(controller: templa.mvc.IController, data?: any, suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean): void {
             this._pushEntry({
                     controller: controller,
                     data: data
@@ -174,23 +176,23 @@ module templa.mvc.composite {
             );
         }
 
-        public _contains(controller: templa.mvc.IController<templa.mvc.IModel>): bool {
+        public _contains(controller: templa.mvc.IController): boolean {
             return this._indexOf(controller) != null;
         }
 
-        public _indexOf(controller: templa.mvc.IController<templa.mvc.IModel>): number {
-            var result = null;
+        public _indexOf(controller: templa.mvc.IController): number {
+            var result: number = null;
             for (var i in this._stack) {
                 var c = this._stack[i].controller;
                 if (c == controller) {
-                    result = i;
+                    result = parseInt(i);
                     break;
                 }
             }
             return result;
         }
 
-        public _pushEntryGetChange(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool): templa.mvc.IModelStateChange {
+        public _pushEntryGetChange(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: boolean): templa.mvc.IModelStateChange {
             var previousController = this.peek();
             this._stack.push(entry);
             if (suppressFireModelChangeEvent != true) {
@@ -201,15 +203,15 @@ module templa.mvc.composite {
             return new AbstractStackControllerModelPushChange(this, entry);
         }
 
-        public _pushEntry(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: bool, suppressFireDescriptionChangeEvent?: bool) {
+        public _pushEntry(entry: IAbstractStackControllerModelEntry, suppressFireModelChangeEvent?: boolean, suppressFireDescriptionChangeEvent?: boolean) {
             var change = this._pushEntryGetChange(entry, suppressFireModelChangeEvent);
             if (suppressFireDescriptionChangeEvent != true) {
                 this._fireStateDescriptionChangeEvent(this, change);
             }
         }
 
-        public peek(): IController<templa.mvc.IModel> {
-            var result: IController<templa.mvc.IModel>;
+        public peek(): IController {
+            var result: IController;
             if (this._stack.length > 0) {
                 result = this._stack[this._stack.length - 1].controller;
             } else {

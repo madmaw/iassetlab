@@ -11,19 +11,16 @@ module templa.mvc {
     export var ControllerStateStarted       = 2;
 
 
-    export interface IController<ModelType extends IModel> {
-
+    export interface IController {
         getModel(): IModel;
-
-        setModel(model: ModelType);
 
         load();
 
-        start(): bool;
+        start(): boolean;
 
-        stop(): bool;
+        stop(): boolean;
 
-        destroy(detachView?:bool): bool;
+        destroy(detachView?:boolean): boolean;
 
         getState(): number;
 
@@ -33,9 +30,9 @@ module templa.mvc {
 
         getView(): IView;
 
-        addOnChangeListener(listener: (source: IController<IModel>, changeEvent: ControllerChangeEvent) => void );
+        addOnChangeListener(listener: (source: IController, changeEvent: ControllerChangeEvent) => void );
 
-        removeOnChangeListener(listener: (source: IController<IModel>, changeEvent: ControllerChangeEvent) => void );
+        removeOnChangeListener(listener: (source: IController, changeEvent: ControllerChangeEvent) => void );
 
         addAnimation(animation: templa.animation.IAnimation);
 

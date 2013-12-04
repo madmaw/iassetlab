@@ -11,7 +11,7 @@ module templa.mvc {
          * recreate itself entirely (stop, destroy, init, start) because the view needs to change elements. If returning true, then
          * the call to layout should do nothing (the controller will destroy/recreate anyway)
          */
-        layout(): bool;
+        layout(): boolean;
     }
 
 }

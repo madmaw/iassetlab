@@ -1,4 +1,5 @@
 ///<reference path="IElementView.ts"/>
+///<reference path="IElementReference.ts"/>
 ///<reference path="AttributeElementReference.ts"/>
 ///<reference path="../../../../build/defs/iassetlab-templa.d.ts"/>
 
@@ -6,7 +7,7 @@
 module templa.dom.mvc {
     export class DocumentFragmentElementView implements IElementView {
 
-        public static createFromHTML(html: string, container: IElementReference, prepend: bool, id: string) {
+        public static createFromHTML(html: string, container: IElementReference, prepend: boolean, id: string) {
             var fragment: DocumentFragment = document.createDocumentFragment();
             var element = document.createElement("div");
             if (html != null) {
@@ -28,9 +29,9 @@ module templa.dom.mvc {
             return new DocumentFragmentElementView(fragment, container, prepend, id);
         }
 
-        private _attached: bool;
+        private _attached: boolean;
 
-        constructor(private _fragment: DocumentFragment, private _container: IElementReference, private _prepend: bool, private _id: string) {
+        constructor(private _fragment: DocumentFragment, private _container: IElementReference, private _prepend: boolean, private _id: string) {
             this._attached = false;
             if (this._container == null) {
                 throw new Error("no container!");
@@ -68,7 +69,7 @@ module templa.dom.mvc {
 
         }
 
-        public layout(): bool {
+        public layout(): boolean {
             return false;
         }
 

@@ -19,7 +19,7 @@ module templa.dom.animation {
             };
         }
 
-        public _doInit(): bool {
+        public _doInit(): boolean {
             for (var i in cssAnimationEndEventNames) {
                 var cssAnimationEndEventName = cssAnimationEndEventNames[i];
                 this._view.addEventListener(cssAnimationEndEventName, this._animationListener, false);
@@ -30,7 +30,7 @@ module templa.dom.animation {
             return true;
         }
 
-        public _doStart(): bool {
+        public _doStart(): boolean {
             var clazz = this._view.getAttribute("class");
             if (clazz == null || clazz.length == 0) {
                 clazz = this._class;
@@ -48,7 +48,7 @@ module templa.dom.animation {
             return true;
         }
 
-        public _doDestroy(): bool {
+        public _doDestroy(): boolean {
             for (var i in cssAnimationEndEventNames) {
                 var cssAnimationEndEventName = cssAnimationEndEventNames[i];
                 this._view.removeEventListener(cssAnimationEndEventName, this._animationListener, false);

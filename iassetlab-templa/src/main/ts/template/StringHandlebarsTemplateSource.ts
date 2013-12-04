@@ -21,7 +21,7 @@ module templa.template {
             return this._template;
         }
 
-        public update(): bool {
+        public update(): boolean {
             this.compile();
             this._setLoadingProgress(1);
             return false;

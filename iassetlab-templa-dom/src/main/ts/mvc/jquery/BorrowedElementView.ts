@@ -1,4 +1,5 @@
 ///<reference path="../IElementView.ts"/>
+///<reference path="../IElementReference.ts"/>
 
 ///<reference path="../../../../../build/defs/jquery.d.ts"/>
 ///<reference path="../../../../../build/defs/iassetlab-templa.d.ts"/>
@@ -37,7 +38,7 @@ module templa.dom.mvc.jquery {
             // do nothing, it's someone else's job
         }
 
-        layout(): bool {
+        layout(): boolean {
             // nope
             return false;
         }

@@ -3,14 +3,14 @@
 module templa.mvc.table {
     export class TableHeader {
         constructor(
-            private _controller: templa.mvc.IController<templa.mvc.IModel>,
+            private _controller: templa.mvc.IController,
             private _fromIndex:number,
             private _span:number
         ) {
 
         }
 
-        public getController(): templa.mvc.IController<templa.mvc.IModel> {
+        public getController(): templa.mvc.IController {
             return this._controller;
         }
 

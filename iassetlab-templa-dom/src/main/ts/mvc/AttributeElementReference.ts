@@ -8,7 +8,7 @@ module templa.dom.mvc {
     // Class
     export class AttributeElementReference implements IElementReference {
         // Constructor
-        constructor(private _view:IElementView, private _attributeName:string, private _attributeValue:string, private _filter?:(o:Node)=>bool) {
+        constructor(private _view:IElementView, private _attributeName:string, private _attributeValue:string, private _filter?:(o:Node)=>boolean) {
         }
 
         public resolve(): Element {

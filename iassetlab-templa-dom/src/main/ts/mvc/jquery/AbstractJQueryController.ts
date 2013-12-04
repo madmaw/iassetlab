@@ -2,6 +2,8 @@
 ///<reference path="JQueryElementReference.ts"/>
 ///<reference path="../AbstractElementController.ts"/>
 ///<reference path="../DirectElementReference.ts"/>
+///<reference path="../IElementViewFactory.ts"/>
+///<reference path="../IElementReference.ts"/>
 
 ///<reference path="../../../../../build/defs/jquery.d.ts"/>
 ///<reference path="../../../../../build/defs/iassetlab-templa.d.ts"/>
@@ -30,7 +32,7 @@ module templa.dom.mvc.jquery {
             }
         }
 
-        public $reference(selector: string): IElementReference {
+        public $reference(selector: string): templa.dom.mvc.IElementReference {
             // too slow!
             //return new JQueryElementReference(this, selector);
             var query = this.$(selector);

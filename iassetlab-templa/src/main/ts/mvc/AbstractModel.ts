@@ -1,11 +1,14 @@
 ///<reference path="IModel.ts"/>
+///<reference path="ModelChangeEvent.ts"/>
+///<reference path="ModelChangeDescription.ts"/>
+///<reference path="IModelStateChange.ts"/>
 ///<reference path=../util/Arrays.ts"/>
 module templa.mvc {
 
     export class AbstractModel implements IModel {
         private _modelOnChangeListeners: { (source: IModel, changeEvent: ModelChangeEvent): void; }[];
         private _stateDescriptionChangeListeners: { (source: IModel, change: IModelStateChange): void; }[];
-        public _listeningForTokenChanges: bool;
+        public _listeningForTokenChanges: boolean;
 
         constructor() {
             this._modelOnChangeListeners = [];
@@ -35,10 +38,10 @@ module templa.mvc {
 
         }
 
-        public _fireModelChangeEvent(changeDescription?: string, suppressFireStateTokenChange?:bool);
-        public _fireModelChangeEvent(changeDescription?: ModelChangeDescription, suppressFireStateTokenChange?: bool);
-        public _fireModelChangeEvent(changeEvent?: ModelChangeEvent, suppressFireStateTokenChange?: bool);
-        public _fireModelChangeEvent(changeEvent?: any, suppressFireStateTokenChange?: bool) {
+        public _fireModelChangeEvent(changeDescription?: string, suppressFireStateTokenChange?:boolean);
+        public _fireModelChangeEvent(changeDescription?: ModelChangeDescription, suppressFireStateTokenChange?: boolean);
+        public _fireModelChangeEvent(changeEvent?: ModelChangeEvent, suppressFireStateTokenChange?: boolean);
+        public _fireModelChangeEvent(changeEvent?: any, suppressFireStateTokenChange?: boolean) {
             if (changeEvent == null) {
                 changeEvent = new ModelChangeEvent();
             } else if (!(changeEvent instanceof ModelChangeEvent)) {

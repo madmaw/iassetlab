@@ -5,6 +5,6 @@
 // Module
 module templa.dom.mvc {
     export interface IElementViewFactory {
-        create(container: IElementReference, prepend?:bool):IElementView;
+        create(container: IElementReference, prepend?:boolean):IElementView;
     }
 }

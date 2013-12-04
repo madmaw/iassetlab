@@ -6,9 +6,9 @@ module templa.mvc.composite {
     export var stackControllerModelEventPopped = "popped";
 
     export interface IStackControllerModel extends templa.mvc.composite.ICompositeControllerModel {
-        isStackEmpty():bool;
+        isStackEmpty():boolean;
 
-        canPop():bool;
+        canPop():boolean;
 
         requestPop():void;
     }

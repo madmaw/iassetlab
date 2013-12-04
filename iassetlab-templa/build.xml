@@ -57,6 +57,7 @@
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match="&lt;mvc.IModel&gt;" replace="&lt;templa.mvc.IModel&gt;"/>
         <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match=" mvc.IController" replace=" templa.mvc.IController"/>
 -->
+        <replaceregexp byline="true" file="${target}/dist/iassetlab-templa.d.ts" match="../../src/main/d.ts/" replace=""/>
     </target>
 
 </project>

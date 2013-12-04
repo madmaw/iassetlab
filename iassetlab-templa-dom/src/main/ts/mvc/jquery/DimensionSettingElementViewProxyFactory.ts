@@ -1,5 +1,7 @@
 ///<reference path="DimensionSettingElementViewProxy.ts"/>
 ///<reference path="../IElementViewFactory.ts"/>
+///<reference path="../IElementView.ts"/>
+///<reference path="../IElementReference.ts"/>
 
 ///<reference path="../../../../../build/defs/jquery.d.ts"/>
 ///<reference path="../../../../../build/defs/iassetlab-templa.d.ts"/>
@@ -21,7 +23,7 @@ module templa.dom.mvc.jquery {
         ) {
         }
 
-        public create(container: IElementReference, prepend?:bool): IElementView {
+        public create(container: IElementReference, prepend?:boolean): IElementView {
             var proxied = this._proxied.create(container, prepend);
             return new DimensionSettingElementViewProxy(
                 proxied,

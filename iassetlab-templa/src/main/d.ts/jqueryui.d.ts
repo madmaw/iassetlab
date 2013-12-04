@@ -12,8 +12,8 @@
 interface AccordionOptions {
     active?: any; // bool or number
     animate?: any; // bool, number, string or object
-    collapsible?: bool;
-    disabled?: bool;
+    collapsible?: boolean;
+    disabled?: boolean;
     event?: string;
     header?: string;
     heightStyle?: string;
@@ -45,9 +45,9 @@ interface Accordion extends Widget, AccordionOptions, AccordionEvents {
 
 interface AutocompleteOptions {
     appendTo?: any; //Selector;
-    autoFocus?: bool;
+    autoFocus?: boolean;
     delay?: number;
-    disabled?: bool;
+    disabled?: boolean;
     minLength?: number;
     position?: string;
     source?: any; // [], string or ()
@@ -80,10 +80,10 @@ interface Autocomplete extends Widget, AutocompleteOptions, AutocompleteEvents {
 // Button //////////////////////////////////////////////////
 
 interface ButtonOptions {
-    disabled?: bool;
+    disabled?: boolean;
     icons?: any;
     label?: string;
-    text?: bool;
+    text?: boolean;
 }
 
 interface Button extends Widget, ButtonOptions {
@@ -96,17 +96,17 @@ interface DatepickerOptions {
     altFieldType?: any; // Selecotr, jQuery or Element
     altFormat?: string;
     appendText?: string;
-    autoSize?: bool;
+    autoSize?: boolean;
     beforeShow?: (input: Element, inst: any) => void;
     beforeShowDay?: (date: Date) => void;
     buttonImage?: string;
-    buttonImageOnly?: bool;
+    buttonImageOnly?: boolean;
     buttonText?: string;
     calculateWeek?: () => any;
-    changeMonth?: bool;
-    changeYear?: bool;
+    changeMonth?: boolean;
+    changeYear?: boolean;
     closeText?: string;
-    constrainInput?: bool;
+    constrainInput?: boolean;
     currentText?: string;
     dateFormat?: string;
     dayNames?: string[];
@@ -115,30 +115,30 @@ interface DatepickerOptions {
     defaultDateType?: any; // Date, number or string
     duration?: string;
     firstDay?: number;
-    gotoCurrent?: bool;
-    hideIfNoPrevNext?: bool;
-    isRTL?: bool;
+    gotoCurrent?: boolean;
+    hideIfNoPrevNext?: boolean;
+    isRTL?: boolean;
     maxDate?: any; // Date, number or string
     minDate?: any; // Date, number or string
     monthNames?: string[];
     monthNamesShort?: string[];
-    navigationAsDateFormat?: bool;
+    navigationAsDateFormat?: boolean;
     nextText?: string;
     numberOfMonths?: any; // number or []
     onChangeMonthYear?: (year: number, month: number, inst: any) => void;
     onClose?: (dateText: string, inst: any) => void;
     onSelect?: (dateText: string, inst: any) => void;
     prevText?: string;
-    selectOtherMonths?: bool;
+    selectOtherMonths?: boolean;
     shortYearCutoff?: any; // number or string
     showAnim?: string;
-    showButtonPanel?: bool;
+    showButtonPanel?: boolean;
     showCurrentAtPos?: number;
-    showMonthAfterYear?: bool;
+    showMonthAfterYear?: boolean;
     showOn?: string;
     showOptions?: any; // TODO
-    showOtherMonths?: bool;
-    showWeek?: bool;
+    showOtherMonths?: boolean;
+    showWeek?: boolean;
     stepMonths?: number;
     weekHeader?: string;
     yearRange?: string;
@@ -165,23 +165,23 @@ interface Datepicker extends Widget, DatepickerOptions {
 // Dialog //////////////////////////////////////////////////
 
 interface DialogOptions {
-    autoOpen?: bool;
+    autoOpen?: boolean;
     buttons?: any; // object or []
-    closeOnEscape?: bool;
+    closeOnEscape?: boolean;
     closeText?: string;
     dialogClass?: string;
-    disabled?: bool;
-    draggable?: bool;
+    disabled?: boolean;
+    draggable?: boolean;
     height?: any; // number or string
     maxHeight?: number;
     maxWidth?: number;
     minHeight?: number;
     minWidth?: number;
-    modal?: bool;
+    modal?: boolean;
     position?: any; // object, string or []
-    resizable?: bool;
+    resizable?: boolean;
     show?: any; // number, string or object
-    stack?: bool;
+    stack?: boolean;
     title?: string;
     width?: any; // number or string
     zIndex?: number;
@@ -225,8 +225,8 @@ interface DraggableEvent {
 }
 
 interface DraggableOptions {
-    disabled?: bool;
-    addClasses?: bool;
+    disabled?: boolean;
+    addClasses?: boolean;
     appendTo?: any;
     axis?: string;
     cancel?: string;
@@ -241,11 +241,11 @@ interface DraggableOptions {
     helper?: any;
     iframeFix?: any;
     opacity?: number;
-    refreshPositions?: bool;
+    refreshPositions?: boolean;
     revert?: any;
     revertDuration?: number;
     scope?: string;
-    scroll?: bool;
+    scroll?: boolean;
     scrollSensitivity?: number;
     scrollSpeed?: number;
     snap?: any;
@@ -280,10 +280,10 @@ interface DroppableEvent {
 }
 
 interface DroppableOptions {
-    disabled?: bool;
+    disabled?: boolean;
     accept?: any;
     activeClass?: string;
-    greedy?: bool;
+    greedy?: boolean;
     hoverClass?: string;
     scope?: string;
     tolerance?: string;
@@ -304,7 +304,7 @@ interface Droppable extends Widget, DroppableOptions, DroppableEvents {
 // Menu //////////////////////////////////////////////////
 
 interface MenuOptions {
-    disabled?: bool;
+    disabled?: boolean;
     icons?: any;
     menus?: string;
     position?: any; // TODO
@@ -332,7 +332,7 @@ interface Menu extends Widget, MenuOptions, MenuEvents {
 // Progressbar //////////////////////////////////////////////////
 
 interface ProgressbarOptions {
-    disabled?: bool;
+    disabled?: boolean;
     value?: number;
 }
 
@@ -357,17 +357,17 @@ interface Progressbar extends Widget, ProgressbarOptions, ProgressbarEvents {
 
 interface ResizableOptions {
     alsoResize?: any; // Selector, JQuery or Element
-    animate?: bool;
+    animate?: boolean;
     animateDuration?: any; // number or string
     animateEasing?: string;
     aspectRatio?: any; // bool or number
-    autoHide?: bool;
+    autoHide?: boolean;
     cancel?: string;
     containment?: any; // Selector, Element or string
     delay?: number;
-    disabled?: bool;
+    disabled?: boolean;
     distance?: number;
-    ghost?: bool;
+    ghost?: boolean;
     grid?: any;
     handles?: any; // string or object
     helper?: string;
@@ -404,10 +404,10 @@ interface Resizable extends Widget, ResizableOptions, ResizableEvents {
 // Selectable //////////////////////////////////////////////////
 
 interface SelectableOptions {
-    autoRefresh?: bool;
+    autoRefresh?: boolean;
     cancel?: string;
     delay?: number;
-    disabled?: bool;
+    disabled?: boolean;
     distance?: number;
     filter?: string;
     tolerance?: string;
@@ -429,7 +429,7 @@ interface Selectable extends Widget, SelectableOptions, SelectableEvents {
 
 interface SliderOptions {
     animate?: any; // bool, string or number
-    disabled?: bool;
+    disabled?: boolean;
     max?: number;
     min?: number;
     orientation?: string;
@@ -469,18 +469,18 @@ interface SortableOptions {
     cursor?: string;
     cursorAt?: any;
     delay?: number;
-    disabled?: bool;
+    disabled?: boolean;
     distance?: number;
-    dropOnEmpty?: bool;
-    forceHelperSize?: bool;
-    forcePlaceholderSize?: bool;
+    dropOnEmpty?: boolean;
+    forceHelperSize?: boolean;
+    forcePlaceholderSize?: boolean;
     grid?: number[];
     handle?: any; // Selector or Element
     items?: any; // Selector
     opacity?: number;
     placeholder?: string;
     revert?: any; // bool or number
-    scroll?: bool;
+    scroll?: boolean;
     scrollSensitivity?: number;
     scrollSpeed?: number;
     tolerance?: string;
@@ -523,7 +523,7 @@ interface Sortable extends Widget, SortableOptions, SortableEvents {
 
 interface SpinnerOptions {
     culture?: string;
-    disabled?: bool;
+    disabled?: boolean;
     icons?: any;
     incremental?: any; // bool or ()
     max?: any; // number or string
@@ -554,7 +554,7 @@ interface Spinner extends Widget, SpinnerOptions, SpinnerEvents {
 
 interface TabsOptions {
     active?: any; // bool or number
-    collapsible?: bool;
+    collapsible?: boolean;
     disabled?: any; // bool or []
     event?: string;
     heightStyle?: string;
@@ -584,13 +584,13 @@ interface Tabs extends Widget, TabsOptions, TabsEvents {
 
 interface TooltipOptions {
     content?: any; // () or string
-    disabled?: bool;
+    disabled?: boolean;
     hide?: any; // bool, number, string or object
     items?: string;
     position?: any; // TODO
     show?: any; // bool, number, string or object
     tooltipClass?: string;
-    track?: bool;
+    track?: boolean;
 }
 
 interface TooltipUIParams {
@@ -643,7 +643,7 @@ interface FadeEffect { }
 
 interface FoldEffect {
     size?: any;
-    horizFirst?: bool;
+    horizFirst?: boolean;
 }
 
 interface HighlightEffect {
@@ -756,7 +756,7 @@ interface UI {
 // Widget //////////////////////////////////////////////////
 
 interface WidgetOptions {
-    disabled?: bool;
+    disabled?: boolean;
     hide?: any;
     show?: any;
 }
@@ -912,8 +912,8 @@ interface JQuery {
 
     toggleClass(className: string, duration?: number, easing?: string, complete?: Function): JQuery;
     toggleClass(className: string, duration?: string, easing?: string, complete?: Function): JQuery;
-    toggleClass(className: string, aswitch?: bool, duration?: number, easing?: string, complete?: Function): JQuery;
-    toggleClass(className: string, aswitch?: bool, duration?: string, easing?: string, complete?: Function): JQuery;
+    toggleClass(className: string, aswitch?: boolean, duration?: number, easing?: string, complete?: Function): JQuery;
+    toggleClass(className: string, aswitch?: boolean, duration?: string, easing?: string, complete?: Function): JQuery;
 
     effect(options: any): JQuery;
     effect(effect: string, options?: any, duration?: number, complete?: Function): JQuery;

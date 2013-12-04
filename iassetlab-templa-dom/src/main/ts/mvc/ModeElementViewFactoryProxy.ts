@@ -1,4 +1,6 @@
 ///<reference path="IElementViewFactory.ts"/>
+///<reference path="IElementView"/>
+///<reference path="IElementReference"/>
 ///<reference path="ModeElementViewProxy.ts"/>
 ///<reference path="../../../../build/defs/iassetlab-templa.d.ts"/>
 
@@ -12,7 +14,7 @@ module templa.dom.mvc {
 
         }
 
-        create(container: IElementReference, prepend?: bool):IElementView {
+        create(container: IElementReference, prepend?: boolean):IElementView {
             var mode = this._modeFunction(container);
             var factory:IElementViewFactory = this._modesToFactories[mode];
             var result;

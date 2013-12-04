@@ -40,8 +40,8 @@ module templa.dom.mvc.jquery {
             this._proxied.detach();
         }
 
-        public layout(): bool {
-            var result: bool = this._proxied.layout();
+        public layout(): boolean {
+            var result: boolean = this._proxied.layout();
             var variableDimensionElement = $(<Element[]><any>this.getRoots());
             if (this._variableDimensionSelector != null) {
                 variableDimensionElement = variableDimensionElement.find(this._variableDimensionSelector);

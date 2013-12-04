@@ -13,10 +13,10 @@ module templa.dom.mvc.jquery.list {
 
     export class AbstractListJQueryListItem {
 
-        constructor(private _controller: templa.mvc.IController<templa.mvc.IModel>, private _controllerType:string, private _containerView?:templa.dom.mvc.IElementView) {
+        constructor(private _controller: templa.mvc.IController, private _controllerType:string, private _containerView?:templa.dom.mvc.IElementView) {
         }
 
-        public getController(): templa.mvc.IController<templa.mvc.IModel> {
+        public getController(): templa.mvc.IController {
             return this._controller; 
         }
 
@@ -34,16 +34,16 @@ module templa.dom.mvc.jquery.list {
     export class AbstractListJQueryController<ModelType extends templa.mvc.list.IListControllerModel> extends templa.dom.mvc.AbstractElementController<ModelType> implements templa.dom.mvc.jquery.IJQuerySelectorHandler {
 
         private _positionsToListItems: { number: AbstractListJQueryListItem; };
-        private _typesToReusableControllers: { string: templa.mvc.IController<templa.mvc.IModel>[]; };
+        private _typesToReusableControllers: { [_:string]: templa.mvc.IController[]; };
 
         // Constructor
         constructor(viewFactory: templa.dom.mvc.IElementViewFactory, private _listItemContainerViewFactory:templa.dom.mvc.IElementViewFactory) {
             super(viewFactory);
             this._positionsToListItems = <any>{};
-            this._typesToReusableControllers = <any>{};
+            this._typesToReusableControllers = {};
         }
 
-        public _initAndStart(controller: templa.dom.mvc.IElementController<templa.mvc.IModel>, container:templa.dom.mvc.IElementReference) {
+        public _initAndStart(controller: templa.dom.mvc.IElementController, container:templa.dom.mvc.IElementReference) {
             var state = controller.getState();
             if (state == templa.mvc.ControllerStateUninitialized) {
                 // initialize it
@@ -52,7 +52,7 @@ module templa.dom.mvc.jquery.list {
             this._start(controller);
         }
 
-        public _start(controller: templa.mvc.IController<templa.mvc.IModel>) {
+        public _start(controller: templa.mvc.IController) {
             var state = controller.getState();
             if (state == templa.mvc.ControllerStateInitialized) {
                 // start it
@@ -60,14 +60,14 @@ module templa.dom.mvc.jquery.list {
             }
         }
 
-        public _stop(controller: templa.mvc.IController<templa.mvc.IModel>) {
+        public _stop(controller: templa.mvc.IController) {
             var state = controller.getState();
             if (state == templa.mvc.ControllerStateStarted) {
                 controller.stop();
             }
         }
 
-        public _destroy(controller: templa.mvc.IController<templa.mvc.IModel>) {
+        public _destroy(controller: templa.mvc.IController) {
             var state = controller.getState();
             if (state == templa.mvc.ControllerStateInitialized) {
                 controller.destroy();
@@ -89,8 +89,8 @@ module templa.dom.mvc.jquery.list {
                 if (this._keepLoading(listModel, i)) {
                     var controllerType = listModel.getControllerType(i);
                     // check reusable controllers
-                    var reusableControllers: templa.mvc.IController<templa.mvc.IModel>[] = this._typesToReusableControllers[controllerType];
-                    var reusableController: templa.mvc.IController<templa.mvc.IModel>;
+                    var reusableControllers: templa.mvc.IController[] = this._typesToReusableControllers[controllerType];
+                    var reusableController: templa.mvc.IController;
                     if (reusableControllers != null && reusableControllers.length > 0) {
                         // note, this controller gets removed from the reuse pile regardless of whether it is actually used or not
                         reusableController = reusableControllers.pop();
@@ -108,11 +108,11 @@ module templa.dom.mvc.jquery.list {
             }
         }
 
-        public _keepLoading(listModel: templa.mvc.list.IListControllerModel, position:number): bool {
+        public _keepLoading(listModel: templa.mvc.list.IListControllerModel, position:number): boolean {
             return true;
         }
 
-        public _doInit(): bool {
+        public _doInit(): boolean {
             var result = super._doInit();
             if (result) {
                 // hope this iterates in numeric order!
@@ -127,7 +127,7 @@ module templa.dom.mvc.jquery.list {
             return result;
         }
 
-        public _doStart(): bool {
+        public _doStart(): boolean {
 
             // TODO : these controllers are probably going to be reloaded anyway, so starting them may not be much use?
 
@@ -140,7 +140,7 @@ module templa.dom.mvc.jquery.list {
             return super._doStart();
         }
 
-        public _doStop(): bool {
+        public _doStop(): boolean {
 
             // stop all controllers
             for (var position in this._positionsToListItems) {
@@ -151,7 +151,7 @@ module templa.dom.mvc.jquery.list {
             return super._doStop();
         }
 
-        public _doDestroy(): bool {
+        public _doDestroy(): boolean {
             // just clear it
             /*
             for (var position in this._positionsToListItems) {
@@ -179,7 +179,7 @@ module templa.dom.mvc.jquery.list {
                 this._stop(controller);
                 this._destroy(controller);
                 listItem.getContainerView().detach();
-                var reusableControllers: templa.mvc.IController<templa.mvc.IModel>[] = this._typesToReusableControllers[listItem.getControllerType()];
+                var reusableControllers: templa.mvc.IController[] = this._typesToReusableControllers[listItem.getControllerType()];
                 if (reusableControllers == null) {
                     reusableControllers = [];
                     this._typesToReusableControllers[listItem.getControllerType()] = reusableControllers;

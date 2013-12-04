@@ -1,4 +1,5 @@
 ///<reference path="IAnimation.ts"/>
+///<reference path="AnimationStateChangeEvent.ts"/>
 ///<reference path="../util/Arrays.ts"/>
 
 // Module
@@ -28,7 +29,7 @@ module templa.animation {
             }
         }
 
-        public _doInit(): bool {
+        public _doInit(): boolean {
             return true;
         }
 
@@ -39,7 +40,7 @@ module templa.animation {
             }
         }
 
-        public _doStart(): bool {
+        public _doStart(): boolean {
             return true;
         }
 
@@ -50,7 +51,7 @@ module templa.animation {
             }
         }
 
-        public _doDestroy(): bool {
+        public _doDestroy(): boolean {
             return true;
         }
 

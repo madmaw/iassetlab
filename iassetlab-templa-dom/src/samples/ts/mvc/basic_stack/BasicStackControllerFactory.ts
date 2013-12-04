@@ -36,7 +36,7 @@ module templa.dom.samples.mvc.basic_stack {
         public create(): templa.mvc.IController {
             var idInput = "basic_input";
             var idStack = "basic_stack";
-            var controllers = <{ string: templa.mvc.IController<templa.mvc.IModel>; }>{};
+            var controllers: {[_:string]:templa.mvc.IController} = {};
             controllers["."+idInput] = this.createInputController();
             controllers["."+idStack] = this.createStackController();
             var model = new templa.mvc.composite.MappedKeyedControllerModel(

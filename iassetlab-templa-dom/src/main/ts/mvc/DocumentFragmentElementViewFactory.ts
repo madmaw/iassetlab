@@ -1,6 +1,7 @@
 ///<reference path="IElementViewFactory.ts"/>
 ///<reference path="DocumentFragmentElementView.ts"/>
 ///<reference path="IElementReference.ts"/>
+///<reference path="IElementView"/>
 ///<reference path="../../../../build/defs/iassetlab-templa.d.ts"/>
 
 // Module
@@ -19,11 +20,11 @@ module templa.dom.mvc {
             }
         }
 
-        public create(container: IElementReference, prepend?:bool): IElementView {
+        public create(container: IElementReference, prepend?:boolean): IElementView {
             return this._createDiv(container, prepend, this._html);
         }
 
-        public _createDiv(container: IElementReference, prepend:bool, html: string) : IElementView {
+        public _createDiv(container: IElementReference, prepend:boolean, html: string) : IElementView {
             var count: number = divElementCount;
             var id = "__div_ele_" + count;
             divElementCount++;

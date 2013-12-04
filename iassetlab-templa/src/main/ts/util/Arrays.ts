@@ -1,8 +1,8 @@
 // Module
 module templa.util.Arrays {
 
-    export function removeElement(array: any[], element:any): bool {
-        var result: bool = false;
+    export function removeElement(array: any[], element:any): boolean {
+        var result: boolean = false;
         var index = array.length;
         while (index > 0) {
             index--;

@@ -1,6 +1,7 @@
 ///<reference path="IElementViewFactory.ts"/>
 ///<reference path="DocumentFragmentElementViewFactory.ts"/>
 ///<reference path="IElementReference.ts"/>
+///<reference path="IElementView.ts"/>
 
 ///<reference path="../../../../build/defs/iassetlab-templa.d.ts"/>
 
@@ -31,7 +32,7 @@ module templa.dom.mvc {
             super(null);
         }
 
-        public create(container:IElementReference, prepend?:bool, extraOptions?:any): IElementView {
+        public create(container:IElementReference, prepend?:boolean, extraOptions?:any): IElementView {
             var options = {};
             if (this._options != null) {
                 for (var key in this._options) {

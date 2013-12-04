@@ -1,6 +1,8 @@
+///<reference path="ICompositeControllerModel.ts"/>
 ///<reference path="../AbstractModel.ts"/>
 ///<reference path="../IController.ts"/>
-///<reference path="ICompositeControllerModel.ts"/>
+///<reference path="../IModel.ts"/>
+///<reference path="../IModelStateChange.ts"/>
 
 ///<reference path="../../util/Arrays.ts"/>
 
@@ -11,8 +13,8 @@ module templa.mvc.composite {
     export class AbstractCompositeControllerModel extends AbstractModel implements ICompositeControllerModel {
 
         public _stateDescriptionChangeListener: (source: IModel, change: IModelStateChange) => void;
-        private _controllerChangeListener: (source: templa.mvc.IController<IModel>, change: templa.mvc.ControllerChangeEvent) => void;
-        private _previouslyDescribedControllers: templa.mvc.IController<IModel>[];
+        private _controllerChangeListener: (source: templa.mvc.IController, change: templa.mvc.ControllerChangeEvent) => void;
+        private _previouslyDescribedControllers: templa.mvc.IController[];
 
         constructor() {
             super();
@@ -22,7 +24,7 @@ module templa.mvc.composite {
                     this._fireStateDescriptionChangeEvent(source, change);
                 }
             };
-            this._controllerChangeListener = (source: templa.mvc.IController<IModel>, change: templa.mvc.ControllerChangeEvent) => {
+            this._controllerChangeListener = (source: templa.mvc.IController, change: templa.mvc.ControllerChangeEvent) => {
                 if (change.getModelChanged()) {
                     var previousModel: templa.mvc.IModel = change.getPreviousModel();
                     if (previousModel != null) {
@@ -37,12 +39,12 @@ module templa.mvc.composite {
             }
         }
 
-        public _getDescribedControllers(): IController<IModel>[] {
+        public _getDescribedControllers(): IController[] {
             var controllers = this.getControllers();
             var result = [];
             // TODO should be a better way
             for (var i in controllers) {
-                var controller:IController<IModel> = controllers[i];
+                var controller:IController = controllers[i];
                 if (controller.getModel() != this) {
                     result.push(controller);
                 }
@@ -50,7 +52,7 @@ module templa.mvc.composite {
             return result;
         }
 
-        public getControllers(): IController<IModel>[]{
+        public getControllers(): IController[]{
             return [];
         }
 
@@ -65,7 +67,7 @@ module templa.mvc.composite {
             if (controllers != null) {
                 // listen on the models for all the controllers
                 for (var i in controllers) {
-                    var controller: templa.mvc.IController<IModel> = controllers[i];
+                    var controller: templa.mvc.IController = controllers[i];
                     controller.addOnChangeListener(this._controllerChangeListener);
                     this._previouslyDescribedControllers.push(controller);
                     var model: IModel = controller.getModel();
@@ -86,7 +88,7 @@ module templa.mvc.composite {
             var controllers = this._previouslyDescribedControllers;
             if (controllers != null) {
                 for (var i in controllers) {
-                    var controller: templa.mvc.IController<IModel> = controllers[i];
+                    var controller: templa.mvc.IController = controllers[i];
                     controller.removeOnChangeListener(this._controllerChangeListener);
                     var model: IModel = controller.getModel();
                     if (model != null) {
@@ -128,7 +130,7 @@ module templa.mvc.composite {
             var descriptions = <any[]>description;
             for (var i in descriptions) {
                 var entry = descriptions[i];
-                var controller:IController<IModel> = controllers[i];
+                var controller:IController = controllers[i];
                 var model = controller.getModel();
                 if (model != null) {
                     model.loadStateDescription(entry);

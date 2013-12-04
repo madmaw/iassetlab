@@ -74,7 +74,7 @@ module templa.dom.samples.mvc.tab_index {
                 <any>{ back: toolbarBackCommandElementViewFactory }
             );
              
-            var decoratorFactory = function(controllers: templa.mvc.IController<templa.mvc.IModel>[]):templa.mvc.IController<templa.mvc.IModel> {
+            var decoratorFactory = function(controllers: templa.mvc.IController[]):templa.mvc.IController {
                 var toolbarController = new templa.dom.mvc.jquery.command.ToolbarCommandJQueryController(
                     toolbarViewFactory,
                     toolbarCommandElementViewFactory,
@@ -102,23 +102,23 @@ module templa.dom.samples.mvc.tab_index {
 
 
             var helloWorldControllerId = "hello_world";
-            var helloWorldController: templa.mvc.IController<templa.mvc.IModel> = templa.dom.samples.mvc.hello_world.HelloWorldControllerFactory.create();
+            var helloWorldController: templa.mvc.IController = templa.dom.samples.mvc.hello_world.HelloWorldControllerFactory.create();
             helloWorldController = decoratorFactory([helloWorldController]);
 
             var helloYouControllerId = "hello_you";
             var helloYouControllerFactory = new templa.dom.samples.mvc.hello_you.HelloYouControllerFactory();
-            var helloYouController: templa.mvc.IController<templa.mvc.IModel> = helloYouControllerFactory.create();
+            var helloYouController: templa.mvc.IController = helloYouControllerFactory.create();
             helloYouController = decoratorFactory([helloYouController]);
 
             var basicStackControllerId = "basic_stack";
             var basicStackControllerFactory = new templa.dom.samples.mvc.basic_stack.BasicStackControllerFactory();
-            var basicStackController: templa.mvc.IController<templa.mvc.IModel> = basicStackControllerFactory.create();
+            var basicStackController: templa.mvc.IController = basicStackControllerFactory.create();
             basicStackController = decoratorFactory([basicStackController]);
 
             var decoratedStackControllerId = "decorated_stack";
             var decoratedStackController = templa.dom.samples.mvc.decorated_stack.DecoratedStackControllerFactory.create(loadables, decoratorFactory);
 
-            var tabbedControllers = <{ string: templa.mvc.IController<templa.mvc.IModel>; }>{};
+            var tabbedControllers = <{ [_:string]: templa.mvc.IController; }>{};
             tabbedControllers[helloWorldControllerId] = helloWorldController;
             tabbedControllers[helloYouControllerId] = helloYouController;
             tabbedControllers[basicStackControllerId] = basicStackController;
@@ -160,7 +160,7 @@ module templa.dom.samples.mvc.tab_index {
             );
 
             var tabPaneKey = ".tab_pane";
-            var tabControllers = <{ string: templa.mvc.IController<templa.mvc.IModel>; }>{};
+            var tabControllers = {};
             tabControllers[tabBarKey] = tabBarController;
 
             var tabModel = new templa.mvc.composite.MappedTabControllerModel( 

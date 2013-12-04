@@ -30,7 +30,7 @@ module templa.dom.mvc {
             this._proxied.detach();
         }
 
-        layout(): bool {
+        layout(): boolean {
             // check ratio
             var ratio = window.innerWidth / window.innerHeight;
             var needsExternalLayout;

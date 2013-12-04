@@ -2,6 +2,9 @@
 ///<reference path="../IJQuerySelectorHandler.ts"/>
 ///<reference path="../JQueryElementReference.ts"/>
 ///<reference path="../../ViewRootElementReference.ts"/>
+///<reference path="../../IElementView.ts"/>
+///<reference path="../../IElementReference.ts"/>
+///<reference path="../../DirectElementReference.ts"/>
 ///<reference path="../../composite/AbstractCompositeElementController.ts"/>
 
 ///<reference path="../../../../../../build/defs/jquery.d.ts"/>
@@ -21,7 +24,7 @@ module templa.dom.mvc.jquery.composite {
             var roots:Node[] = this._view.getRoots();
             var allChildRoots: Node[] = [];
             for (var i in this._controllers) {
-                var controller: templa.mvc.IController<templa.mvc.IModel> = this._controllers[i];
+                var controller: templa.mvc.IController = this._controllers[i];
                 var view: IElementView = <IElementView>controller.getView();
                 if (view != null) {
                     // we can get odd situations where the owner controller is initialized, but the children are not
@@ -67,7 +70,7 @@ module templa.dom.mvc.jquery.composite {
             return result;
         }
 
-        public getControllerContainer(controller: templa.mvc.IController<templa.mvc.IModel>): IElementReference {
+        public getControllerContainer(controller: templa.mvc.IController): IElementReference {
             var selector = this.getControllerContainerSelector(controller);
             var result: IElementReference;
             if (selector == null) {
@@ -81,7 +84,7 @@ module templa.dom.mvc.jquery.composite {
             return result;
         }
 
-        public getControllerContainerSelector(controller: templa.mvc.IController<templa.mvc.IModel>): string {
+        public getControllerContainerSelector(controller: templa.mvc.IController): string {
             return null;
         }
 

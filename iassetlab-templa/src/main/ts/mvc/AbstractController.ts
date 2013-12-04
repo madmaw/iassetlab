@@ -1,23 +1,29 @@
 ///<reference path="IController.ts"/>
-///<reference path="../animation/IAnimation.ts"/>
-///<reference path="../util/Arrays.ts"/>
+///<reference path="IControllerWithModel.ts"/>
 ///<reference path="IView.ts"/>
+///<reference path="IModel.ts"/>
+///<reference path="ModelChangeEvent.ts"/>
+///<reference path="Command.ts"/>
+///<reference path="ControllerChangeEvent.ts"/>
+///<reference path="../animation/IAnimation.ts"/>
+///<reference path="../animation/AnimationStateChangeEvent.ts"/>
+///<reference path="../util/Arrays.ts"/>
 
 // Module
 module templa.mvc {
 
     // Class
-    export class AbstractController<ModelType extends IModel> implements IController<ModelType> {
+    export class AbstractController<ModelType extends IModel> implements IControllerWithModel<ModelType> {
 
         public _model: ModelType;
-        private _commands: templa.mvc.Command[];
+        private _commands: Command[];
         private _state: number;
 
         private _animations: templa.animation.IAnimation[];
         private _animationListener: (source: templa.animation.IAnimation, changeEvent: templa.animation.AnimationStateChangeEvent) => void;
 
         private _modelOnChangeListener: (model: templa.mvc.IModel, event: templa.mvc.ModelChangeEvent) => void;
-        private _controllerOnChangeListeners: { (source: templa.mvc.IController<IModel>, changeEvent: templa.mvc.ControllerChangeEvent): void; }[];
+        private _controllerOnChangeListeners: { (source: IController, changeEvent: ControllerChangeEvent): void; }[];
 
         // Constructor
         constructor() {
@@ -42,8 +48,8 @@ module templa.mvc {
             this._fireControllerChangeEvent(new ControllerChangeEvent(true, true, true, previousModel));
         }
 
-        public _init(): bool {
-            var result: bool;
+        public _init(): boolean {
+            var result: boolean;
             if (this._state == templa.mvc.ControllerStateUninitialized) {
                 result = this._doInit();
                 if (result) {
@@ -63,7 +69,7 @@ module templa.mvc {
             return result;
         }
 
-        public _doInit(): bool {
+        public _doInit(): boolean {
             return true;
         }
 
@@ -84,8 +90,8 @@ module templa.mvc {
             this._doLoad(this._model);
         }
 
-        public start(): bool {
-            var result: bool;
+        public start(): boolean {
+            var result: boolean;
             if (this._state == templa.mvc.ControllerStateInitialized) {
                 result = this._doStart();
                 if (result) {
@@ -104,12 +110,12 @@ module templa.mvc {
             return result;
         }
 
-        public _doStart(): bool {
+        public _doStart(): boolean {
             return true;
         }
 
-        public stop(): bool {
-            var result: bool;
+        public stop(): boolean {
+            var result: boolean;
             if (this._state == templa.mvc.ControllerStateStarted) {
                 result = this._doStop();
                 if (result) {
@@ -124,13 +130,13 @@ module templa.mvc {
             return result;
         }
 
-        public _doStop(): bool {
+        public _doStop(): boolean {
             return true;
         }
 
-        public destroy(detachView?: bool): bool {
+        public destroy(detachView?: boolean): boolean {
             // destroy any animations
-            var result: bool;
+            var result: boolean;
             if (this._state == templa.mvc.ControllerStateInitialized) {
                 this._clearAnimations();
                 result = this._doDestroy(detachView);
@@ -144,7 +150,7 @@ module templa.mvc {
             return result;
         }
 
-        public _doDestroy(detachView?: bool): bool {
+        public _doDestroy(detachView?: boolean): boolean {
             return true;
         }
 
@@ -165,14 +171,14 @@ module templa.mvc {
             return null;
         }
 
-        public addOnChangeListener(listener: (source: IController<IModel>, changeEvent: ControllerChangeEvent) => void ) {
+        public addOnChangeListener(listener: (source: IController, changeEvent: ControllerChangeEvent) => void ) {
             if (this._controllerOnChangeListeners == null) {
                 this._controllerOnChangeListeners = [];
             }
             this._controllerOnChangeListeners.push(listener);
         }
 
-        public removeOnChangeListener(listener: (source: IController<IModel>, changeEvent: ControllerChangeEvent) => void ) {
+        public removeOnChangeListener(listener: (source: IController, changeEvent: ControllerChangeEvent) => void ) {
             if (this._controllerOnChangeListeners != null) {
                 templa.util.Arrays.removeElement(this._controllerOnChangeListeners, listener);
                 if (this._controllerOnChangeListeners.length == 0) {
@@ -219,7 +225,7 @@ module templa.mvc {
             this._init();
         }
 
-        public _isAnimating(): bool {
+        public _isAnimating(): boolean {
             return this._animations != null && this._animations.length > 0;
         }
 
@@ -233,7 +239,7 @@ module templa.mvc {
             }
         }
 
-        public _addAnimation(animation: templa.animation.IAnimation, doNotStart?: bool) {
+        public _addAnimation(animation: templa.animation.IAnimation, doNotStart?: boolean) {
             if (this._animations == null) {
                 this._animations = [];
                 this._animationListener = (source: templa.animation.IAnimation, event: templa.animation.AnimationStateChangeEvent) => {
@@ -253,7 +259,7 @@ module templa.mvc {
             }
         }
 
-        public _removeAnimation(animation: templa.animation.IAnimation, doNotDestroy?: bool) {
+        public _removeAnimation(animation: templa.animation.IAnimation, doNotDestroy?: boolean) {
             if (this._animations != null) {
                 if (templa.util.Arrays.removeElement(this._animations, animation)) {
                     animation.removeAnimationListener(this._animationListener);

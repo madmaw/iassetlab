@@ -7,7 +7,7 @@ module templa.mvc {
     // Class
     export class Command {
 
-        private _enabled: bool;
+        private _enabled: boolean;
 
         // Constructor
         constructor(private _id: string, private _commandType:number, private _priority:number, private _action:() => void) {
@@ -22,11 +22,11 @@ module templa.mvc {
             return this._commandType;
         }
 
-        public setEnabled(_enabled: bool) {
+        public setEnabled(_enabled: boolean) {
             this._enabled = _enabled;
         }
 
-        public getEnabled(): bool {
+        public getEnabled(): boolean {
             return this._enabled;
         }
 

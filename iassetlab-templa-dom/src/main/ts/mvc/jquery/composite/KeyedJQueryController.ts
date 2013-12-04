@@ -1,4 +1,5 @@
 ///<reference path="AbstractCompositeJQueryController.ts"/>
+///<reference path="../../IElementViewFactory.ts"/>
 
 ///<reference path="../../../../../../build/defs/jquery.d.ts"/>
 ///<reference path="../../../../../../build/defs/iassetlab-templa.d.ts"/> 
@@ -20,7 +21,7 @@ module templa.dom.mvc.jquery.composite {
             this._keysToSelectors[key] = selector;
         }
 
-        public getControllerContainerSelector(controller: templa.mvc.IController<templa.mvc.IModel>): string {
+        public getControllerContainerSelector(controller: templa.mvc.IController): string {
             var model: templa.mvc.composite.IKeyedControllerModel = <templa.mvc.composite.IKeyedControllerModel>this._model;
             var key: string = model.getControllerKey(controller);
             var selector: string = this._keysToSelectors[key];

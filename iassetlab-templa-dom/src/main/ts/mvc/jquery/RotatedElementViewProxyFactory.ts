@@ -1,4 +1,6 @@
 ﻿///<reference path="RotatedElementViewProxy.ts"/>
+///<reference path="../IElementReference.ts"/>
+///<reference path="../IElementView.ts"/>
 ///<reference path="../IElementViewFactory.ts"/>
 ///<reference path="../DirectElementReference.ts"/>
 
@@ -9,11 +11,11 @@ module templa.dom.mvc.jquery {
 
     export class RotatedElementViewProxyFactory implements templa.dom.mvc.IElementViewFactory {
 
-        constructor(private _proxied: templa.dom.mvc.IElementViewFactory, private _useContainer?:bool) {
+        constructor(private _proxied: templa.dom.mvc.IElementViewFactory, private _useContainer?:boolean) {
 
         }
 
-        create(container: IElementReference, prepend?: bool): IElementView {
+        create(container: IElementReference, prepend?: boolean): IElementView {
             
             var element = document.createElement("div");
             var proxyContainer = new templa.dom.mvc.DirectElementReference(element);

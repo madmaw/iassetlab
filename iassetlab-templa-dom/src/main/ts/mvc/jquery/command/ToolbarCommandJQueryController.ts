@@ -26,7 +26,7 @@ module templa.dom.mvc.jquery.command {
             this._generalViews = [];
         }
 
-        public _doDestroy(detachView?: bool) {
+        public _doDestroy(detachView?: boolean) {
             if (detachView == false) {
                 // TODO disable onclicks
                 this._backViews = [];

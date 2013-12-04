@@ -8,11 +8,15 @@ module templa.loading {
     export class CompositeLoadable implements ILoadable {
 
         private _synchronousLoadables: ILoadable[];
+        private _loadables: ILoadable[];
 
-        constructor(private _loadables?:ILoadable[]) {
-            if (this._loadables == null) {
+            constructor(loadables?:ILoadable[]) {
+            if (loadables == null) {
                 this._loadables = [];
+            } else {
+                this._loadables = loadables;
             }
+
             this._synchronousLoadables = [];
         }
 
@@ -45,7 +49,7 @@ module templa.loading {
             return result;
         }
 
-        isComplete(): bool {
+        isComplete(): boolean {
             var result = true;
             for (var i in this._loadables) {
                 var loadable: ILoadable = this._loadables[i];
@@ -58,7 +62,7 @@ module templa.loading {
             return result;
         }
 
-        update(): bool {
+        update(): boolean {
             var result;
             if (this._synchronousLoadables.length > 0) {
                 var synchronousLoader = this._synchronousLoadables[0];
@@ -75,8 +79,8 @@ module templa.loading {
             return result;
         }
 
-        requestStartLoading(callback?: (loadable: ILoadable, message: string) => void ): bool {
-            var result: bool = false;
+        requestStartLoading(callback?: (loadable: ILoadable, message: string) => void ): boolean {
+            var result: boolean = false;
             var internalCallback;
             if (callback != null) {
                 internalCallback = (loadable: ILoadable, message: string) => {

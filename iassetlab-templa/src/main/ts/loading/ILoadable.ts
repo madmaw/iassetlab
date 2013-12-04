@@ -10,17 +10,17 @@ module templa.loading {
 
         getErrors(): string[];
 
-        isComplete(): bool;
+        isComplete(): boolean;
 
         /**
          * update a synchronous loading thing, return true if it isn't finished (requires another call), false if it is
          */
-        update(): bool;
+        update(): boolean;
 
         /**
          * return true if the loading requires calls to update, false if it is asynchronous 
          */
-        requestStartLoading(callback?: (loadable:ILoadable, message:string) => void): bool;
+        requestStartLoading(callback?: (loadable:ILoadable, message:string) => void): boolean;
     }
 
 }
