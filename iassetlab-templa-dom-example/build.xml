@@ -37,7 +37,7 @@
         <pathconvert property="tsFilesArg" refid="tsFiles" pathsep="' '"/>
         <echo message="'${tsFilesArg}'"/>
         <!-- Compile all .ts files -->
-        <exec executable="tscc" failonerror="true">
+        <exec executable="tsc" failonerror="true">
 
             <arg value="-out"/>
             <arg path="${target}/dist/iassetlab-templa-dom-example.js"/>
@@ -61,6 +61,7 @@
     </target>
 
     <target name="closure" depends="build">
+        <!-- this doesn't seem to produce anything useful -->
         <exec executable="ccjs" failonerror="true">
             <redirector output="${target}/dist/iassetlab-templa-dom-example-all.min.js" alwayslog="true"/>
 
