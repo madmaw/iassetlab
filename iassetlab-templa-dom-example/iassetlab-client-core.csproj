@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{DCBA0C94-E39E-4514-ABDD-E96E093F9BB1}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="build.xml" />
+    <Content Include="index.html" />
+    <Content Include="lib\hammer-1.0.5.js" />
+    <Content Include="lib\hammer-1.0.5.min.js" />
+    <Content Include="src\main\assetbatch\assets.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="src\main\assetbatch\css.xslt" />
+    <Content Include="src\main\assetbatch\toolbar_background.xslt" />
+    <Content Include="src\main\assetbatch\toolbar_button.xslt" />
+    <Content Include="src\main\css\absolute_animations_narrow.css" />
+    <Content Include="src\main\css\absolute_animations_wide_3.css" />
+    <Content Include="src\main\css\absolute_animations_wide_4.css" />
+    <Content Include="src\main\css\relative_animations_narrow.css" />
+    <Content Include="src\main\css\relative_animations_wide_4.css" />
+    <Content Include="src\main\css\iassetlab.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\animated-overlay.gif" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-icons_222222_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-icons_454545_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-icons_888888_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery-ui.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.accordion.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.all.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.autocomplete.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.base.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.button.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.core.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.datepicker.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.dialog.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.menu.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.progressbar.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.resizable.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.selectable.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.slider.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.spinner.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.tabs.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.theme.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\jquery.ui.tooltip.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\animated-overlay.gif" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery-ui.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.accordion.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.button.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.core.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.dialog.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.menu.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.resizable.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.selectable.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.slider.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.spinner.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.tabs.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.theme.min.css" />
+    <Content Include="src\main\css\jquery-ui-1.10.2\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="src\main\css\relative_animations_wide_3.css" />
+    <Content Include="src\main\d.ts\hammerjs.d.ts" />
+    <Content Include="src\main\handlebars\about\about_main.html" />
+    <Content Include="src\main\handlebars\empty\empty_ender.html" />
+    <Content Include="src\main\handlebars\empty\empty_starter.html" />
+    <Content Include="src\main\handlebars\home\home_main.html" />
+    <Content Include="src\main\handlebars\loading\loading_container.html" />
+    <Content Include="src\main\handlebars\search\search_results_loading_main.html" />
+    <Content Include="src\main\handlebars\search\search_results_loading_switcher_main.html" />
+    <Content Include="src\main\handlebars\search\search_results_item_container_main.html" />
+    <Content Include="src\main\handlebars\search\search_results_main.html" />
+    <Content Include="src\main\handlebars\search\search_main.html" />
+    <Content Include="src\main\handlebars\stack\stack_narrow.html" />
+    <Content Include="src\main\handlebars\stack\stack_wide_3.html" />
+    <Content Include="src\main\handlebars\stack\stack_wide_4.html" />
+    <Content Include="src\main\handlebars\statusbar\statusbar.html" />
+    <Content Include="src\main\handlebars\statusbar\statusbar_decorator.html" />
+    <Content Include="src\main\handlebars\context\context.html" />
+    <Content Include="src\main\handlebars\template\template_summary.html" />
+    <Content Include="src\main\handlebars\toolbar\toolbar_decorator_narrow.html" />
+    <Content Include="src\main\handlebars\toolbar\toolbar_decorator_wide_3.html" />
+    <Content Include="src\main\handlebars\toolbar\toolbar_decorator_wide_4.html" />
+    <Content Include="src\main\handlebars\toolbar\toolbar_button_back.html" />
+    <Content Include="src\main\handlebars\toolbar\toolbar_button_normal.html" />
+    <Content Include="src\main\handlebars\toolbar\toolbar.html" />
+    <Content Include="src\main\res\ios\1536w.css" />
+    <Content Include="src\main\res\ios\1536w\tabbar_horizontal_background.png" />
+    <Content Include="src\main\res\ios\1536w\tabbar_vertical_background.png" />
+    <Content Include="src\main\res\ios\1536w\toolbar_background.png" />
+    <Content Include="src\main\res\ios\1536w\toolbar_button_back.png" />
+    <Content Include="src\main\res\ios\1536w\toolbar_button_normal.png" />
+    <Content Include="src\main\res\ios\320w.css" />
+    <Content Include="src\main\res\ios\320w\tabbar_horizontal_background.png" />
+    <Content Include="src\main\res\ios\320w\tabbar_vertical_background.png" />
+    <Content Include="src\main\res\ios\320w\toolbar_background.png" />
+    <Content Include="src\main\res\ios\320w\toolbar_button_back.png" />
+    <Content Include="src\main\res\ios\320w\toolbar_button_normal.png" />
+    <Content Include="src\main\res\ios\640w.css" />
+    <Content Include="src\main\res\ios\640w\tabbar_horizontal_background.png" />
+    <Content Include="src\main\res\ios\640w\tabbar_vertical_background.png" />
+    <Content Include="src\main\res\ios\640w\toolbar_background.png" />
+    <Content Include="src\main\res\ios\640w\toolbar_button_back.png" />
+    <Content Include="src\main\res\ios\640w\toolbar_button_normal.png" />
+    <Content Include="src\main\ts\AssetLabControllerFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\AssetLabHomeControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\home\IHomeControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\home\HomeController.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\main\ts\mvc\browse\" />
+    <Folder Include="src\main\ts\mvc\invisible\" />
+    <Folder Include="src\main\ts\mvc\template\detail\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="src\main\ts\mvc\about\AboutController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\AssetLabStackControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\AssetLabDecoratorModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\statusbar\StatusbarController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\statusbar\IStatusbarControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\filter\FilteringKeyedControllerModelProxy.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\about\IAboutControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\stack\IBackForwardStackControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\stack\BackForwardStackController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\search\SearchController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\search\ISearchControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\AssetLabSearchControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\AssetLabSearchResultsControllerModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\service\ITemplateService.ts" />
+    <TypeScriptCompile Include="src\main\ts\service\TemplateVersion.ts" />
+    <TypeScriptCompile Include="src\main\ts\service\Template.ts" />
+    <TypeScriptCompile Include="src\main\ts\service\User.ts" />
+    <TypeScriptCompile Include="src\main\ts\service\json\JSONTemplateServiceFunctionFactory.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\template\TemplateController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\template\ITemplateModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\template\summary\TemplateSummaryController.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\template\summary\ITemplateSummaryModel.ts" />
+    <TypeScriptCompile Include="src\main\ts\mvc\AssetLabSearchResultTemplateSummaryModel.ts" />
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>51092</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:51093/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES3</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>false</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
+  <Target Name="CompileTypeScript">
+    <Message Text="Compiling TypeScript files" />
+    <Exec Command="ant" />
+  </Target>
+</Project>

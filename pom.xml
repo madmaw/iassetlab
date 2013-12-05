@@ -11,6 +11,7 @@
         <module>iassetlab-cli</module>
         <module>iassetlab-templa</module>
         <module>iassetlab-templa-dom</module>
+        <module>iassetlab-templa-dom-example</module>
     </modules>
 
     <properties>
