@@ -96,7 +96,7 @@
         <pathconvert property="tsSampleFilesArg" refid="tsSampleFiles" pathsep="' '"/>
         <echo message="'${tsSampleFilesArg}'"/>
         <!-- Compile all .ts files -->
-        <exec executable="tsc" failonerror="true">
+        <exec executable="tscc" failonerror="true">
 
             <arg value="-out"/>
             <arg path="${target}/dist/iassetlab-templa-dom-samples.js"/>

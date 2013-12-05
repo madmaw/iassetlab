@@ -37,7 +37,7 @@
         <pathconvert property="tsFilesArg" refid="tsFiles" pathsep="' '"/>
         <echo message="'${tsFilesArg}'"/>
         <!-- Compile all .ts files -->
-        <exec executable="tsc" failonerror="true">
+        <exec executable="tscc" failonerror="true">
 
             <arg value="-out"/>
             <arg path="${target}/dist/iassetlab-templa-dom-example.js"/>
@@ -58,5 +58,17 @@
         <!-- Lint all required CSS, JS files -->
         <!-- Concatenate all required CSS, JS files -->
         <!-- Compress built CSS, JS files -->
+    </target>
+
+    <target name="closure" depends="build">
+        <exec executable="ccjs" failonerror="true">
+            <redirector output="${target}/dist/iassetlab-templa-dom-example-all.min.js" alwayslog="true"/>
+
+            <arg path="${target}/dist/iassetlab-templa-dom-example.js"/>
+            <arg path="${target}/lib/iassetlab-templa-dom.js"/>
+            <arg path="${target}/lib/iassetlab-templa.js"/>
+
+        </exec>
+
     </target>
 </project>
