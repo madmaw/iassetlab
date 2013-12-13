@@ -44,7 +44,7 @@ module templa.dom.samples.mvc.hello_you {
                 "<div class = '" + idOutput + "' > </div><div class = '" + idInput + "' > </div>"
             );
 
-            var controller = new templa.dom.mvc.jquery.composite.KeyedJQueryController(
+            var controller = new templa.dom.mvc.jquery.composite.KeyedJQueryController<templa.mvc.composite.IKeyedControllerModel>(
                 viewFactory
             );
             controller.setModel(model);

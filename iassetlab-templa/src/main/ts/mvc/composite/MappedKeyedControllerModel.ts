@@ -17,7 +17,7 @@ module templa.mvc.composite {
             super();
             this._listeningForTokenChanges = false;
             if (this._controllerMap == null) {
-                this._controllerMap = <{ string: IController; } >{};
+                this._controllerMap = {};
             }
         }
 

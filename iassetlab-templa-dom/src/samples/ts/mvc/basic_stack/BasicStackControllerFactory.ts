@@ -19,7 +19,7 @@ module templa.dom.samples.mvc.basic_stack {
 
         public createStackController(): templa.mvc.IController {
             var stackViewFactory = new templa.dom.mvc.DocumentFragmentElementViewFactory("<div key='stack'></div>");
-            var stackController = new templa.dom.mvc.jquery.composite.StackJQueryController(stackViewFactory, []);
+            var stackController = new templa.dom.mvc.jquery.composite.StackJQueryController<templa.mvc.composite.IStackControllerModel>(stackViewFactory, []);
             stackController.setModel(this._model);
             return stackController;
         }
@@ -47,7 +47,7 @@ module templa.dom.samples.mvc.basic_stack {
                 "<div class = '" + idInput +"' > </div><div class = '"+idStack+"' > </div>"
             );
 
-            var controller = new templa.dom.mvc.jquery.composite.KeyedJQueryController(
+            var controller = new templa.dom.mvc.jquery.composite.KeyedJQueryController<templa.mvc.composite.IKeyedControllerModel>(
                 viewFactory
             );
             controller.setModel(model);

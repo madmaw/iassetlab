@@ -171,6 +171,8 @@
     <TypeScriptCompile Include="src\main\ts\mvc\template\summary\TemplateSummaryController.ts" />
     <TypeScriptCompile Include="src\main\ts\mvc\template\summary\ITemplateSummaryModel.ts" />
     <TypeScriptCompile Include="src\main\ts\mvc\AssetLabSearchResultTemplateSummaryModel.ts" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +186,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>iassetlab-templa-dom-example</AssemblyName>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -210,6 +215,7 @@
     <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptOutDir>build</TypeScriptOutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptTarget>ES5</TypeScriptTarget>

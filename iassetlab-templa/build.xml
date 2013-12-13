@@ -27,7 +27,7 @@
         <pathconvert property="tsFilesArg" refid="tsFiles" pathsep="' '"/>
         <echo message="'${tsFilesArg}'"/>
         <!-- Compile all .ts files -->
-        <exec executable="tsc" failonerror="true">
+        <exec executable="tsc.cmd" failonerror="true">
 
             <arg value="-out"/>
             <arg path="${target}/dist/iassetlab-templa.js"/>

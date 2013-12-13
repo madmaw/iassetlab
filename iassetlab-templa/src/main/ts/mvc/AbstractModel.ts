@@ -1,8 +1,4 @@
-///<reference path="IModel.ts"/>
-///<reference path="ModelChangeEvent.ts"/>
-///<reference path="ModelChangeDescription.ts"/>
-///<reference path="IModelStateChange.ts"/>
-///<reference path=../util/Arrays.ts"/>
+
 module templa.mvc {
 
     export class AbstractModel implements IModel {

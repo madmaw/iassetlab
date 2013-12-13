@@ -9,12 +9,13 @@ module templa.util.Strings {
             result = anyFormat.format.apply(anyFormat, params);
         } else {
             // do it using regex
-            result = format.replace(/{(\d+)}/g, function (match, number) {
-                return typeof params[number] != 'undefined'
-                  ? params[number]
-                  : match
-                ;
-            });
+            var f = function (match:string, num?:string) : string {
+                return typeof params[num] != 'undefined'
+                    ? params[num]
+                    : match
+                    ;
+            };
+            result = format.replace(<string><any>(/{(\d+)}/g), f);
         }
         return result;
     }

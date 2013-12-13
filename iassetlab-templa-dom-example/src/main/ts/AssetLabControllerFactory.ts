@@ -409,7 +409,7 @@ module iassetlab.client.core {
             var loadingSwitcherViewFactory = templa.dom.mvc.TemplateElementViewFactory.createFromURL(
                 "src/main/handlebars/loading/loading_container.html"
             );
-            var loadingSwitcherController = new templa.dom.mvc.jquery.composite.AbstractCompositeJQueryController(
+            var loadingSwitcherController = new templa.dom.mvc.jquery.composite.AbstractCompositeJQueryController<templa.mvc.composite.ICompositeControllerModel>(
                 loadingSwitcherViewFactory
             );
 
@@ -417,7 +417,7 @@ module iassetlab.client.core {
             var loadingModel: templa.mvc.loading.LoadableProxyingLoadingControllerModel = new templa.mvc.loading.LoadableProxyingLoadingControllerModel(compositeLoadable);
 
             var loadingViewFactory = new templa.dom.mvc.DocumentFragmentElementViewFactory();
-            var loadingController = new templa.dom.mvc.jquery.loading.ProgressBarLoadingJQueryUIController(
+            var loadingController = new templa.dom.mvc.jquery.loading.ProgressBarLoadingJQueryUIController<templa.mvc.loading.ILoadingControllerModel>(
                 loadingViewFactory
             );
 
@@ -464,13 +464,13 @@ module iassetlab.client.core {
             var stackModel = new iassetlab.client.core.mvc.AssetLabStackControllerModel(
                 getControllersToDisplay(),
                 () => {
-                    var emptyController = new templa.dom.mvc.AbstractElementController(this._emptyStarterViewFactory);
+                    var emptyController = new templa.dom.mvc.AbstractElementController<templa.mvc.AbstractModel>(this._emptyStarterViewFactory);
                     var emptyModel = new templa.mvc.AbstractModel();
                     emptyController.setModel(emptyModel);
                     return decoratorFactory([emptyController], true);
                 },
                 () => {
-                    var emptyController = new templa.dom.mvc.AbstractElementController(this._emptyEnderViewFactory);
+                    var emptyController = new templa.dom.mvc.AbstractElementController<templa.mvc.AbstractModel>(this._emptyEnderViewFactory);
                     var emptyModel = new templa.mvc.AbstractModel();
                     emptyController.setModel(emptyModel);
                     return decoratorFactory([emptyController], true);
@@ -557,7 +557,7 @@ module iassetlab.client.core {
         }
 
         public createSearchResultsController(searchResultsViewFactory: templa.dom.mvc.IElementViewFactory, searchResultsModel: iassetlab.client.core.mvc.AssetLabSearchResultsControllerModel): templa.mvc.IController {
-            var searchResultsController = new templa.dom.mvc.jquery.list.AbstractListJQueryController(
+            var searchResultsController = new templa.dom.mvc.jquery.list.AbstractListJQueryController<iassetlab.client.core.mvc.AssetLabSearchResultsControllerModel>(
                 searchResultsViewFactory,
                 this._searchResultsItemContainerViewFactory
             );
@@ -566,12 +566,12 @@ module iassetlab.client.core {
             searchResultsController.setModel(searchResultsModel);
 
             // TODO do not use progress bar, have a spinning circle or something?
-            var loadingController = new templa.dom.mvc.AbstractElementController(
+            var loadingController = new templa.dom.mvc.AbstractElementController<templa.mvc.AbstractModel>(
                 this._searchResultsLoadingViewFactory
             );
             loadingController.setModel(searchResultsModel);
 
-            var loadingSwitcherController = new templa.dom.mvc.jquery.composite.AbstractCompositeJQueryController(
+            var loadingSwitcherController = new templa.dom.mvc.jquery.composite.AbstractCompositeJQueryController<templa.mvc.loading.SwitchOnLoadingCompositeControllerModel>(
                 this._searchResultsLoadingSwitcherViewFactory
             );
             var loadingSwitcherModel = new templa.mvc.loading.SwitchOnLoadingCompositeControllerModel(loadingController, searchResultsController, searchResultsModel);
@@ -604,7 +604,7 @@ module iassetlab.client.core {
         ) {
 
             // create 
-            var controller = new templa.dom.mvc.jquery.composite.KeyedJQueryController(
+            var controller = new templa.dom.mvc.jquery.composite.KeyedJQueryController<iassetlab.client.core.mvc.filter.FilteringKeyedControllerModelProxy>(
                 this._contextViewFactory
             );
 
@@ -640,7 +640,7 @@ module iassetlab.client.core {
                 );
                 statusbarController.setModel(statusbarModel);
 
-                var decoratorController = new templa.dom.mvc.jquery.composite.KeyedJQueryController(
+                var decoratorController = new templa.dom.mvc.jquery.composite.KeyedJQueryController<iassetlab.client.core.mvc.AssetLabDecoratorModel>(
                     this._statusbarDecoratorViewFactory
                 );
                 decoratorController.setModel(
@@ -660,7 +660,7 @@ module iassetlab.client.core {
             // decorator
 
             return (controllers: templa.mvc.IController[], invisible?:boolean) => {
-                var toolbarController = new templa.dom.mvc.jquery.command.ToolbarCommandJQueryController(
+                var toolbarController = new templa.dom.mvc.jquery.command.ToolbarCommandJQueryController<templa.mvc.command.CommandControllerModelAdapter>(
                     this._toolbarViewFactory,
                     this._toolbarCommandElementViewFactory,
                     "." + this._toolbarButtonsBackClass,
@@ -675,7 +675,7 @@ module iassetlab.client.core {
                     viewFactory = this._visibleDecoratorViewFactory;
                 }
 
-                var decoratorController = new templa.dom.mvc.jquery.composite.KeyedJQueryController(
+                var decoratorController = new templa.dom.mvc.jquery.composite.KeyedJQueryController<iassetlab.client.core.mvc.AssetLabDecoratorModel>(
                     viewFactory
                 );
                 decoratorController.setModel(
