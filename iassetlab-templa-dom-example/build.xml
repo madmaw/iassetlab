@@ -63,7 +63,7 @@
     <target name="dist" depends="build">
 
         <zip destfile="dist.zip">
-            <fileset dir="." includes="build/**,src/main/css/**,src/main/res/**"/>
+            <fileset dir="." includes="build/**,src/main/css/**,src/main/res/**,src/main/handlebars/**"/>
             <fileset file="index.html"/>
         </zip>
 
