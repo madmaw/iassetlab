@@ -1,0 +1,223 @@
+﻿/** animations take into account the relative position of the views being added: the margin values interact with eachother, which is why the numbers look weird */
+
+.animation-relative-wide-4-push {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-relative-wide-4-push-keyframes;    
+    -moz-animation-name: animation-relative-wide-4-push-keyframes;    
+    animation-name: animation-relative-push-wide-4-keyframes;    
+}
+
+
+@-webkit-keyframes animation-relative-wide-4-push-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -25%;
+    }
+}
+
+@-moz-keyframes animation-relative-wide-4-push-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -25%;
+    }
+}
+
+@keyframes animation-relative-wide-4-push-keyframes{
+    from {
+        margin-left: 0%;
+    }
+    to {
+        margin-left: -25%;
+    }
+}
+
+.animation-relative-wide-4-push-2 {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-relative-wide-4-push-2-keyframes;    
+    -moz-animation-name: animation-relative-wide-4-push-2-keyframes;    
+    animation-name: animation-relative-wide-4-push-2-keyframes;    
+}
+
+
+@-webkit-keyframes animation-relative-wide-4-push-2-keyframes{
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.3;
+    }
+}
+
+@-moz-keyframes animation-relative-wide-4-push-2-keyframes{
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.3;
+    }
+}
+
+@keyframes animation-relative-wide-4-push-2-keyframes{
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.3;
+    }
+}
+
+.animation-relative-wide-4-push-4 {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-relative-wide-4-push-4-keyframes;    
+    -moz-animation-name: animation-relative-wide-4-push-4-keyframes;    
+    animation-name: animation-relative-wide-4-push-4-keyframes;    
+}
+
+
+@-webkit-keyframes animation-relative-wide-4-push-4-keyframes{
+    from {
+        opacity: 0.3;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes animation-relative-wide-4-push-4-keyframes{
+    from {
+        opacity: 0.3;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes animation-relative-wide-4-push-4-keyframes{
+    from {
+        opacity: 0.3;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+.animation-relative-wide-4-pop {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-relative-wide-4-pop-keyframes;    
+    -moz-animation-name: animation-relative-wide-4-pop-keyframes;    
+    animation-name: animation-relative-wide-4-pop-keyframes;    
+}
+
+@-webkit-keyframes animation-relative-wide-4-pop-keyframes{
+    from {
+        margin-left: -25%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@-moz-keyframes animation-relative-wide-4-pop-keyframes{
+    from {
+        margin-left: -25%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+@keyframes animation-relative-wide-4-pop-keyframes{
+    from {
+        margin-left: -25%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+.animation-relative-wide-4-pop-2 {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-relative-wide-4-pop-2-keyframes;    
+    -moz-animation-name: animation-relative-wide-4-pop-2-keyframes;    
+    animation-name: animation-relative-wide-4-pop-2-keyframes;    
+}
+
+
+@-webkit-keyframes animation-relative-wide-4-pop-2-keyframes{
+    from {
+        opacity: 0.3;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes animation-relative-wide-4-pop-2-keyframes{
+    from {
+        opacity: 0.3;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes animation-relative-wide-4-pop-2-keyframes{
+    from {
+        opacity: 0.3;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animation-relative-wide-4-pop-4 {
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: animation-relative-wide-4-pop-4-keyframes;    
+    -moz-animation-name: animation-relative-wide-4-pop-4-keyframes;    
+    animation-name: animation-relative-wide-4-pop-4-keyframes;    
+}
+
+
+@-webkit-keyframes animation-relative-wide-4-pop-4-keyframes{
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.3;
+    }
+}
+
+@-moz-keyframes animation-relative-wide-4-pop-4-keyframes{
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.3;
+    }
+}
+
+@keyframes animation-relative-wide-4-pop-4-keyframes{
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.3;
+    }
+}

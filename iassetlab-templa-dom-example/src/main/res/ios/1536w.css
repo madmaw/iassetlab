@@ -1,0 +1,84 @@
+.toolbar_decorator_toolbar_container {
+    background:url('1536w/toolbar_background.png');
+}
+
+.statusbar_decorator_statusbar {
+    background:url('1536w/statusbar_background.png');
+}
+
+.toolbar_button_normal {
+    -ms-border-image:url('1536w/toolbar_button_normal.png') 8 16 16 16 fill stretch stretch;
+    -moz-border-image:url('1536w/toolbar_button_normal.png') 8 16 16 16 fill stretch stretch;
+    -webkit-border-image:url('1536w/toolbar_button_normal.png') 8 16 16 16 fill stretch stretch;
+    -o-border-image:url('1536w/toolbar_button_normal.png') 8 16 16 16 fill stretch stretch;
+    border-image:url('1536w/toolbar_button_normal.png') 8 16 16 16 fill stretch stretch;
+}
+
+.toolbar_button_back {
+    -ms-border-image:url('1536w/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+    -moz-border-image:url('1536w/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+    -webkit-border-image:url('1536w/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+    -o-border-image:url('1536w/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+    border-image:url('1536w/toolbar_button_back.png') 8 8 8 16 fill stretch stretch;
+}
+
+.content_pane_wide_4, .content_pane_wide_3 {
+    -ms-border-image:url('1536w/rounded_panel_background.png') 12 12 12 12 fill stretch stretch;
+    -moz-border-image:url('1536w/rounded_panel_background.png') 12 12 12 12 fill stretch stretch;
+    -webkit-border-image:url('1536w/rounded_panel_background.png') 12 12 12 12 fill stretch stretch;
+    -o-border-image:url('1536w/rounded_panel_background.png') 12 12 12 12 fill stretch stretch;
+    border-image:url('1536w/rounded_panel_background.png') 12 12 12 12 fill stretch stretch;
+}
+
+.statusbar_decorator_statusbar {
+    height:40px;
+}
+
+.toolbar_decorator_toolbar_container {
+    height:50px;
+}
+
+.toolbar_buttons_container {
+    padding-bottom:12px;
+}
+
+.toolbar_buttons_container {
+    padding-left:${page_margin_left}px;
+}
+
+.toolbar_buttons_container {
+    padding-right:${page_margin_right}px;
+}
+
+.toolbar_button_normal {
+    border-width:8px 8px 8px 8px;
+}
+
+.toolbar_button_back {
+    border-width:8px 8px 8px 16px;
+}
+
+.stack_narrow .toolbar_decorator_content_container {
+    padding-top:50px;
+}
+
+.statusbar_decorator_content {
+    padding-top:40px;
+}
+
+.toolbar_decorator_toolbar_container {
+    top:40px;
+}
+
+.content_pane_wide_4, .content_pane_wide_3 {
+    margin:12px;
+}
+
+.content_pane_wide_4, .content_pane_wide_3 {
+    border-width:12px;
+}
+
+#content_padding_measure {
+    height:48px;
+}
+
