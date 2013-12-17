@@ -111,4 +111,13 @@
 
     </target>
 
+    <target name="dist-sample" depends="build">
+
+        <zip destfile="dist-sample.zip">
+            <fileset dir="." includes="build/**,src/samples/css/**,src/samples/res/**"/>
+            <fileset file="index.html"/>
+        </zip>
+
+    </target>
+
 </project>

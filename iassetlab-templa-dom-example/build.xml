@@ -27,7 +27,7 @@
         </copy>
 
     </target>
-
+  
     <target name="build" depends="init">
 
         <fileset dir="." id="tsFiles">
@@ -59,6 +59,16 @@
         <!-- Concatenate all required CSS, JS files -->
         <!-- Compress built CSS, JS files -->
     </target>
+
+    <target name="dist" depends="build">
+
+        <zip destfile="dist.zip">
+            <fileset dir="." includes="build/**,src/main/css/**,src/main/res/**"/>
+            <fileset file="index.html"/>
+        </zip>
+
+    </target>
+
 
     <target name="closure" depends="build">
         <!-- this doesn't seem to produce anything useful -->
