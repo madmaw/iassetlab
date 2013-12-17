@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width"/>
+
+    <title>iAssetLab</title>
+
+    <link rel="stylesheet" href="src/main/css/iassetlab.css"/>
+
+    <link rel="stylesheet" href="src/main/css/absolute_animations_narrow.css"/>
+    <link rel="stylesheet" href="src/main/css/absolute_animations_wide_3.css"/>
+
+    <link rel="stylesheet" href="src/main/css/relative_animations_narrow.css"/>
+    <link rel="stylesheet" href="src/main/css/relative_animations_wide_3.css"/>
+    <link rel="stylesheet" href="src/main/css/relative_animations_wide_4.css"/>
+
+    <link rel="stylesheet" href="src/main/css/jquery-ui-1.10.2/jquery-ui.css"/>
+    <link rel="stylesheet" href="src/main/css/jquery-ui-1.10.2/jquery.ui.progressbar.css"/>
+    <!-- sizes chosen so portrait/landscape will use the same set of assets on most iphones/ipads -->
+    <link rel='stylesheet' media='screen and (max-width: 480px)' href='src/main/res/ios/320w.css' />
+    <link rel='stylesheet' media='screen and (min-width: 481px) and (max-width: 1136px)' href='src/main/res/ios/640w.css' />
+    <link rel='stylesheet' media='screen and (min-width: 1137px)' href='src/main/res/ios/1536w.css' />
+
+    <script src="build/lib/hammer-1.0.5.js"></script>
+    <script src="build/lib/handlebars-1.0.10.js"></script>
+    <script src="build/lib/jquery-1.9.1.js"></script>
+    <script src="build/lib/jquery-ui-1.10.2.js"></script>
+    <script src="build/lib/rison-0.9.2.js"></script>
+    <script src="build/lib/iassetlab-templa.js"></script>
+    <script src="build/lib/iassetlab-templa-dom.js"></script>
+    <script src="build/dist/iassetlab-templa-dom-example.js"></script>
+
+    <script>
+        window.onload = function () {
+            var contentElement = document.getElementById("content");
+            var assetLabControllerFactory = new iassetlab.client.core.AssetLabControllerFactory();
+            var loadables = []
+            assetLabControllerFactory.init(loadables);
+            var assetLabController = assetLabControllerFactory.create();
+            var loader = assetLabControllerFactory.wrapInLoader(loadables, assetLabController);
+
+            var title = "iAssetLab";
+            var getTitle = function () {
+                var fullTitle = title;
+                var controllerTitle = loader.getTitle();
+                if (controllerTitle != null && controllerTitle != "") {
+                    fullTitle += " - " + controllerTitle;
+                }
+                return fullTitle;
+            }
+
+            loader.addOnChangeListener(function (source, changeEvent) {
+                if (changeEvent.titleChanged) {
+                    document.title = getTitle();
+                }
+            });
+
+            var historyManager = new templa.mvc.history.WebHistoryManager(assetLabController);
+            historyManager.start();
+
+            loader.init(new templa.dom.mvc.DirectElementReference(contentElement));
+            loader.start();
+
+        };
+    </script>
+</head>
+<body>
+    <div id="content"></div>
+    <!-- do nothing with this -->
+    <div id="content_padding_measure" style="visibility:hidden; position:absolute; top:0;"></div>
+</body>
+</html>
