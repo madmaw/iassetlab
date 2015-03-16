@@ -107,6 +107,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
                 String imageWidthName = property.getKey() + "-width";
                 String imageHeightName = property.getKey() + "-height";
                 final String imageURIName = property.getKey() + "-uri";
+
                 properties.add(new ConfigurationTree.Property(imageWidthName, null, new ImageDimensionValue(path, property.getAssetValue(), imageWidthName, ImageDimensionValue.DIMENSION_WIDTH)));
                 properties.add(new ConfigurationTree.Property(imageHeightName, null, new ImageDimensionValue(path, property.getAssetValue(), imageHeightName, ImageDimensionValue.DIMENSION_HEIGHT)));
                 properties.add(new ConfigurationTree.Property(imageURIName, null, new AssetValue() {

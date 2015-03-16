@@ -60,7 +60,7 @@ public class XSLFrameTransformerFactory implements FrameTransformerFactory {
             DataPath xslDataPath = xslFileAssetValue.getSourceDataPath().getRelativePath(xslFile);
             InputStream xslInputStream = xslDataPath.open();
             try {
-                Source xslSource = new StreamSource(xslInputStream);
+                Source xslSource = new StreamSource(xslInputStream, xslDataPath.toAbsolutePath());
                 transformer = transformerFactory.newTransformer(xslSource);
             } catch( TransformerConfigurationException ex ) {
                 throw new FrameTransformerConfigurationException(xslFile, ex);
