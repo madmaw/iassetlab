@@ -20,11 +20,17 @@ public class ConfigurationTree implements AssetConfigurationSource {
         private String key;
         private String type;
         private AssetValue assetValue;
+        private Map<String, String> attributes;
 
         public Property(String key, String type, AssetValue assetValue) {
+            this(key, type, assetValue, null);
+        }
+
+        public Property(String key, String type, AssetValue assetValue, Map<String, String> attributes) {
             this.key = key;
             this.type = type;
             this.assetValue = assetValue;
+            this.attributes = attributes;
         }
 
         public String getKey() {
@@ -33,6 +39,14 @@ public class ConfigurationTree implements AssetConfigurationSource {
 
         public String getType() {
             return type;
+        }
+
+        public String getAttribute(String key) {
+            if( this.attributes != null ) {
+                return this.attributes.get(key);
+            } else {
+                return null;
+            }
         }
 
         public AssetValue getAssetValue() {

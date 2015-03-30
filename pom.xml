@@ -16,6 +16,7 @@
 
     <properties>
         <!-- Specify Batik version for project -->
+        <!-- note 1.8 has been released, but isn't in a repo -->
         <batik.version>1.7</batik.version>
 
         <!-- Specify Spring version for project -->

@@ -5,19 +5,25 @@ import com.iassetlab.core.parser.ConfigurationParseException;
 import com.iassetlab.core.parser.ConfigurationTreeParser;
 import com.iassetlab.core.value.AbsolutePathAssetValueProxy;
 import com.iassetlab.core.value.ImageDimensionValue;
+import com.iassetlab.core.value.SimpleAssetValue;
+import net.glxn.qrgen.core.AbstractQRCode;
+import net.glxn.qrgen.core.image.ImageType;
+import net.glxn.qrgen.javase.QRCode;
+import org.apache.batik.util.Base64EncoderStream;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -127,6 +133,98 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
                         return imageURIName;
                     }
                 }));
+            } else if( "qrcode".equals(property.getType()) ) {
+                final String widthKey = property.getAttribute("widthKey");
+                final String heightKey = property.getAttribute("heightKey");
+                final String foregroundKey = property.getAttribute("foregroundKey");
+                final String backgroundKey = property.getAttribute("backgroundKey");
+                final String imageTypeKey = property.getAttribute("imageTypeKey");
+
+                final String imageURIName = property.getKey() + "-uri";
+
+                properties.add(new ConfigurationTree.Property(imageURIName, null, new AssetValue() {
+                    @Override
+                    public DataPath getSourceDataPath() {
+                        return path;
+                    }
+
+                    @Override
+                    public String getValue(AssetContext context) {
+                        String value = property.getAssetValue().getValue(context);
+
+                        AbstractQRCode qrcode = QRCode.from(value);
+
+                        AssetValue widthAsset = context.get(widthKey);
+                        Integer width;
+                        if(widthAsset != null ) {
+                            String widthString = widthAsset.getValue(context);
+                            if( widthString != null ) {
+                                width = Integer.parseInt(widthString);
+                            } else {
+                                width = null;
+                            }
+
+                        } else {
+                            width = null;
+                        }
+                        Integer height;
+                        AssetValue heightAsset = context.get(heightKey);
+                        if( heightAsset != null ) {
+                            String heightString = heightAsset.getValue(context);
+                            if( heightString != null ) {
+                                height = Integer.parseInt(heightString);
+                            } else {
+                                height = null;
+                            }
+                        } else {
+                            height = null;
+                        }
+
+                        if( width != null ) {
+                            if( height == null ) {
+                                height = width;
+                            }
+                        } else {
+                            if( height != null ) {
+                                width = height;
+                            }
+                        }
+                        if( width != null && height != null ) {
+                            qrcode = qrcode.withSize(width, height);
+                        }
+
+                        /* needs later version???
+                        AssetValue backgroundAsset = context.get(backgroundKey);
+                        if( backgroundAsset != null ) {
+                            String backgroundString = backgroundAsset.getValue(context);
+                            if( backgroundString != null ) {
+
+                            }
+                        }
+                        */
+
+                        ImageType imageType = ImageType.PNG;
+                        AssetValue imageTypeAsset = context.get(imageTypeKey);
+                        if( imageTypeAsset != null ) {
+                            String imageTypeString = imageTypeAsset.getValue(context);
+                            if( imageTypeString != null ) {
+                                imageType = ImageType.valueOf(imageTypeString);
+                            }
+                        }
+                        qrcode = qrcode.to(imageType);
+
+                        ByteArrayOutputStream bos = qrcode.stream();
+                        String base64 = Base64.encodeBase64String(bos.toByteArray());
+                        String dataURI = "data:image/"+imageType.name().toLowerCase()+";base64,"+base64;
+                        return dataURI;
+                    }
+
+                    @Override
+                    public String getName(AssetContext context) {
+                        return imageURIName;
+                    }
+                }));
+
             }
             properties.add(property);
         }
@@ -155,6 +253,14 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         String name = propertyElement.getAttribute(PROPERTY_NAME_ATTRIBUTE);
         String isRelativePath = propertyElement.getAttribute(PROPERTY_IS_RELATIVE_PATH);
         String type = propertyElement.getAttribute(PROPERTY_TYPE);
+
+        NamedNodeMap propertyElementAttributes = propertyElement.getAttributes();
+        HashMap<String, String> attributes = new HashMap<>(propertyElementAttributes.getLength());
+        for( int i=0; i<propertyElementAttributes.getLength(); i++ ) {
+            Attr node = (Attr)propertyElementAttributes.item(i);
+            attributes.put(node.getName(), node.getValue());
+        }
+
         // image is a special type
         String value = propertyElement.getTextContent();
         try {
@@ -164,7 +270,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
                 // hack to allow well-behaved paths to be specified in XML
                 assetValue = new AbsolutePathAssetValueProxy(assetValue);
             }
-            return new ConfigurationTree.Property(key, type, assetValue);
+            return new ConfigurationTree.Property(key, type, assetValue, attributes);
         } catch( InvalidAssetValueTemplateException ex ) {
             throw new ConfigurationParseException(ex);
         }
