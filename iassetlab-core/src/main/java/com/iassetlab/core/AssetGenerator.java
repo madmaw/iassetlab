@@ -45,7 +45,7 @@ public class AssetGenerator {
     public void generate(List<ConfigurationTree> configurations, FrameConsumer frameConsumer) throws IOException, FrameGenerationException, FrameGeneratorConfigurationException, FrameConsumptionException {
         AssetContext defaultAssetContext = new BasicAssetContext(defaults);
         int sequenceNumber = 0;
-        ArrayList<ChildAssetContextWithDataPath> contexts = new ArrayList<>();
+        ArrayList<ChildAssetContextWithDataPath> contexts = new ArrayList<ChildAssetContextWithDataPath>();
 
         for( ConfigurationTree configuration : configurations ) {
             List<Map<String, AssetValue>> configurationBuilds = configuration.build();

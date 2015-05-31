@@ -29,7 +29,7 @@ public class FileFrameConsumer extends AbstractFrameConsumer {
     public FileFrameConsumer(File directory, boolean append) {
         this.directory = directory;
         this.append = append;
-        this.writtenTo = new HashSet<>();
+        this.writtenTo = new HashSet<File>();
     }
 
     public File getFile(AssetContext context) {

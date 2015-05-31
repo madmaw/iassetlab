@@ -98,14 +98,14 @@ public class ConfigurationTree implements AssetConfigurationSource {
 
     @Override
     public List<Map<String, AssetValue>> build() {
-        Map<String, AssetValue> local = new HashMap<>(properties.size());
+        Map<String, AssetValue> local = new HashMap<String, AssetValue>(properties.size());
 
         for( Property property : properties ) {
             local.put(property.getKey(), property.getAssetValue());
         }
 
-        List<AssetConfigurationSource> configurationSources = new ArrayList<>( this.references.size() + this.diversifiers.size() );
-        List<List<Map<String, AssetValue>>> assetConfigurations = new ArrayList<>( this.references.size() + this.diversifiers.size() );
+        List<AssetConfigurationSource> configurationSources = new ArrayList<AssetConfigurationSource>( this.references.size() + this.diversifiers.size() );
+        List<List<Map<String, AssetValue>>> assetConfigurations = new ArrayList<List<Map<String, AssetValue>>>( this.references.size() + this.diversifiers.size() );
         configurationSources.addAll(references);
         configurationSources.addAll(diversifiers);
 
@@ -115,9 +115,9 @@ public class ConfigurationTree implements AssetConfigurationSource {
             numAssetConfigurations *= assetConfiguration.size();
             assetConfigurations.add(assetConfiguration);
         }
-        List<Map<String, AssetValue>> result = new ArrayList<>(numAssetConfigurations);
+        List<Map<String, AssetValue>> result = new ArrayList<Map<String, AssetValue>>(numAssetConfigurations);
         for( int i=0; i<numAssetConfigurations; i++ ) {
-            Map<String, AssetValue> row = new HashMap<>(local);
+            Map<String, AssetValue> row = new HashMap<String, AssetValue>(local);
 
             int index = i;
             // reverse the loop so we reduce the back-most configuration first

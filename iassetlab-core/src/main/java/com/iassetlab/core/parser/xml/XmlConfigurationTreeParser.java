@@ -104,7 +104,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         String name = configurationTreeElement.getAttribute(CONFIGURATION_TREE_NAME_ATTRIBUTE);
 
         List<Element> propertyNodes = getElementsByTagName(configurationTreeElement, PROPERTY_ELEMENT_NAME);
-        ArrayList<ConfigurationTree.Property> properties = new ArrayList<>(propertyNodes.size());
+        ArrayList<ConfigurationTree.Property> properties = new ArrayList<ConfigurationTree.Property>(propertyNodes.size());
         for( int i=0; i<propertyNodes.size(); i++ ) {
             Element propertyElement = propertyNodes.get(i);
             final ConfigurationTree.Property property = parseProperty(path, propertyElement);
@@ -230,7 +230,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         }
 
         List<Element> referenceNodes = getElementsByTagName(configurationTreeElement, REFERENCE_ELEMENT_NAME);
-        ArrayList<Reference> references = new ArrayList<>(referenceNodes.size());
+        ArrayList<Reference> references = new ArrayList<Reference>(referenceNodes.size());
         for( int i=0; i<referenceNodes.size(); i++ ) {
             Element referenceElement = referenceNodes.get(i);
             Reference reference = parseReference(path, referenceElement);
@@ -238,7 +238,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         }
 
         List<Element> diversifierNodes = getElementsByTagName(configurationTreeElement, DIVERSIFIER_ELEMENT_NAME);
-        ArrayList<Diversifier> diversifiers = new ArrayList<>(diversifierNodes.size());
+        ArrayList<Diversifier> diversifiers = new ArrayList<Diversifier>(diversifierNodes.size());
         for( int i=0; i<diversifierNodes.size(); i++ ) {
             Element diversifierElement = diversifierNodes.get(i);
             Diversifier diversifier = parseDiversifier(path, diversifierElement);
@@ -255,7 +255,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
         String type = propertyElement.getAttribute(PROPERTY_TYPE);
 
         NamedNodeMap propertyElementAttributes = propertyElement.getAttributes();
-        HashMap<String, String> attributes = new HashMap<>(propertyElementAttributes.getLength());
+        HashMap<String, String> attributes = new HashMap<String, String>(propertyElementAttributes.getLength());
         for( int i=0; i<propertyElementAttributes.getLength(); i++ ) {
             Attr node = (Attr)propertyElementAttributes.item(i);
             attributes.put(node.getName(), node.getValue());
@@ -279,7 +279,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
     public Diversifier parseDiversifier(DataPath path, Element diversifierElement) throws ConfigurationParseException, IOException {
         String key = diversifierElement.getAttribute(DIVERSIFIER_KEY_ATTRIBUTE);
         List<Element> configurationTreeNodes = getElementsByTagName(diversifierElement, CONFIGURATION_TREE_ELEMENT_NAME);
-        ArrayList<ConfigurationTree> configurationTrees = new ArrayList<>(configurationTreeNodes.size());
+        ArrayList<ConfigurationTree> configurationTrees = new ArrayList<ConfigurationTree>(configurationTreeNodes.size());
         for( int i=0; i<configurationTreeNodes.size(); i++ ) {
             Element configurationTreeElement = configurationTreeNodes.get(i);
             ConfigurationTree configurationTree = parseConfigurationTree(path, configurationTreeElement);
@@ -311,7 +311,7 @@ public class XmlConfigurationTreeParser implements ConfigurationTreeParser {
 
     private static List<Element> getElementsByTagName(Element parent, String tagName) {
 
-        ArrayList<Element> result = new ArrayList<>();
+        ArrayList<Element> result = new ArrayList<Element>();
         Node child = parent.getFirstChild();
         while( child != null ) {
             if( child instanceof Element ) {

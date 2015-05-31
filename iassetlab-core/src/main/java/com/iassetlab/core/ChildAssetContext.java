@@ -54,7 +54,7 @@ public class ChildAssetContext extends BasicAssetContext {
     public Collection<String> getKeys() {
         Collection<String> currentKeys = super.getKeys();
         Collection<String> parentKeys = this.parent.getKeys();
-        HashSet<String> keys = new HashSet<>(currentKeys.size() + parentKeys.size());
+        HashSet<String> keys = new HashSet<String>(currentKeys.size() + parentKeys.size());
         keys.addAll(currentKeys);
         for( String parentKey : parentKeys ) {
             if( this.parentPrefix != null ) {

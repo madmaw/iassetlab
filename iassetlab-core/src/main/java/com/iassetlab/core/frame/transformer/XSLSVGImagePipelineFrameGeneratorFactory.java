@@ -44,7 +44,7 @@ public class XSLSVGImagePipelineFrameGeneratorFactory implements FrameGeneratorF
 
     @Override
     public FrameGenerator create(AssetContext assetContext) throws FrameGeneratorConfigurationException {
-        ArrayList<FrameTransformerFactory> transformerFactories = new ArrayList<>();
+        ArrayList<FrameTransformerFactory> transformerFactories = new ArrayList<FrameTransformerFactory>();
 
         // xsl
         XSLFrameTransformerFactory xslFrameTransformerFactory = new XSLFrameTransformerFactory(transformerFactory, defaultXSLOutputMimeType);

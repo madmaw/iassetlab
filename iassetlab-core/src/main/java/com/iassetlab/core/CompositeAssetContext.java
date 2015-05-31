@@ -17,7 +17,7 @@ public class CompositeAssetContext implements AssetContext {
     public List<AssetContext> assetContexts;
 
     public CompositeAssetContext() {
-        this.assetContexts = new ArrayList<>();
+        this.assetContexts = new ArrayList<AssetContext>();
     }
 
     public void addAssetContext(AssetContext assetContext) {
@@ -38,7 +38,7 @@ public class CompositeAssetContext implements AssetContext {
 
     @Override
     public Collection<String> getKeys() {
-        HashSet<String> result = new HashSet<>();
+        HashSet<String> result = new HashSet<String>();
         for( AssetContext assetContext : this.assetContexts ) {
             Collection<String> partKeys = assetContext.getKeys();
             result.addAll(partKeys);

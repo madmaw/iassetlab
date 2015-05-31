@@ -47,8 +47,8 @@ public class Main {
 
         public CommandLineParameters(String targetDirectory) {
             this.targetDirectory = targetDirectory;
-            this.inputFiles = new ArrayList<>();
-            this.inputParameters = new HashMap<>();
+            this.inputFiles = new ArrayList<String>();
+            this.inputParameters = new HashMap<String, String>();
         }
 
         public String getTargetDirectory() {
@@ -78,7 +78,7 @@ public class Main {
         FileDataPath userDataPath = new FileDataPath(new File(userDirectory));
 
         Map<String, String> inputParameters = parameters.getInputParameters();
-        HashMap<String, AssetValue> assetValues = new HashMap<>(inputParameters.size());
+        HashMap<String, AssetValue> assetValues = new HashMap<String, AssetValue>(inputParameters.size());
         for( Map.Entry<String, String> inputParameter : inputParameters.entrySet() ) {
             String key = inputParameter.getKey();
             String value = inputParameter.getValue();
@@ -99,7 +99,7 @@ public class Main {
                 AssetGenerator.class.getClassLoader()
         );
         // TODO should probably have a URL one as well
-        HashMap<String, DataPathFactory> dataPathFactories = new HashMap<>(2);
+        HashMap<String, DataPathFactory> dataPathFactories = new HashMap<String, DataPathFactory>(2);
         dataPathFactories.put("file", fileDataPathFactory);
         dataPathFactories.put("res", resourceDataPathFactory);
         ProtocolAwareDataPathFactoryProxy xmlDataPathFactory = new ProtocolAwareDataPathFactoryProxy(
@@ -121,7 +121,7 @@ public class Main {
         XmlConfigurationTreeParser parser = new XmlConfigurationTreeParser(DocumentBuilderFactory.newInstance(), VelocityAssetValueFactory.getInstance());
 
         List<String> inputFiles = parameters.getInputFiles();
-        ArrayList<ConfigurationTree> configurations = new ArrayList<>(inputFiles.size());
+        ArrayList<ConfigurationTree> configurations = new ArrayList<ConfigurationTree>(inputFiles.size());
         for( String inputFile : inputFiles ) {
             DataPath inputDataPath = xmlDataPathFactory.getDataPath(inputFile);
             ConfigurationTree configuration = parser.parse(inputDataPath);

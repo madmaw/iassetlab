@@ -78,7 +78,7 @@ public class TestXSLFrameTransformer {
 
     @Test
     public void test3() throws Exception {
-        HashSet<String> strings = new HashSet<>(4);
+        HashSet<String> strings = new HashSet<String>(4);
         strings.add("<?xml version=\"1.0\" encoding=\"UTF-8\"?><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-5 -10 10 20\" height=\"20\" width=\"10\"><g><rect height=\"10\" width=\"5\" y=\"5\" x=\"2.5\" stroke=\"black\" stroke-width=\"3\" fill=\"red\"/></g></svg>");
         strings.add("<?xml version=\"1.0\" encoding=\"UTF-8\"?><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-5 -10 10 20\" height=\"20\" width=\"10\"><g><rect height=\"10\" width=\"5\" y=\"5\" x=\"2.5\" stroke=\"black\" stroke-width=\"3\" fill=\"green\"/></g></svg>");
         strings.add("<?xml version=\"1.0\" encoding=\"UTF-8\"?><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-50 -100 100 200\" height=\"200\" width=\"100\"><g><rect height=\"100\" width=\"50\" y=\"50\" x=\"25\" stroke=\"black\" stroke-width=\"3\" fill=\"red\"/></g></svg>");

@@ -21,7 +21,7 @@ public class InMemoryFrameConsumer extends AbstractFrameConsumer {
     private List<byte[]> frames;
 
     public InMemoryFrameConsumer() {
-        this.frames = new ArrayList<>();
+        this.frames = new ArrayList<byte[]>();
     }
 
     public InMemoryFrameConsumer(List<byte[]> frames) {

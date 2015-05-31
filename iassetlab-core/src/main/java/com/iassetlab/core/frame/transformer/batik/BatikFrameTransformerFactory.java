@@ -129,7 +129,7 @@ public class BatikFrameTransformerFactory implements FrameTransformerFactory {
             }
         }
 
-        HashMap<RenderingHints.Key, Object> hintMap = new HashMap<>();
+        HashMap<RenderingHints.Key, Object> hintMap = new HashMap<RenderingHints.Key, Object>();
         // TODO make this configurable
         hintMap.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         hintMap.put(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);

@@ -37,7 +37,7 @@ public class Reference implements AssetConfigurationSource {
 
     @Override
     public List<Map<String, AssetValue>> build() {
-        List<Map<String, AssetValue>> result = new ArrayList<>();
+        List<Map<String, AssetValue>> result = new ArrayList<Map<String, AssetValue>>();
         List<Map<String, AssetValue>> rows = this.configuration.build();
         for( final Map<String, AssetValue> row : rows ) {
             AssetValue assetValue = new AssetValue() {
@@ -66,7 +66,7 @@ public class Reference implements AssetConfigurationSource {
 
             };
 
-            Map<String, AssetValue> properties = new HashMap<>(1);
+            Map<String, AssetValue> properties = new HashMap<String, AssetValue>(1);
             properties.put(this.key, assetValue);
             result.add(properties);
         }

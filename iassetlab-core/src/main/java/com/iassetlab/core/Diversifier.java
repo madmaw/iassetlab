@@ -33,7 +33,7 @@ public class Diversifier implements AssetConfigurationSource {
 
     @Override
     public List<Map<String, AssetValue>> build() {
-        List<Map<String, AssetValue>> result = new ArrayList<>(configurations.size());
+        List<Map<String, AssetValue>> result = new ArrayList<Map<String, AssetValue>>(configurations.size());
 
         for( int i =0; i<configurations.size(); i++ ) {
             ConfigurationTree configuration = this.configurations.get(i);

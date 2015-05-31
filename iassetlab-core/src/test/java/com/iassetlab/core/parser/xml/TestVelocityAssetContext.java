@@ -88,7 +88,7 @@ public class TestVelocityAssetContext {
 
         List<Map<String, AssetValue>> builds = tree.build();
 
-        HashSet<String> greetings = new HashSet<>();
+        HashSet<String> greetings = new HashSet<String>();
         greetings.add("Hello William");
         greetings.add("Hello Simion");
 

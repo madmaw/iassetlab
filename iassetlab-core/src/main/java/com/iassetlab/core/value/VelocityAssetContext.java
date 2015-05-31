@@ -53,7 +53,7 @@ public class VelocityAssetContext extends AbstractContext {
     public VelocityAssetContext(AssetContext assetContext, Context context) {
         super(context);
         this.assetContext = assetContext;
-        this.internalVariables = new HashMap<>();
+        this.internalVariables = new HashMap<String, Object>();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class VelocityAssetContext extends AbstractContext {
     @Override
     public Object[] internalGetKeys() {
         Collection<String> assetKeys = this.assetContext.getKeys();
-        HashSet<String> keys = new HashSet<>(assetKeys.size() + this.internalVariables.size());
+        HashSet<String> keys = new HashSet<String>(assetKeys.size() + this.internalVariables.size());
         keys.addAll(assetKeys);
         keys.addAll(this.internalVariables.keySet());
         Object[] result = new Object[keys.size()];

@@ -24,8 +24,8 @@ public class DelegatingFrameConsumer implements FrameConsumer {
 
     public DelegatingFrameConsumer(FrameConsumerFactory frameConsumerFactory) {
         this.frameConsumerFactory = frameConsumerFactory;
-        this.frameConsumers = new HashMap<>();
-        this.orderedFrameConsumers = new ArrayList<>();
+        this.frameConsumers = new HashMap<String, FrameConsumer>();
+        this.orderedFrameConsumers = new ArrayList<FrameConsumer>();
     }
 
     private FrameConsumer getFrameConsumer(AssetContext context) {

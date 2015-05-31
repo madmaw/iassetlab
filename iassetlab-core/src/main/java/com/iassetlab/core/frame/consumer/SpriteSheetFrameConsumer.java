@@ -39,7 +39,7 @@ public class SpriteSheetFrameConsumer extends AbstractFrameConsumer {
 
     public SpriteSheetFrameConsumer(FrameConsumer aggregatedFrameConsumer) {
         this.aggregatedFrameConsumer = aggregatedFrameConsumer;
-        this.frames = new ArrayList<>();
+        this.frames = new ArrayList<BufferedImage>();
         this.width = 0;
         this.height = 0;
         this.assetContext = new CompositeAssetContext();

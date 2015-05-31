@@ -16,7 +16,7 @@ public class BasicAssetContext implements AssetContext {
     private Map<String, AssetValue> values;
 
     public BasicAssetContext() {
-        this.values = new HashMap<>();
+        this.values = new HashMap<String, AssetValue>();
     }
 
     public BasicAssetContext(Map<String, AssetValue> values) {
